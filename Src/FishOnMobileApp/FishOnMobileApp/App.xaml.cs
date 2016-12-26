@@ -12,8 +12,7 @@ namespace FishOnMobileApp
         public App()
         {
             InitializeComponent();
-
-            MainPage = new FishOnMobileApp.MainPage();
+            MainPage = new NavigationPage(new FishOnMobileApp.MainPage());
         }
 
         protected override void OnStart()

@@ -1,22 +1,12 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace FishOn.ViewModel
 {
     public class MainPageViewModel : BaseViewModel
     {
-        private bool _isBusy = false;
-
-        public bool IsBusy
-        {
-            get { return _isBusy; }
-            set
-            {
-                _isBusy = value;
-                base.OnPropertyChanged();
-            }
-        }
-      
+        
         public ICommand FishOnCommand { get { return new Command(() =>
                 {
                     IsBusy = true;
