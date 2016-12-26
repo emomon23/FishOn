@@ -6,10 +6,21 @@ namespace FishOn.ViewModel
 {
     public class MainPageViewModel : BaseViewModel
     {
-        
-        public ICommand FishOnCommand { get { return new Command(() =>
+        public MainPageViewModel(INavigation navigation) : base(navigation)
+        {
+        }
+
+        public ICommand FishOnCommand { get { return new Command(async () =>
                 {
-                    IsBusy = true;
+                    try
+                    {
+                        IsBusy = true;
+                        await Navigate_ToSpeciesList();
+                    }
+                    finally
+                    {
+                        IsBusy = false;
+                    }
                 });
             }
         }

@@ -13,7 +13,7 @@ namespace FishOnMobileApp
         public MainPage()
         {
             InitializeComponent();
-            BindingContext = new MainPageViewModel();
+            BindingContext = new MainPageViewModel(this.Navigation);
         }
     }
 }

@@ -11,9 +11,15 @@ namespace FishOn.ViewModel
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
+        private readonly INavigation _navigation;
         private bool _isBusy = false;
         public event PropertyChangedEventHandler PropertyChanged;
-       
+
+        public BaseViewModel(INavigation navigation)
+        {
+            _navigation = navigation;
+        }
+
         public bool IsBusy
         {
             get { return _isBusy; }
@@ -29,16 +35,18 @@ namespace FishOn.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        /*Example
-         * public bool IsActive {
-         *     get {return _isActive}
-         *     set { 
-         *           _isActive = value;
-         *           OnPropertyChanges()
-         *           OnPropertyChanges(nameof(SomeCalculatedMessageThatUsesIsActive))
-         *         }
-         * }
-         */
+        protected async Task Navigate_ToSpeciesList()
+        {
+            var speciesPage = new SpeciesListPage();
+            speciesPage.BindingContext = new SpeciesPageViewModel(speciesPage.Navigation);
+
+            await _navigation.PushAsync(speciesPage);
+        }
+
+        protected async Task Navigate_BackToLandingPage()
+        {
+            await _navigation.PopToRootAsync(true);
+        }
 
     }
 }
