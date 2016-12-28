@@ -25,9 +25,8 @@ namespace FishOnMobileApp.WinPhone
         public MainPage()
         {
             this.InitializeComponent();
-
+            Xamarin.FormsMaps.Init("INSERT_AUTHENTICATION_TOKEN_HERE");
             this.NavigationCacheMode = NavigationCacheMode.Required;
-
             LoadApplication(new FishOnMobileApp.App());
         }
 
