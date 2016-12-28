@@ -7,7 +7,8 @@ namespace FishOn.Model
         public int SpeciesId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-
+       
         public virtual ICollection<WayPoint> WayPoints { get; set; }
+        public virtual ICollection<Lake> Lakes { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FishOn.Model;
+using FishOn.Repositories;
 
 namespace FishOn.Services
 {
@@ -13,6 +14,18 @@ namespace FishOn.Services
 
     public class LakeDataService : ILakeDataService
     {
+        private ILakeRepository _lakeRepo;
+
+        public LakeDataService()
+        {
+            _lakeRepo = new LakeRepository();
+        }
+
+        public LakeDataService(ILakeRepository lakeRepo)
+        {
+            _lakeRepo = lakeRepo;
+        }
+
         public async Task<List<Lake>> GetLakes()
         {
             return null;

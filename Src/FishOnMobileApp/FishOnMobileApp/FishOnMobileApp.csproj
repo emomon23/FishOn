@@ -38,6 +38,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LakeMapPage.xaml.cs">
+      <DependentUpon>LakeMapPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -45,6 +48,7 @@
     <Compile Include="Model\Species.cs" />
     <Compile Include="Model\WayPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\FishOnHttpRepository.cs" />
     <Compile Include="Repositories\LakeRepository.cs" />
     <Compile Include="Repositories\SpeciiesRepository.cs" />
@@ -55,7 +59,8 @@
     <Compile Include="SpeciesListPage.xaml.cs">
       <DependentUpon>SpeciesListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="BaseViewModel.cs" />
+    <Compile Include="ViewModel\LakeMapPageViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
     <Compile Include="ViewModel\SpeciesPageViewModel.cs" />
   </ItemGroup>
@@ -101,6 +106,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SpeciesListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="LakeMapPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

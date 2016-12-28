@@ -11,14 +11,11 @@ namespace FishOn.Repositories
         Task Delete(int wayPointId);
     }
 
-    public class WayPointRepository : IWayPointRepository
+    public class WayPointRepository : BaseRepository, IWayPointRepository
     {
         private IFishOnHttpRepository _fishOnHttp;
 
-        public WayPointRepository(IFishOnHttpRepository fishOnHttp)
-        {
-            _fishOnHttp = fishOnHttp;
-        }
+        public WayPointRepository(IFishOnHttpRepository fishOnHttp = null) : base(fishOnHttp) { }
 
         public async Task<List<WayPoint>> GetWayPoints(int lakeId)
         {

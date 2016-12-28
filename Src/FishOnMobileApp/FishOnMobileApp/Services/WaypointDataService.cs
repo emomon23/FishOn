@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FishOn.Model;
+using FishOn.Repositories;
 
 namespace FishOn.Services
 {
@@ -11,8 +12,20 @@ namespace FishOn.Services
         Task Delete(int wayPointId);
     }
 
-    public class WayPointRepository : IWayPointDataService
+    public class WayPointDataService : IWayPointDataService
     {
+        private IWayPointRepository _wayPointRepository;
+
+        public WayPointDataService()
+        {
+            _wayPointRepository = new WayPointRepository();
+        }
+
+        public WayPointDataService(IWayPointRepository wayPointRepository)
+        {
+            _wayPointRepository = wayPointRepository;
+        }
+
         public async Task<List<WayPoint>> GetWayPoints(int lakeId)
         {
             return null;

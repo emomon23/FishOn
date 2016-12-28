@@ -11,14 +11,12 @@ namespace FishOn.Repositories
         Task Delete(int lakeId);
     }
 
-    public class LakeRepository : ILakeRepository
+    public class LakeRepository : BaseRepository, ILakeRepository
     {
         private readonly IFishOnHttpRepository _fishOnHttp;
 
-        public LakeRepository(IFishOnHttpRepository fishOnHttp)
-        {
-            _fishOnHttp = fishOnHttp;
-        }
+        public LakeRepository(IFishOnHttpRepository fishOnHttp = null) : base(fishOnHttp) { }
+
 
         public async Task<List<Lake>> GetLakes()
         {
