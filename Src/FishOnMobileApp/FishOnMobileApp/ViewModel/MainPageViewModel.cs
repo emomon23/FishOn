@@ -18,7 +18,7 @@ namespace FishOn.ViewModel
             {
                 return new Command(async () =>
                 {
-                    await Navigate_ToSpeciesList();
+                    await Navigate_ToSpeciesListAsync();
                 });
             }
         }
@@ -29,7 +29,7 @@ namespace FishOn.ViewModel
             {
                 return new Command(async () =>
                 {
-                    await Naviage_ToLakeMap();
+                    await Naviage_ToLakeMapAsync();
                 });
             }
         }

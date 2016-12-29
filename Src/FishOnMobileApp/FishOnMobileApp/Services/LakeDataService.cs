@@ -7,9 +7,10 @@ namespace FishOn.Services
 {
     public interface ILakeDataService
     {
-        Task<List<Lake>> GetLakes();
-        Task Save(Lake lake);
-        Task Delete(int lakeId);
+        Task<List<Lake>> GetLakesAsync();
+        Task SaveAsync(Lake lake);
+        Task DeleteAsync(int lakeId);
+        Task<int> FindClosestLakeIdAsync(double latitude, double longitude);
     }
 
     public class LakeDataService : ILakeDataService
@@ -26,17 +27,22 @@ namespace FishOn.Services
             _lakeRepo = lakeRepo;
         }
 
-        public async Task<List<Lake>> GetLakes()
+        public async Task<List<Lake>> GetLakesAsync()
         {
             return null;
         }
 
-        public async Task Save(Lake lake)
+        public async Task<int> FindClosestLakeIdAsync(double latitude, double longitude)
+        {
+            return -1;
+        }
+
+        public async Task SaveAsync(Lake lake)
         {
 
         }
 
-        public async Task Delete(int lakeId)
+        public async Task DeleteAsync(int lakeId)
         {
 
         }

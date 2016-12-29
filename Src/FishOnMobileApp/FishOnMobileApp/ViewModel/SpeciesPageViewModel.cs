@@ -1,24 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using FishOn.Model;
 using FishOn.Services;
 using Xamarin.Forms;
+using Xamarin.Forms.Maps;
+using Plugin.Geolocator;
 
 namespace FishOn.ViewModel
 {
     public class SpeciesPageViewModel : BaseViewModel
     {
         private ObservableCollection<Species> _speciesList;
-        private Species _selectedSpecies;
-
+       
         public SpeciesPageViewModel(INavigation navigation) : base(navigation) { }
         public SpeciesPageViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService):base(navigation, lakeDataService, speciesDataService, wayPointDataService) { }
 
         public async Task Initialize()
         {
-            var list = await _speciesDataService.GetSpecies();
+            var list = await _speciesDataService.GetSpeciesAsync();
             var observable = new ObservableCollection<Species>(list);
             SpeciesList = observable;
         }
@@ -27,7 +29,7 @@ namespace FishOn.ViewModel
         {
             get
             {
-                return new Command(async () => await Navigate_BackToLandingPage() );
+                return new Command(async () => await Navigate_BackToLandingPageAsync() );
             }
         }
 
@@ -35,15 +37,18 @@ namespace FishOn.ViewModel
         {
             get
             {
-                return new Command<Species>(async (Species s) =>
+                return new Command<Species>(async (Species speciesCaught) =>
                 {
                     try
                     {
                         IsBusy = true;
-                        //Get current coordinates
-                        //Create waypoint()
-                        await _wayPointDataService.Save(new WayPoint());
-                        await Navigate_BackToLandingPage();
+                        var position = await CrossGeolocator.Current.GetPositionAsync(10000);
+                        await _wayPointDataService.CreateNewFishOnAsync(position.Latitude, position.Longitude, speciesCaught);
+                        await Navigate_BackToLandingPageAsync();
+                    }
+                    catch (Exception exp)
+                    {
+                        var needToHandleThis = exp.Message;
                     }
                     finally
                     {
@@ -62,16 +67,5 @@ namespace FishOn.ViewModel
                 OnPropertyChanged();
             }
         }
-
-        public Species SelectedSpecies
-        {
-            get { return _selectedSpecies; }
-            set
-            {
-                _selectedSpecies = value;
-                OnPropertyChanged();
-            }
-        }
-
     }
 }

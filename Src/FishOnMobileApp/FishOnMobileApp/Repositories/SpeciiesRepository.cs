@@ -6,10 +6,10 @@ namespace FishOn.Repositories
 {
     public interface ISpeciesRepository
     {
-        Task<List<Species>> GetSpecies();
-        Task<List<Species>> GetSpecies(int lakeId);
-        Task Save(Species species);
-        Task Delete(int speciesId);
+        Task<List<Species>> GetSpeciesAsync();
+        Task<List<Species>> GetSpeciesAsync(int lakeId);
+        Task SaveAsync(Species species);
+        Task DeleteAsync(int speciesId);
     }
 
     public class SpeciesRepository : BaseRepository, ISpeciesRepository
@@ -18,7 +18,7 @@ namespace FishOn.Repositories
         {
         }
 
-        public async Task<List<Species>> GetSpecies()
+        public async Task<List<Species>> GetSpeciesAsync()
         {
             return new List<Species>()
             {
@@ -67,17 +67,17 @@ namespace FishOn.Repositories
             };
         }
 
-        public async Task<List<Species>> GetSpecies(int lakeId)
+        public async Task<List<Species>> GetSpeciesAsync(int lakeId)
         {
             return null;
         }
 
-        public async Task Save(Species species)
+        public async Task SaveAsync(Species species)
         {
 
         }
 
-        public async Task Delete(int speciesId)
+        public async Task DeleteAsync(int speciesId)
         {
 
         }

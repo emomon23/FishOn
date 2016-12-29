@@ -19,4 +19,5 @@
    </DataTemplate>
  </ListView.ItemTemplate>
 </ListView>
+<Button Text="BOAT LANCH" Command="{Binding SelectSpeciesCommand}"></Button>
 </ContentPage>

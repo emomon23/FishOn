@@ -54,7 +54,7 @@ namespace FishOn.ViewModel
 
         #region Navigation Methods
 
-        protected async Task Navigate_ToSpeciesList()
+        protected async Task Navigate_ToSpeciesListAsync()
         {
             var speciesPage = new SpeciesListPage();
             var viewModel =  new SpeciesPageViewModel(speciesPage.Navigation, _lakeService, _speciesDataService, _wayPointDataService);
@@ -64,7 +64,7 @@ namespace FishOn.ViewModel
             await _navigation.PushAsync(speciesPage);
         }
 
-        protected async Task Naviage_ToLakeMap()
+        protected async Task Naviage_ToLakeMapAsync()
         {
             var lakeMapPage = new LakeMapPage();
             lakeMapPage.BindingContext = new LakeMapPageViewModel(lakeMapPage.Navigation, _lakeService, _speciesDataService, _wayPointDataService);
@@ -72,7 +72,7 @@ namespace FishOn.ViewModel
             await _navigation.PushAsync(lakeMapPage);
         }
 
-        protected async Task Navigate_BackToLandingPage()
+        protected async Task Navigate_BackToLandingPageAsync()
         {
             await _navigation.PopToRootAsync(true);
         }
