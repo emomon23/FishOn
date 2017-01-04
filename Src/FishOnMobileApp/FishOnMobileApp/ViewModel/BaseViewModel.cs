@@ -54,6 +54,16 @@ namespace FishOn.ViewModel
 
         #region Navigation Methods
 
+        protected async Task Navigate_ToLakeListAsync()
+        {
+            var lakesPage = new LakeListPage();
+            var viewModel = new LakeListViewModel(lakesPage.Navigation, _lakeService, _speciesDataService, _wayPointDataService);
+            await viewModel.Initialize();
+            lakesPage.BindingContext = viewModel;
+
+            await _navigation.PushAsync(lakesPage);
+        }
+
         protected async Task Navigate_ToSpeciesListAsync()
         {
             var speciesPage = new SpeciesListPage();

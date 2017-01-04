@@ -12,7 +12,7 @@ namespace FishOn.Model
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
-        public virtual ICollection<Species> Species { get; set; }
+        [Ignore]
         public virtual ICollection<WayPoint> WayPoints { get; set; }
     }
 }

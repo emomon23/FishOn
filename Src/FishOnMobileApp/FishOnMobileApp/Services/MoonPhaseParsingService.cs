@@ -74,5 +74,11 @@ namespace FishOn.Services
 
     }
 
+    public class MoonPhase
+    {
+        public string Label { get; set; }
+        public double Age { get; set; }
+        public int IlluminationPercent { get; set; }
+    }
    
 }

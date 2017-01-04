@@ -7,25 +7,26 @@ namespace FishOn.Repositories
     public interface ILakeRepository
     {
         Task<List<Lake>> GetLakesAsync();
-        Task SaveAsync(Lake lake);
+        Task SaveAsync(List<Lake> lake);
         Task DeleteAsync(int lakeId);
     }
 
     public class LakeRepository : BaseRepository, ILakeRepository
     {
-        private readonly IFishOnHttpRepository _fishOnHttp;
-
         public LakeRepository(IFishOnHttpRepository fishOnHttp = null) : base(fishOnHttp) { }
-
-
+        
         public async Task<List<Lake>> GetLakesAsync()
         {
-            return null;
+            var db = await GetDB();
+            var result = await db.GetLakesAsync();
+            return result;
         }
+        
 
-        public async Task SaveAsync(Lake lake)
+        public async Task SaveAsync(List<Lake> lakes)
         {
-            
+            var db = await GetDB();
+            await db.SaveNewLakesAsync(lakes);
         }
 
         public async Task DeleteAsync(int lakeId)

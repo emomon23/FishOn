@@ -76,6 +76,16 @@ namespace FishOn.Utils
             return result;
         }
 
+        public static bool IsNullOrEmpty(this string str)
+        {
+            return string.IsNullOrEmpty(str);
+        }
+
+        public static bool IsNotNullOrEmpty(this string str)
+        {
+            return !string.IsNullOrEmpty(str);
+        }
+
         public static void MoveUp(this List<Species> species, Species speciesToMove)
         {
             int index = FindIndex(species, speciesToMove);

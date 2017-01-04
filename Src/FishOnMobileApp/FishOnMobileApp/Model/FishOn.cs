@@ -12,7 +12,6 @@ namespace FishOn.Model
     {
         [PrimaryKey, AutoIncrement]
         public int FishOnId { get; set; }
-        public string Species { get; set; }
         public DateTime DateCaught { get; set; }
         public string Note { get; set; }
         public int? WaterTemp { get; set; }
@@ -22,9 +21,23 @@ namespace FishOn.Model
 
         [Indexed]
         public int WayPointId { get; set; }
+        
+        [Indexed]
+        public int WetherConditionId { get; set; }
+
+        [Indexed]
+        public int SpeciesId { get; set; }
+
+        [Ignore]
         public WeatherCondition WeatherCondition { get; set; }
        
+        [Ignore]
         public virtual FishingLure Lure { get; set; }
+
+        [Ignore]
         public virtual WayPoint WayPoint { get; set; }
+
+        [Ignore]
+        public virtual Species Species { get; set; }
     }
 }

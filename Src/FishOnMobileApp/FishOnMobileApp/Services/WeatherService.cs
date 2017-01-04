@@ -64,7 +64,10 @@ namespace FishOn.Services
                 result.Visibility = weatherConditionsElements.ElementAt(1).XPathQuery("value/visibility").Value.ToDouble();
             }
 
-            result.MoonPhase = await _moonPhaseParsingService.GetCurrentMoonPhaseAsync();
+            var moonPhase = await _moonPhaseParsingService.GetCurrentMoonPhaseAsync();
+            result.Moon_Age = moonPhase.Age;
+            result.Moon_IlluminationPercent = moonPhase.IlluminationPercent;
+            result.Moon_Label = moonPhase.Label;
             
             return result;
         }

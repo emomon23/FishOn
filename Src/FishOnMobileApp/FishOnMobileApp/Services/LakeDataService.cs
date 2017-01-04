@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FishOn.Model;
 using FishOn.Repositories;
@@ -11,6 +13,7 @@ namespace FishOn.Services
         Task SaveAsync(Lake lake);
         Task DeleteAsync(int lakeId);
         Task<int> FindClosestLakeIdAsync(double latitude, double longitude);
+        Task<List<Lake>> CreateNewLakesAsync(string[] lakeNames);
     }
 
     public class LakeDataService : ILakeDataService
@@ -29,7 +32,26 @@ namespace FishOn.Services
 
         public async Task<List<Lake>> GetLakesAsync()
         {
-            return null;
+            return await _lakeRepo.GetLakesAsync();
+        }
+
+        public async Task<List<Lake>> CreateNewLakesAsync(string[] lakeNames)
+        {
+            var currentLakes = await _lakeRepo.GetLakesAsync();
+            var newLakes = new List<Lake>();
+
+            foreach (string rawLakeName in lakeNames)
+            {
+                var lakeName = rawLakeName.Replace("Lake", "").Replace("lake", "").Trim();
+
+                if (!currentLakes.Any(l => l.LakeName.Equals(lakeName, StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    newLakes.Add(new Lake() {LakeName = lakeName});
+                }
+            }
+
+            await _lakeRepo.SaveAsync(newLakes);
+            return await _lakeRepo.GetLakesAsync();
         }
 
         public async Task<int> FindClosestLakeIdAsync(double latitude, double longitude)

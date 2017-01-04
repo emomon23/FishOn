@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:FishOn.ViewModel;assembly=FishOnMobileApp"
+             x:Class="FishOn.LakeListPage">
+  <StackLayout>
+      <Label Text="Enter lake names, seperated by commas"></Label>
+      <StackLayout Orientation="Horizontal">
+         <Entry Text="{Binding NewLakeNamesSeperatedByComma}" Placeholder="Lake Names (Pine, Christmas)"></Entry>
+         <Button Text="+" Command="{Binding AddNewLakesCommand}"></Button>
+      </StackLayout>
+
+    <ListView HasUnevenRows="True" x:Name="lakesList"
+                ItemsSource="{Binding LakesList}" >
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <ViewCell>
+            <StackLayout>
+              <Button Text="{Binding LakeName}"
+                      Command="{Binding Path=BindingContext.LakeSelectedCommand, 
+                             Source={viewModel:ElementSource lakesList}}"
+                      CommandParameter="{Binding}"/>
+            </StackLayout>
+          </ViewCell>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+   
+    <StackLayout Orientation="Horizontal">
+      <Label Text="Lake Selected:"></Label>
+      <Label Text="{Binding SelectedLake.LakeName}"></Label>
+    </StackLayout>
+    
+    <StackLayout Orientation="Horizontal">
+      <Label Text="Water Temp?"></Label>
+      <Entry Text="{Binding WaterTemp}" Placeholder="Water Temp?"></Entry>
+    </StackLayout>
+    <Button Text="Start Trip" Command="{Binding SetSessionDataCommand}"></Button>
+  </StackLayout>
+</ContentPage>

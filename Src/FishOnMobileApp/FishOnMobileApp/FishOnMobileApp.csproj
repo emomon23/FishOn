@@ -38,6 +38,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LakeListPage.xaml.cs">
+      <DependentUpon>LakeListPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LakeMapPage.xaml.cs">
       <DependentUpon>LakeMapPage.xaml</DependentUpon>
     </Compile>
@@ -47,7 +50,6 @@
     <Compile Include="Model\FishingLure.cs" />
     <Compile Include="Model\FishOn.cs" />
     <Compile Include="Model\Lake.cs" />
-    <Compile Include="Model\MoonPhase.cs" />
     <Compile Include="Model\SessionData.cs" />
     <Compile Include="Model\Species.cs" />
     <Compile Include="Model\WayPoint.cs" />
@@ -71,6 +73,7 @@
     </Compile>
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="ViewModel\LakeListViewModel.cs" />
     <Compile Include="ViewModel\LakeMapPageViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
     <Compile Include="ViewModel\SpeciesPageViewModel.cs" />
@@ -143,6 +146,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LakeMapPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="LakeListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

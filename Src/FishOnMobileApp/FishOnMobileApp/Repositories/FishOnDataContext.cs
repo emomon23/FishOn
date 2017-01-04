@@ -18,6 +18,8 @@ namespace FishOn.Repositories
     {
         Task InitializeAsync();
         Task<List<Species>> GetSpeciesAsync();
+        Task SaveNewLakesAsync(List<Lake> newLakes);
+        Task<List<Lake>> GetLakesAsync();
     }
 
     public class FishOnDataContext : IFishOnDataContext
@@ -25,6 +27,8 @@ namespace FishOn.Repositories
         private SQLiteAsyncConnection _db;
         private readonly ISQLite _sqLite;
         private static IFishOnDataContext _singletonInstance;
+
+        #region Constructor_Initialization
 
         public FishOnDataContext() : this(DependencyService.Get<ISQLite>()){}
 
@@ -55,7 +59,11 @@ namespace FishOn.Repositories
                 await SeedDatabaseAsync();
             }
         }
-        
+
+        #endregion
+
+        #region Species
+
         public async Task<List<Species>> GetSpeciesAsync()
         {
             return await _db.Table<Species>().ToListAsync();
@@ -70,14 +78,42 @@ namespace FishOn.Repositories
         {
             await _db.InsertAsync(species);
         }
+
+        #endregion
+
+        #region Lakes
         
+        public async Task SaveNewLakesAsync(List<Lake> newLakes)
+        {
+            foreach (var lake in newLakes)
+            {
+                var result = await _db.InsertAsync(lake);
+            }
+        }
+
+        public async Task<List<Lake>>  GetLakesAsync()
+        {
+            return await _db.Table<Lake>().ToListAsync();
+        }
+
+        #endregion
+
+        #region WayPoints
+
+        
+
+        #endregion
+
+        #region DBCreation Seeding
 
         private async Task CreateDatabaseAsync()
         {
             await _db.CreateTableAsync<Species>();
-          //  await _db.CreateTableAsync<WayPoint>();
-          //  await _db.CreateTableAsync<Lake>();
-          //  await _db.CreateTableAsync<Model.FishOn>();
+            await _db.CreateTableAsync<WayPoint>();
+            await _db.CreateTableAsync<Lake>();
+            await _db.CreateTableAsync<Model.FishOn>();
+            await _db.CreateTableAsync<WeatherCondition>();
+            await _db.CreateTableAsync<FishingLure>();
         }
 
         private async Task SeedDatabaseAsync()
@@ -91,5 +127,7 @@ namespace FishOn.Repositories
               await _db.InsertAsync(new Species() { Description = "", Name = "Muskie", DisplayOrder = 70});
               await _db.InsertAsync(new Species() { Description = "", Name = "Catfish", DisplayOrder = 80});
         }
+
+        #endregion
     }
 }

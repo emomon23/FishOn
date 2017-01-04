@@ -23,6 +23,17 @@ namespace FishOn.ViewModel
             }
         }
 
+        public ICommand SetLakeWaterTemp
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    await Navigate_ToLakeListAsync();
+                });
+            }
+        }
+
         public ICommand FindMySpotCommand
         {
             get
