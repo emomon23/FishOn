@@ -19,17 +19,21 @@ namespace FishOn.Services
     public class WeatherService : IWeatherService
     {
         private IFishOnHttpRepository _httpRepo;
+        private IMoonPhaseParsingService _moonPhaseParsingService;
+
 	    //Example: http://forecast.weather.gov/MapClick.php?lat=45.01058&lon=-93.4555&FcstType=dwml
         private const string _BaseUrl = "http://forecast.weather.gov/MapClick.php?lat=[LATITUDE]&lon=[LONGITUDE]&FcstType=dwml";
 
         public WeatherService()
         {
             _httpRepo = new FishOnHttpRepository();
+            _moonPhaseParsingService = new MoonPhaseParsingService();
         }
 
-        public WeatherService(IFishOnHttpRepository httpRepository)
+        public WeatherService(IFishOnHttpRepository httpRepository, IMoonPhaseParsingService moonPhaseParsingService)
         {
             _httpRepo = httpRepository;
+            _moonPhaseParsingService = moonPhaseParsingService;
         }
 
         public async Task<WeatherCondition> GetWeatherConditionsAsync(double latitude, double longitude)
@@ -59,10 +63,14 @@ namespace FishOn.Services
             {
                 result.Visibility = weatherConditionsElements.ElementAt(1).XPathQuery("value/visibility").Value.ToDouble();
             }
+
+            result.MoonPhase = await _moonPhaseParsingService.GetCurrentMoonPhaseAsync();
             
             return result;
         }
-    }
 
+        
+       
+    }
 
 }

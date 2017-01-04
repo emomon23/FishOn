@@ -11,22 +11,28 @@ namespace FishOn.Model
     //Any waypoints created will use the water temp that was set at the beginning of the session (up to X (8?) hours)
     public static class SessionData
     {
-        private static int currentWaterTemp;
-        private static DateTime waterTempSetDateTime;
+        private static int _currentWaterTemp;
+        private static DateTime _sessionStartDateTime;
+        private static int _currentLakeId;
 
         public static int CurrentWaterTemp
         {
-            get { return currentWaterTemp;  }
-            set
-            {
-                currentWaterTemp = value;
-                waterTempSetDateTime = DateTime.Now;
-            }
+            get { return _currentWaterTemp;  }
         }
 
-        public static double AgeOfWaterTempSetting_InMinutes
+        public static int CurrentLakeId { get { return _currentLakeId;} }
+
+        public static double SessionAge_InMinutes
         {
-            get { return (DateTime.Now - waterTempSetDateTime).TotalMinutes; }
+            get { return (DateTime.Now - _sessionStartDateTime).TotalMinutes; }
+        }
+
+        public static void RestartSession(int? currentLakeId, int? currentWaterTemp)
+        {
+            _currentLakeId = currentLakeId ?? 0;
+            _currentWaterTemp = currentWaterTemp ?? 0;
+            _sessionStartDateTime = DateTime.Now;
+
         }
     }
 }

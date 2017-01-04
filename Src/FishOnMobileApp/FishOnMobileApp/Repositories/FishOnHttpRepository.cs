@@ -16,6 +16,7 @@ namespace FishOn.Repositories
         Task<List<Species>> GetSpeciesAsync(int lakeId);
         Task<List<WayPoint>> GetWayPointsAsync(int lakeId);
         Task<XElement> GetXMLAsync(string url);
+        Task<string> GetRawStringAsync(string url);
     }
 
     public class FishOnHttpRepository : IFishOnHttpRepository
@@ -54,6 +55,12 @@ namespace FishOn.Repositories
 
         public async Task<XElement> GetXMLAsync(string url)
         {
+            var xmlString = await GetRawStringAsync(url);
+            return xmlString == null ? null :XElement.Parse(xmlString);
+        }
+
+        public async Task<string> GetRawStringAsync(string url)
+        {
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml");
@@ -63,8 +70,7 @@ namespace FishOn.Repositories
                 var httpResponse = await httpClient.GetAsync(url);
                 if (httpResponse.StatusCode == HttpStatusCode.OK)
                 {
-                    var xmlString = await httpResponse.Content.ReadAsStringAsync();
-                    return XElement.Parse(xmlString);
+                    return await httpResponse.Content.ReadAsStringAsync();
                 }
 
                 return null;

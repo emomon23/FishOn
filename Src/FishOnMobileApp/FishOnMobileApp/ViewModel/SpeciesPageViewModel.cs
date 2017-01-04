@@ -36,15 +36,21 @@ namespace FishOn.ViewModel
         public ICommand SelectSpeciesCommand
         {
             get
-            {
+           { 
                 return new Command<Species>(async (Species speciesCaught) =>
                 {
                     try
                     {
                         IsBusy = true;
-                        var position = await CrossGeolocator.Current.GetPositionAsync(10000);
-                        await _wayPointDataService.CreateNewFishOnAsync(position.Latitude, position.Longitude, speciesCaught);
-                        await Navigate_BackToLandingPageAsync();
+                        var locator = CrossGeolocator.Current;
+
+                        if (locator.IsGeolocationEnabled && locator.IsGeolocationAvailable)
+                        {
+                            var position = await locator.GetPositionAsync(10000);
+                            await _wayPointDataService.CreateNewFishOnAsync(position.Latitude, position.Longitude,
+                                speciesCaught);
+                        }
+                       
                     }
                     catch (Exception exp)
                     {
@@ -53,6 +59,7 @@ namespace FishOn.ViewModel
                     finally
                     {
                         IsBusy = false;
+                        await Navigate_BackToLandingPageAsync();
                     }
                 });
             }
@@ -60,7 +67,9 @@ namespace FishOn.ViewModel
 
         public ObservableCollection<Species> SpeciesList
         {
-            get { return _speciesList; }
+            get {
+                return _speciesList;
+            }
             private set
             {
                 _speciesList = value;

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SQLite;
+using SQLite.Net.Attributes;
 
 namespace FishOn.Model
 {
@@ -11,6 +13,8 @@ namespace FishOn.Model
             FishCaught = new List<FishOn>();
             Species = new List<Species>();
         }
+
+        [PrimaryKey, AutoIncrement]
         public int WayPointId { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }

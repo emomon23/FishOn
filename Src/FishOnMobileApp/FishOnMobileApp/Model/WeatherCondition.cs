@@ -14,5 +14,6 @@ namespace FishOn.Model
         public double WindSpeed { get; set; }
         public double DewPoint { get; set; }
         public double Visibility { get; set; }
+        public MoonPhase MoonPhase { get; set; }
     }
 }

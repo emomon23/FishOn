@@ -38,7 +38,7 @@ namespace FishOn.Services
 
             if (wayPoint == null)
             {
-                int lakeId = await FindClosestLakeIdAsync(latitude, longitude);
+                int lakeId = SessionData.CurrentLakeId;
 
                 wayPoint = new WayPoint()
                 {
@@ -62,21 +62,16 @@ namespace FishOn.Services
         {
             return null;
         }
-
-        private async Task<int> FindClosestLakeIdAsync(double lat, double longitude)
-        {
-            return -1;
-        }
-
+        
         private async Task<WayPoint> GetWayPoint(double latitude, double longitude)
         {
             var wayPoints = await _wayPointRepository.GetWayPointsAsync();
-            return wayPoints.SingleOrDefault(w => w.Longitude == longitude && w.Latitude == latitude);
+            return wayPoints?.SingleOrDefault(w => w.Longitude == longitude && w.Latitude == latitude);
         }
 
         private async Task SaveAsync(WayPoint wayPoint)
         {
-
+            await _wayPointRepository.SaveAsync(wayPoint);
         }
 
         public async Task DeleteAsync(int wayPointId)
