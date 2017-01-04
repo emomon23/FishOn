@@ -20,6 +20,13 @@ namespace FishOn.Repositories
         Task<List<Species>> GetSpeciesAsync();
         Task SaveNewLakesAsync(List<Lake> newLakes);
         Task<List<Lake>> GetLakesAsync();
+        Task<List<WayPoint>> GetWayPointsAsync(int? lakeId = null);
+        Task SaveWayPointAsync(WayPoint wp);
+        Task<WayPoint> GetWayPointAsync(double latitude, double longitude);
+        Task SaveFishOnAsync(Model.FishOn fishCaught);
+        Task SaveNewLureAsync(FishingLure lure);
+        Task SaveWeatherConditionAsync(WeatherCondition wc);
+
     }
 
     public class FishOnDataContext : IFishOnDataContext
@@ -51,7 +58,7 @@ namespace FishOn.Repositories
         
         public async Task  InitializeAsync()
         {
-            _sqLite.DeleteDatabase();
+            //_sqLite.DeleteDatabase();
 
             if (!_sqLite.DoesDBExist)
             {
@@ -100,8 +107,60 @@ namespace FishOn.Repositories
 
         #region WayPoints
 
-        
+        public async Task<WayPoint> GetWayPointAsync(double latitude, double longitude)
+        {
+            return
+                await _db.Table<WayPoint>()
+                    .Where(w => w.Latitude == latitude && w.Longitude == longitude)
+                    .FirstOrDefaultAsync();
+        }
 
+        public async Task<List<WayPoint>> GetWayPointsAsync(int? lakeId = null)
+        {
+            if (lakeId.HasValue)
+            {
+                return await _db.Table<WayPoint>().Where(w => w.LakeId == lakeId.Value).ToListAsync();
+            }
+
+            return await _db.Table<WayPoint>().ToListAsync();
+        }
+
+        public async Task SaveWayPointAsync(WayPoint wp)
+        {
+            if (wp.WayPointId == 0)
+            {
+                await _db.InsertAsync(wp);
+            }
+            else
+            {
+                await _db.UpdateAsync(wp);
+            }
+        }
+
+
+        #endregion
+
+        #region WeatherConditions
+
+        public async Task SaveWeatherConditionAsync(WeatherCondition wc)
+        {
+            _db.InsertAsync(wc);
+        }
+
+        #endregion
+        
+        #region Fish Caught / Fishing Lures
+
+        public async Task SaveFishOnAsync(Model.FishOn fishCaught)
+        {
+            await _db.InsertAsync(fishCaught);
+        }
+
+        public async Task SaveNewLureAsync(FishingLure lure)
+        {
+            await _db.InsertAsync(lure);
+        }
+        
         #endregion
 
         #region DBCreation Seeding

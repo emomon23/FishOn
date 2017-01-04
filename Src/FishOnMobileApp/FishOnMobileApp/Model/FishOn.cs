@@ -21,10 +21,7 @@ namespace FishOn.Model
 
         [Indexed]
         public int WayPointId { get; set; }
-        
-        [Indexed]
-        public int WetherConditionId { get; set; }
-
+     
         [Indexed]
         public int SpeciesId { get; set; }
 

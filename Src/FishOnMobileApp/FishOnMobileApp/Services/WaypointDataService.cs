@@ -17,24 +17,30 @@ namespace FishOn.Services
         private IWayPointRepository _wayPointRepository;
         private ILakeRepository _lakeRepository;
         private IWeatherService _weatherService;
+        private IFishRepository _fishRepository;
+        private IWeatherRepository _weatherRepository;
 
         public WayPointDataService()
         {
             _wayPointRepository = new WayPointRepository();
             _lakeRepository = new LakeRepository();
             _weatherService = new WeatherService();
+            _fishRepository = new FishRepository();
+            _weatherRepository = new WeatherRepository();
         }
 
-        public WayPointDataService(IWayPointRepository wayPointRepository, ILakeRepository lakeRepository, IWeatherService weatherService)
+        public WayPointDataService(IWayPointRepository wayPointRepository, ILakeRepository lakeRepository, IWeatherService weatherService, IFishRepository fishRepo, IWeatherRepository weatherRepo)
         {
             _wayPointRepository = wayPointRepository;
             _lakeRepository = lakeRepository;
             _weatherService = weatherService;
+            _weatherRepository = weatherRepo;
+            _fishRepository = fishRepo;
         }
 
         public async Task CreateNewFishOnAsync(double latitude, double longitude, Species speciesCaught)
         {
-            var wayPoint = await GetWayPoint(latitude, longitude);
+            var wayPoint = await _wayPointRepository.GetWayPointAsync(latitude, longitude);
 
             if (wayPoint == null)
             {
@@ -63,15 +69,29 @@ namespace FishOn.Services
             return null;
         }
         
-        private async Task<WayPoint> GetWayPoint(double latitude, double longitude)
-        {
-            var wayPoints = await _wayPointRepository.GetWayPointsAsync();
-            return wayPoints?.SingleOrDefault(w => w.Longitude == longitude && w.Latitude == latitude);
-        }
-
+       
         private async Task SaveAsync(WayPoint wayPoint)
         {
-            await _wayPointRepository.SaveAsync(wayPoint);
+            if (wayPoint.WayPointId == 0)
+            {
+                await _wayPointRepository.SaveAsync(wayPoint);
+            }
+
+            var fishCaught = wayPoint.FishCaught.FirstOrDefault(f => f.FishOnId == 0);
+            fishCaught.WayPointId = wayPoint.WayPointId;
+
+            if (fishCaught.Lure != null && fishCaught.Lure.FishingLureId == 0)
+            {
+                var lure = fishCaught.Lure;
+                await _fishRepository.SaveNewLureAsync(lure);
+                fishCaught.FishingLureId = lure.FishingLureId;
+            }
+
+            await _fishRepository.SaveFishOnAsync(fishCaught);
+            var weatherCondition = fishCaught.WeatherCondition;
+            weatherCondition.WeatherConditionId = fishCaught.FishOnId;
+            await _weatherRepository.SaveAsync(weatherCondition);
+           
         }
 
         public async Task DeleteAsync(int wayPointId)

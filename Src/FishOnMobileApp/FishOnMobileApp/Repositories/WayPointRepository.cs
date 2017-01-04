@@ -9,33 +9,40 @@ namespace FishOn.Repositories
     {
         Task<List<WayPoint>> GetWayPointsAsync(int lakeId);
         Task<List<WayPoint>> GetWayPointsAsync();
+        Task<WayPoint> GetWayPointAsync(double latitude, double longitude);
         Task SaveAsync(WayPoint wayPoint);
         Task DeleteAsync(int wayPointId);
     }
 
     public class WayPointRepository : BaseRepository, IWayPointRepository
     {
-        private IFishOnHttpRepository _fishOnHttp;
-        private List<WayPoint> _wayPoints = new List<WayPoint>();
-
         public WayPointRepository(IFishOnHttpRepository fishOnHttp = null) : base(fishOnHttp) { }
 
         public async Task<List<WayPoint>> GetWayPointsAsync(int lakeId)
         {
-            return _wayPoints.Where(w => w.LakeId == lakeId).ToList();
+            var db = await GetDB();
+            return await db.GetWayPointsAsync(lakeId);
         }
 
         public async Task<List<WayPoint>> GetWayPointsAsync()
         {
-            return _wayPoints;
+            var db = await GetDB();
+            return await db.GetWayPointsAsync();
         }
+
+        public async Task<WayPoint> GetWayPointAsync(double latitude, double longitude)
+        {
+            var db = await GetDB();
+            return await db.GetWayPointAsync(latitude, longitude);
+        }
+        
 
         public async Task SaveAsync(WayPoint wayPoint)
         {
+            var db = await GetDB();
             if (wayPoint.WayPointId == 0)
             {
-                wayPoint.WayPointId = _wayPoints.Count + 1;
-                _wayPoints.Add(wayPoint);
+                await db.SaveWayPointAsync(wayPoint);
             }
         }
 

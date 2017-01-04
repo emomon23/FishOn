@@ -58,13 +58,14 @@
     <Compile Include="PlatformInterfaces\ISQLite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\FishRepository.cs" />
     <Compile Include="Repositories\FishOnHttpRepository.cs" />
     <Compile Include="Repositories\FishOnDataContext.cs" />
     <Compile Include="Repositories\LakeRepository.cs" />
-    <Compile Include="Repositories\SpeciiesRepository.cs" />
+    <Compile Include="Repositories\SpeciesRepository.cs" />
     <Compile Include="Repositories\WayPointRepository.cs" />
+    <Compile Include="Repositories\WeatherRepository.cs" />
     <Compile Include="Services\LakeDataService.cs" />
-    <Compile Include="Services\MoonPhaseParsingService.cs" />
     <Compile Include="Services\SpeciesDataService.cs" />
     <Compile Include="Services\WaypointDataService.cs" />
     <Compile Include="Services\WeatherService.cs" />

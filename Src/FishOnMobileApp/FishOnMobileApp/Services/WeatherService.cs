@@ -19,21 +19,18 @@ namespace FishOn.Services
     public class WeatherService : IWeatherService
     {
         private IFishOnHttpRepository _httpRepo;
-        private IMoonPhaseParsingService _moonPhaseParsingService;
-
+        
 	    //Example: http://forecast.weather.gov/MapClick.php?lat=45.01058&lon=-93.4555&FcstType=dwml
         private const string _BaseUrl = "http://forecast.weather.gov/MapClick.php?lat=[LATITUDE]&lon=[LONGITUDE]&FcstType=dwml";
 
         public WeatherService()
         {
             _httpRepo = new FishOnHttpRepository();
-            _moonPhaseParsingService = new MoonPhaseParsingService();
         }
 
-        public WeatherService(IFishOnHttpRepository httpRepository, IMoonPhaseParsingService moonPhaseParsingService)
+        public WeatherService(IFishOnHttpRepository httpRepository)
         {
             _httpRepo = httpRepository;
-            _moonPhaseParsingService = moonPhaseParsingService;
         }
 
         public async Task<WeatherCondition> GetWeatherConditionsAsync(double latitude, double longitude)
@@ -64,16 +61,100 @@ namespace FishOn.Services
                 result.Visibility = weatherConditionsElements.ElementAt(1).XPathQuery("value/visibility").Value.ToDouble();
             }
 
-            var moonPhase = await _moonPhaseParsingService.GetCurrentMoonPhaseAsync();
-            result.Moon_Age = moonPhase.Age;
-            result.Moon_IlluminationPercent = moonPhase.IlluminationPercent;
-            result.Moon_Label = moonPhase.Label;
+            result.Moon_Age = GetMoonAge();
+            result.Moon_IlluminationPercent = GetMoonIlliumination(result.Moon_Age);
+            result.Moon_Label = GetMoonPhaseName(result.Moon_Age);
             
             return result;
         }
-
         
-       
+        private double GetMoonAge()
+        {
+            var now = DateTime.Now;
+            return GetMoonAge(now.Day, now.Month, now.Year);
+        }
+        private double GetMoonAge(int d, int m, int y)
+        {
+            double age;
+            int j = JulianDate(d, m, y);
+            //Calculate the approximate phase of the moon
+            var ip = (j + 4.867) / 29.53059;
+            ip = ip - Math.Floor(ip);
+            //After several trials I've seen to add the following lines, 
+            //which gave the result was not bad 
+            if (ip < 0.5)
+                age = ip * 29.53059 + 29.53059 / 2;
+            else
+                age = ip * 29.53059 - 29.53059 / 2;
+            // Moon's age in days
+            age = Math.Floor(age) + 1;
+            return age;
+        }
+
+        private int JulianDate(int d, int m, int y)
+        {
+            int mm, yy;
+            int k1, k2, k3;
+            int j;
+
+            yy = y - (int)((12 - m) / 10);
+            mm = m + 9;
+            if (mm >= 12)
+            {
+                mm = mm - 12;
+            }
+            k1 = (int)(365.25 * (yy + 4712));
+            k2 = (int)(30.6001 * mm + 0.5);
+            k3 = (int)((int)((yy / 100) + 49) * 0.75) - 38;
+            // 'j' for dates in Julian calendar:
+            j = k1 + k2 + d + 59;
+            if (j > 2299160)
+            {
+                // For Gregorian calendar:
+                j = j - k3; // 'j' is the Julian date at 12h UT (Universal Time)
+            }
+            return j;
+        }
+
+        private string GetMoonPhaseName(double age)
+        {
+            if (age < 1)
+                return "New Moon";
+
+            if (age < 7)
+                return "Waxing Cresent";
+
+            if (age > 7 && age <= 8)
+                return "1st Quarter";
+
+            if (age > 8 && age <= 14)
+                return "Waxing Gibbious";
+
+            if (age > 14 && age <= 15)
+                return "Full Moon";
+
+            if (age > 15 && age < 21)
+                return "Wanning Gibbous";
+
+            if (age >= 21 && age <= 22)
+                return "Last Quarter";
+
+            if (age > 22 && age < 30)
+                return "Wanning Cresent";
+
+            return $"Unknown Age: {age}";
+        }
+
+        private int GetMoonIlliumination(double age)
+        {
+            const double peak = 14.78;
+            const double max = 29.02;
+
+            var temp = age <= peak ? age : max - age;
+            return (int)((temp / peak) * (double)100);
+        }
+
+
     }
 
 }

@@ -27,6 +27,13 @@ namespace FishOn.ViewModel
             var list = await _lakeService.GetLakesAsync();
             var observable = new ObservableCollection<Lake>(list);
             LakesList = observable;
+
+            if (SessionData.CurrentLakeId > 0)
+            {
+                SelectedLake = _lakes.SingleOrDefault(l => l.LakeId == SessionData.CurrentLakeId);
+            }
+
+            WaterTemp = SessionData.CurrentWaterTemp;
         }
 
         public ObservableCollection<Lake> LakesList
