@@ -68,7 +68,6 @@ namespace FishOn.Services
         {
             return null;
         }
-        
        
         private async Task SaveAsync(WayPoint wayPoint)
         {

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FishOn.SimpleInputModal">
+  <StackLayout>
+    <Label x:Name="lblCaption" Text="{Binding CaptionText}"></Label>
+    <Entry x:Name="txtValue" Text="{Binding InputBoxValue}"></Entry>
+    <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+       <Button Text="{Binding CancelButtonText}" Command="{Binding CancelClickCommand}"></Button>
+       <Button Text ="{Binding OkButtonText}" Command="{Binding OkClickCommand}"></Button>
+    </StackLayout>
+  </StackLayout>
+</ContentPage>
