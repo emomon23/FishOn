@@ -8,8 +8,8 @@
    <StackLayout>
      <Button Text="Fish ON!" Command="{Binding FishOnCommand}" />
      <Button Text="Find a Spot" Command="{Binding FindMySpotCommand}" />
+     <Button Text="My Data" Command="{Binding MyDataCommand}"></Button>
      <Button Text="Set Lake / Water Temp" Command="{Binding SetLakeWaterTemp}" />
-     
      <ActivityIndicator IsRunning="{Binding IsBusy}"></ActivityIndicator>
    </StackLayout>
 

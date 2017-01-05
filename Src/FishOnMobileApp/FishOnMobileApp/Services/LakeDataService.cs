@@ -10,10 +10,12 @@ namespace FishOn.Services
     public interface ILakeDataService
     {
         Task<List<Lake>> GetLakesAsync();
+        Task<Lake> GetLakeAsync(int lakeId);
         Task SaveAsync(Lake lake);
         Task DeleteAsync(int lakeId);
         Task<int> FindClosestLakeIdAsync(double latitude, double longitude);
         Task<List<Lake>> CreateNewLakesAsync(string[] lakeNames);
+        Task<Lake> GetOrCreateLakeAsync(string lakeName);
     }
 
     public class LakeDataService : ILakeDataService
@@ -35,6 +37,16 @@ namespace FishOn.Services
             return await _lakeRepo.GetLakesAsync();
         }
 
+        public async Task<Lake> GetLakeAsync(int lakeId)
+        {
+            return await _lakeRepo.GetLakeAsync(lakeId);
+        }
+
+        public async Task<Lake> GetOrCreateLakeAsync(string lakeName)
+        {
+            return await _lakeRepo.GetLakeAsync(lakeName);
+        }
+
         public async Task<List<Lake>> CreateNewLakesAsync(string[] lakeNames)
         {
             var currentLakes = await _lakeRepo.GetLakesAsync();
@@ -44,7 +56,8 @@ namespace FishOn.Services
             {
                 var lakeName = rawLakeName.Replace("Lake", "").Replace("lake", "").Trim();
 
-                if (!currentLakes.Any(l => l.LakeName.Equals(lakeName, StringComparison.CurrentCultureIgnoreCase)))
+                //Don't create duplicate lake names
+                if (!currentLakes.Any(l => l.LakeName.Equals(lakeName, StringComparison.CurrentCultureIgnoreCase)) && lakeNames.Count(l => l.Equals(lakeName, StringComparison.CurrentCultureIgnoreCase)) <2 )
                 {
                     newLakes.Add(new Lake() {LakeName = lakeName});
                 }

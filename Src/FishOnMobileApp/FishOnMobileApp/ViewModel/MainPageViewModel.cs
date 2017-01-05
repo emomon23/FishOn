@@ -59,6 +59,17 @@ namespace FishOn.ViewModel
             }
         }
 
+        public ICommand MyDataCommand
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    await Navigate_ToMyDataButtonsListAsync();
+                });
+            }
+        }
+
         public ICommand FindMySpotCommand
         {
             get

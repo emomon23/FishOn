@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using FishOn.Model;
+using Newtonsoft.Json;
 
 namespace FishOn.Utils
 {
@@ -126,6 +127,12 @@ namespace FishOn.Utils
             }
 
             return -1;
+        }
+
+        public static object Clone<T>(this Object obj)
+        {
+            var jsonString = JsonConvert.SerializeObject(obj);
+            return JsonConvert.DeserializeObject<T>(jsonString);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Maps;
 
 namespace FishOn
 {
@@ -13,6 +14,11 @@ namespace FishOn
         public LakeMapPage()
         {
             InitializeComponent();
+        }
+
+        public Map LakeMapControl
+        {
+            get { return WayPointsMap; }
         }
     }
 }

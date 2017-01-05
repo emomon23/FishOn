@@ -11,7 +11,8 @@ namespace FishOn.Repositories
         Task<List<WayPoint>> GetWayPointsAsync();
         Task<WayPoint> GetWayPointAsync(double latitude, double longitude);
         Task SaveAsync(WayPoint wayPoint);
-        Task DeleteAsync(int wayPointId);
+        Task SaveWayPointProvisioningAsync(WayPoint wayPoint);
+        Task DeleteAsync(WayPoint wayPoint);
     }
 
     public class WayPointRepository : BaseRepository, IWayPointRepository
@@ -46,9 +47,19 @@ namespace FishOn.Repositories
             }
         }
 
-        public async Task DeleteAsync(int wayPointId)
+        public async Task SaveWayPointProvisioningAsync(WayPoint wayPoint)
         {
+            var db = await GetDB();
+            await db.SaveWayPointAsync(wayPoint);
+        }
 
+        public async Task DeleteAsync(WayPoint wayPoint)
+        {
+            if (wayPoint?.WayPointId > 0)
+            {
+                var db = await GetDB();
+                await db.DeleteWayPointAsync(wayPoint);
+            }
         }
     }
 }

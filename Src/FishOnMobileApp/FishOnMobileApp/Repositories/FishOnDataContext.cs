@@ -20,13 +20,16 @@ namespace FishOn.Repositories
         Task<List<Species>> GetSpeciesAsync();
         Task SaveNewLakesAsync(List<Lake> newLakes);
         Task<List<Lake>> GetLakesAsync();
+        Task<Lake> GetLakeAsync(string lakeName);
+        Task<Lake> GetLakeAsync(int lakeId);
         Task<List<WayPoint>> GetWayPointsAsync(int? lakeId = null);
         Task SaveWayPointAsync(WayPoint wp);
         Task<WayPoint> GetWayPointAsync(double latitude, double longitude);
         Task SaveFishOnAsync(Model.FishOn fishCaught);
         Task SaveNewLureAsync(FishingLure lure);
         Task SaveWeatherConditionAsync(WeatherCondition wc);
-
+        Task<List<Model.FishOn>> GetFishCaughtAtWayPointAsync(int wayPointId);
+        Task DeleteWayPointAsync(WayPoint wayPoint);
     }
 
     public class FishOnDataContext : IFishOnDataContext
@@ -98,6 +101,24 @@ namespace FishOn.Repositories
             }
         }
 
+        public async Task<Lake> GetLakeAsync(string lakeName)
+        {
+            var lakes = await _db.Table<Lake>()
+                    .Where(l => l.LakeName == lakeName)
+                    .ToListAsync();
+
+            return lakes != null && lakes.Count == 1 ? lakes[0] : null;
+        }
+
+        public async Task<Lake> GetLakeAsync(int lakeId)
+        {
+            var lakes = await _db.Table<Lake>()
+                    .Where(l => l.LakeId == lakeId)
+                    .ToListAsync();
+
+            return lakes != null && lakes.Count == 1 ? lakes[0] : null;
+        }
+
         public async Task<List<Lake>>  GetLakesAsync()
         {
             return await _db.Table<Lake>().ToListAsync();
@@ -123,6 +144,21 @@ namespace FishOn.Repositories
             }
 
             return await _db.Table<WayPoint>().ToListAsync();
+        }
+
+        public async Task DeleteWayPointAsync(WayPoint wayPoint)
+        {
+            var id = wayPoint.WayPointId;
+            await _db.DeleteAsync(wayPoint);
+
+            var fishCaught = await this.GetFishCaughtAtWayPointAsync(id);
+            foreach (var fish in fishCaught)
+            {
+                var weather = _db.Table<WeatherCondition>().Where(w => w.WeatherConditionId == fish.FishOnId);
+                await _db.DeleteAsync(weather);
+                await _db.DeleteAsync(fish);
+            }
+
         }
 
         public async Task SaveWayPointAsync(WayPoint wp)
@@ -154,6 +190,11 @@ namespace FishOn.Repositories
         public async Task SaveFishOnAsync(Model.FishOn fishCaught)
         {
             await _db.InsertAsync(fishCaught);
+        }
+
+        public async Task<List<Model.FishOn>> GetFishCaughtAtWayPointAsync(int wayPointId)
+        {
+            return await _db.Table<Model.FishOn>().Where(f => f.WayPointId == wayPointId).ToListAsync();
         }
 
         public async Task SaveNewLureAsync(FishingLure lure)

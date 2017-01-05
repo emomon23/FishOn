@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using FishOn.Model;
@@ -11,6 +12,7 @@ namespace FishOn.Repositories
     {
         Task SaveFishOnAsync(Model.FishOn fishCaught);
         Task SaveNewLureAsync(FishingLure lure);
+        Task<List<Model.FishOn>> GetFishCaughtAtWayPointAsync(int wayPointId);
     }
 
     public class FishRepository: BaseRepository, IFishRepository
@@ -21,6 +23,14 @@ namespace FishOn.Repositories
         {
             var db = await GetDB();
             await db.SaveFishOnAsync(fishCaught);
+        }
+
+        public async Task<List<Model.FishOn>> GetFishCaughtAtWayPointAsync(int wayPointId)
+        {
+            var db = await GetDB();
+            var fishCaught = await db.GetFishCaughtAtWayPointAsync(wayPointId);
+
+            return fishCaught;
         }
 
         public async Task SaveNewLureAsync(FishingLure lure)

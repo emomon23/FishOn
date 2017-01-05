@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FishOn.ProvisioningPages.WayPoints.WPDetailPage">
+ <StackLayout>
+   <StackLayout Orientation="Horizontal">
+     <Label Text="Name"></Label>
+     <Entry HorizontalOptions="FillAndExpand" Text="{Binding WayPoint.Name}"></Entry>
+   </StackLayout>
+   <StackLayout Orientation="Horizontal">
+     <Label Text="Lat"></Label>
+     <Entry WidthRequest="150" Text="{Binding WayPoint.Latitude}"></Entry>
+     
+     <Label Text="Long"></Label>
+     <Entry WidthRequest="150" Text="{Binding WayPoint.Longitude}"></Entry>
+   </StackLayout>
+   
+   <StackLayout Orientation="Horizontal">
+     <Label Text="WP Type (1: BoatLaunch,  2: Fish)"></Label>
+     <Entry WidthRequest="300" Text="{Binding WayPoint.WayPointType}"></Entry>
+   </StackLayout>
+   
+   <StackLayout Orientation="Horizontal">
+     <Label Text="Lake"></Label>
+     <Entry HorizontalOptions="FillAndExpand" Text="{Binding LakeName}"></Entry>
+   </StackLayout>
+   
+   <StackLayout Orientation="Horizontal">
+     <Button Text="Cancel" Command="{Binding CancelWayPointAddEditCommand}"></Button>
+     <Button Text="Delete" Command="{Binding DeleteWayPointCommand}"></Button>
+     <Button HorizontalOptions="EndAndExpand" Text="Save" Command="{Binding SaveWayPointCommand}"></Button>
+   </StackLayout>
+ </StackLayout>
+</ContentPage>

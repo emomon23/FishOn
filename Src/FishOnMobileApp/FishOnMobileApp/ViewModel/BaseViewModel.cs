@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using FishOn.ProvisioningPages.WayPoints;
 using FishOn.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -77,7 +78,9 @@ namespace FishOn.ViewModel
         protected async Task Naviage_ToLakeMapAsync()
         {
             var lakeMapPage = new LakeMapPage();
-            lakeMapPage.BindingContext = new LakeMapPageViewModel(lakeMapPage.Navigation, _lakeService, _speciesDataService, _wayPointDataService);
+            var viewModel = new LakeMapPageViewModel(lakeMapPage.Navigation, lakeMapPage.LakeMapControl, _lakeService, _speciesDataService, _wayPointDataService);
+            await viewModel.InitializeAsync();
+            lakeMapPage.BindingContext = viewModel;
 
             await _navigation.PushAsync(lakeMapPage);
         }
@@ -85,6 +88,24 @@ namespace FishOn.ViewModel
         protected async Task Navigate_BackToLandingPageAsync()
         {
             await _navigation.PopToRootAsync(true);
+        }
+
+        protected async Task Navigate_To_WayPointProvisoning_MasterDetailPageAsync()
+        {
+            var page = new WPProvisoningList();
+            var viewModel = new WayPointProvisioningViewModel(page.Navigation, _lakeService, _speciesDataService, _wayPointDataService);
+            await viewModel.InitializeAsync();
+
+            page.BindingContext = viewModel;
+            await _navigation.PushAsync(page);
+        }
+        
+        protected async Task Navigate_ToMyDataButtonsListAsync()
+        {
+            var page = new MyDataListPage();
+            page.BindingContext =  new MyDataListViewModel(page.Navigation, _lakeService, _speciesDataService, _wayPointDataService);
+
+            await _navigation.PushAsync(page);
         }
 
         #endregion

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SQLite;
 using SQLite.Net.Attributes;
 
 namespace FishOn.Model
@@ -14,5 +13,7 @@ namespace FishOn.Model
 
         [Ignore]
         public virtual ICollection<WayPoint> WayPoints { get; set; }
+
+       
     }
 }

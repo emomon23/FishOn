@@ -3,13 +3,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using FishOn.Model;
 using FishOn.Repositories;
+using FishOn.Utils;
 
 namespace FishOn.Services
 {
     public interface IWayPointDataService
     {
-        Task<List<WayPoint>> GetWayPointsAsync(int lakeId);
+        Task<List<WayPoint>> GetWayPointsAsync();
         Task CreateNewFishOnAsync(double latitude, double longitude, Species speciesCaught);
+        Task SaveWayPointProvisioningAsync(WayPoint wayPoint);
+        Task DeleteWayPointAsync(WayPoint wayPoint);
     }
 
     public class WayPointDataService : IWayPointDataService
@@ -19,6 +22,7 @@ namespace FishOn.Services
         private IWeatherService _weatherService;
         private IFishRepository _fishRepository;
         private IWeatherRepository _weatherRepository;
+        private ISpeciesRepository _speciesRepository;
 
         public WayPointDataService()
         {
@@ -27,15 +31,22 @@ namespace FishOn.Services
             _weatherService = new WeatherService();
             _fishRepository = new FishRepository();
             _weatherRepository = new WeatherRepository();
+            _speciesRepository = new SpeciesRepository();
         }
 
-        public WayPointDataService(IWayPointRepository wayPointRepository, ILakeRepository lakeRepository, IWeatherService weatherService, IFishRepository fishRepo, IWeatherRepository weatherRepo)
+        public WayPointDataService(IWayPointRepository wayPointRepository, ILakeRepository lakeRepository, IWeatherService weatherService, IFishRepository fishRepo, IWeatherRepository weatherRepo, ISpeciesRepository speciesRepository)
         {
             _wayPointRepository = wayPointRepository;
             _lakeRepository = lakeRepository;
             _weatherService = weatherService;
             _weatherRepository = weatherRepo;
             _fishRepository = fishRepo;
+            _speciesRepository = speciesRepository;
+        }
+
+        public async Task SaveWayPointProvisioningAsync(WayPoint wayPoint)
+        {
+            await _wayPointRepository.SaveWayPointProvisioningAsync(wayPoint);
         }
 
         public async Task CreateNewFishOnAsync(double latitude, double longitude, Species speciesCaught)
@@ -51,7 +62,7 @@ namespace FishOn.Services
                     LakeId = lakeId,
                     Latitude = latitude,
                     Longitude = longitude,
-                    WayPointType = speciesCaught == null? "BOAT LAUNCH" : "FISH"
+                    WayPointType = speciesCaught == null? WayPoint.WayPointTypeEnumeration.BoatLaunch : WayPoint.WayPointTypeEnumeration.FishOn
                 };
             }
 
@@ -64,9 +75,31 @@ namespace FishOn.Services
             await SaveAsync(wayPoint);
         }
 
-        public async Task<List<WayPoint>> GetWayPointsAsync(int lakeId)
+        public async Task DeleteWayPointAsync(WayPoint wayPoint)
         {
-            return null;
+            await _wayPointRepository.DeleteAsync(wayPoint);
+        }
+
+        public async Task<List<WayPoint>> GetWayPointsAsync()
+        {
+            var wayPoints = await _wayPointRepository.GetWayPointsAsync();
+            var lakes = await _lakeRepository.GetLakesAsync();
+            foreach (var wayPoint in wayPoints)
+            {
+                var lakeMatch = lakes.FirstOrDefault(l => l.LakeId == wayPoint.LakeId);
+                wayPoint.Lake = (Lake)lakeMatch?.Clone<Lake>();
+
+                var fishCaught = await _fishRepository.GetFishCaughtAtWayPointAsync(wayPoint.WayPointId);
+
+                foreach (var fish in fishCaught)
+                {
+                    fish.Species = await _speciesRepository.GetSpeciesAsync(fish.SpeciesId);
+                }
+
+                wayPoint.FishCaught = fishCaught;
+            }
+
+            return wayPoints;
         }
        
         private async Task SaveAsync(WayPoint wayPoint)
