@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FishOnMobileApp.Droid</RootNamespace>
-    <AssemblyName>FishOnMobileApp.Droid</AssemblyName>
+    <AssemblyName>com.FishOnMobile</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
