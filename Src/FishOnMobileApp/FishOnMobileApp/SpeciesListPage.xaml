@@ -4,19 +4,25 @@
              xmlns:viewModel="clr-namespace:FishOn.ViewModel;assembly=FishOnMobileApp"
              x:Class="FishOn.SpeciesListPage">
   
- <ListView HasUnevenRows="True" x:Name="speciesListView"
-                ItemsSource="{Binding SpeciesList}" SelectedItem="{Binding SelectedSpecies}" >
- <ListView.ItemTemplate>
-   <DataTemplate>
-      <ViewCell>
-         <StackLayout>
-            <Button Text="{Binding Name}" 
-                    Command="{Binding Path=BindingContext.SelectSpeciesCommand, 
-                             Source={viewModel:ElementSource speciesListView}}"
-                    CommandParameter="{Binding}"/>
-         </StackLayout>
-      </ViewCell> 
-   </DataTemplate>
- </ListView.ItemTemplate>
-</ListView>
+  <StackLayout>
+       <ListView HasUnevenRows="True" x:Name="speciesListView"
+                      ItemsSource="{Binding SpeciesList}" SelectedItem="{Binding SelectedSpecies}" >
+       <ListView.ItemTemplate>
+         <DataTemplate>
+            <ViewCell>
+               <StackLayout>
+                  <Button Text="{Binding Name}" 
+                          Command="{Binding Path=BindingContext.SelectSpeciesCommand, 
+                                   Source={viewModel:ElementSource speciesListView}}"
+                          CommandParameter="{Binding}"/>
+               </StackLayout>
+            </ViewCell> 
+         </DataTemplate>
+       </ListView.ItemTemplate>
+      </ListView>
+      <ActivityIndicator IsRunning="{Binding IsBusy}"></ActivityIndicator>
+  </StackLayout>
+  
+ 
+ 
 </ContentPage>

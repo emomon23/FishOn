@@ -2,6 +2,7 @@
 
 using Android.App;
 using Android.Content.PM;
+using Android.Locations;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;

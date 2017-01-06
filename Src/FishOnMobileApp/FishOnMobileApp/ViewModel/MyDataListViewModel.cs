@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using FishOn.PlatformInterfaces;
 using FishOn.Services;
 using Xamarin.Forms;
 
@@ -12,7 +13,7 @@ namespace FishOn.ViewModel
     public class MyDataListViewModel : BaseViewModel
     {
         public MyDataListViewModel(INavigation navigation) : base(navigation) { }
-        public MyDataListViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService):base(navigation, lakeDataService, speciesDataService, wayPointDataService) { }
+        public MyDataListViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService) { }
 
         public ICommand LakesButtonCommand
         {

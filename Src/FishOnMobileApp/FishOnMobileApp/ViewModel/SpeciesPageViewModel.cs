@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using FishOn.Model;
+using FishOn.PlatformInterfaces;
 using FishOn.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
-using Plugin.Geolocator;
 
 namespace FishOn.ViewModel
 {
@@ -16,7 +14,7 @@ namespace FishOn.ViewModel
         private ObservableCollection<Species> _speciesList;
        
         public SpeciesPageViewModel(INavigation navigation) : base(navigation) { }
-        public SpeciesPageViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService):base(navigation, lakeDataService, speciesDataService, wayPointDataService) { }
+        public SpeciesPageViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService) { }
 
         public async Task Initialize()
         {
@@ -36,31 +34,26 @@ namespace FishOn.ViewModel
         public ICommand SelectSpeciesCommand
         {
             get
-           { 
-                return new Command<Species>(async (Species speciesCaught) =>
+            {
+                return new Command<Species>((Species speciesCaught) =>
                 {
-                    try
+                    IsBusy = true;
+                 
+                    _locationService.GetCurrentPosition(async (Position? p, string errorMsg) =>
                     {
-                        IsBusy = true;
-                        var locator = CrossGeolocator.Current;
-
-                        if (locator.IsGeolocationEnabled && locator.IsGeolocationAvailable)
+                        if (p.HasValue)
                         {
-                            var position = await locator.GetPositionAsync(10000);
+                            var position = p.Value;
                             await _wayPointDataService.CreateNewFishOnAsync(position.Latitude, position.Longitude,
                                 speciesCaught);
+
+                            IsBusy = false;
+                            await Navigate_BackToLandingPageAsync();
+                           
                         }
-                       
-                    }
-                    catch (Exception exp)
-                    {
-                        var needToHandleThis = exp.Message;
-                    }
-                    finally
-                    {
-                        IsBusy = false;
-                        await Navigate_BackToLandingPageAsync();
-                    }
+
+                    });
+
                 });
             }
         }

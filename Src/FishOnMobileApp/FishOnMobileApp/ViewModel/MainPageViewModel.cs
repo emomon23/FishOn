@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using FishOn.PlatformInterfaces;
 using FishOn.Services;
 using FishOn.Utils;
 using Xamarin.Forms;
@@ -12,7 +13,7 @@ namespace FishOn.ViewModel
     {
         private bool _initialzeCalled = false;
         public MainPageViewModel(INavigation navigation) : base(navigation){}
-        public MainPageViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService):base(navigation, lakeDataService, speciesDataService, wayPointDataService) { }
+        public MainPageViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService) { }
 
         public async Task Initialize()
         {

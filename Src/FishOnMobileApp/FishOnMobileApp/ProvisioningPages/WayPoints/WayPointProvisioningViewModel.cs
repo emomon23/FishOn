@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using FishOn.Model;
+using FishOn.PlatformInterfaces;
 using FishOn.ProvisioningPages.WayPoints;
 using FishOn.Services;
 using FishOnMobileApp;
@@ -14,8 +16,8 @@ namespace FishOn.ViewModel
         private ObservableCollection<WayPoint> _speciesList;
         
         public WayPointProvisioningViewModel(INavigation navigation, ILakeDataService lakeDataService,
-            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService)
-            : base(navigation, lakeDataService, speciesDataService, wayPointDataService){}
+            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService)
+            : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService){}
 
         public async Task InitializeAsync()
         {

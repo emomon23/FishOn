@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FishOn.Model;
+using FishOn.PlatformInterfaces;
 using FishOn.Services;
-using Plugin.Geolocator;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -21,8 +17,8 @@ namespace FishOn.ViewModel
         }
 
         public LakeMapPageViewModel(INavigation navigation, Map lakeMap, ILakeDataService lakeDataService,
-            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService)
-            : base(navigation, lakeDataService, speciesDataService, wayPointDataService)
+            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService)
+            : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService)
         {
             _lakeMap = lakeMap;
         }
@@ -46,17 +42,19 @@ namespace FishOn.ViewModel
                 _lakeMap.Pins.Add(pin);
             }
 
-            var locator = CrossGeolocator.Current;
+            IsBusy = true;
 
-            if (locator.IsGeolocationEnabled && locator.IsGeolocationAvailable)
+            _locationService.GetCurrentPosition(async (Position? p, string errorMsg) =>
             {
-                var locatorPosition = await locator.GetPositionAsync(10000);
-                if (locatorPosition != null)
+                if (p.HasValue)
                 {
-                    var position = new Position(locatorPosition.Latitude, locatorPosition.Longitude);
-                    _lakeMap.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromMiles(2)));
+                    var position = p.Value;
+                    double miles = .5;
+                    _lakeMap.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromMiles(miles)));
+                    IsBusy = false;
                 }
-            }
+            });
+
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FishOn.Model;
+using FishOn.PlatformInterfaces;
 using FishOn.Services;
 using FishOn.Utils;
 using Xamarin.Forms;
@@ -20,7 +21,7 @@ namespace FishOn.ViewModel
         ObservableCollection<Lake> _lakes;
 
         public LakeListViewModel(INavigation navigation) : base(navigation) { }
-        public LakeListViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService):base(navigation, lakeDataService, speciesDataService, wayPointDataService) { }
+        public LakeListViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService) { }
         
         public async Task Initialize()
         {

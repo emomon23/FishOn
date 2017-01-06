@@ -61,7 +61,7 @@ namespace FishOn.Repositories
         
         public async Task  InitializeAsync()
         {
-            //_sqLite.DeleteDatabase();
+            _sqLite.DeleteDatabase();
 
             if (!_sqLite.DoesDBExist)
             {
@@ -154,8 +154,14 @@ namespace FishOn.Repositories
             var fishCaught = await this.GetFishCaughtAtWayPointAsync(id);
             foreach (var fish in fishCaught)
             {
-                var weather = _db.Table<WeatherCondition>().Where(w => w.WeatherConditionId == fish.FishOnId);
-                await _db.DeleteAsync(weather);
+                var weatherConditions =
+                    await _db.Table<WeatherCondition>().Where(w => w.WeatherConditionId == fish.FishOnId).ToListAsync();
+
+                if (weatherConditions != null && weatherConditions.Count > 0)
+                {
+                    await _db.DeleteAsync(weatherConditions[0]);
+                }
+
                 await _db.DeleteAsync(fish);
             }
 
