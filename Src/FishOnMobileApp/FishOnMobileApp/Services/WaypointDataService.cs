@@ -94,6 +94,7 @@ namespace FishOn.Services
                 foreach (var fish in fishCaught)
                 {
                     fish.Species = await _speciesRepository.GetSpeciesAsync(fish.SpeciesId);
+                    wayPoint.MergeSpecies(fish.Species);
                 }
 
                 wayPoint.FishCaught = fishCaught;

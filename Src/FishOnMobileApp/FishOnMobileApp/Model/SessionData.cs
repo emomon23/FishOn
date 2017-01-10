@@ -32,7 +32,6 @@ namespace FishOn.Model
             _currentLakeId = currentLakeId ?? 0;
             _currentWaterTemp = currentWaterTemp ?? 0;
             _sessionStartDateTime = DateTime.Now;
-
         }
     }
 }

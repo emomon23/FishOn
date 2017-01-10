@@ -16,8 +16,8 @@ namespace FishOn.ViewModel
         private ObservableCollection<WayPoint> _speciesList;
         
         public WayPointProvisioningViewModel(INavigation navigation, ILakeDataService lakeDataService,
-            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService)
-            : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService){}
+            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService)
+            : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService){}
 
         public async Task InitializeAsync()
         {

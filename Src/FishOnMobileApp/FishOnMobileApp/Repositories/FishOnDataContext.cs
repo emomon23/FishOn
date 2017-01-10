@@ -30,6 +30,8 @@ namespace FishOn.Repositories
         Task SaveWeatherConditionAsync(WeatherCondition wc);
         Task<List<Model.FishOn>> GetFishCaughtAtWayPointAsync(int wayPointId);
         Task DeleteWayPointAsync(WayPoint wayPoint);
+        Task<List<AppSetting>> GetAppSettingsAsync();
+        Task SaveAppSettingAsync(AppSetting setting);
     }
 
     public class FishOnDataContext : IFishOnDataContext
@@ -61,13 +63,28 @@ namespace FishOn.Repositories
         
         public async Task  InitializeAsync()
         {
-            _sqLite.DeleteDatabase();
+           // _sqLite.DeleteDatabase();
 
             if (!_sqLite.DoesDBExist)
             {
                 await CreateDatabaseAsync();
                 await SeedDatabaseAsync();
             }
+        }
+
+        #endregion
+
+        #region AppSettings
+
+        public async Task<List<AppSetting>> GetAppSettingsAsync()
+        {
+            var result = await _db.Table<AppSetting>().ToListAsync();
+            return result;
+        }
+
+        public async Task SaveAppSettingAsync(AppSetting setting)
+        {
+            await _db.UpdateAsync(setting);
         }
 
         #endregion
@@ -214,24 +231,28 @@ namespace FishOn.Repositories
 
         private async Task CreateDatabaseAsync()
         {
+            await _db.CreateTableAsync<AppSetting>();
             await _db.CreateTableAsync<Species>();
             await _db.CreateTableAsync<WayPoint>();
             await _db.CreateTableAsync<Lake>();
             await _db.CreateTableAsync<Model.FishOn>();
             await _db.CreateTableAsync<WeatherCondition>();
             await _db.CreateTableAsync<FishingLure>();
+            
         }
 
         private async Task SeedDatabaseAsync()
         {
-              await _db.InsertAsync(new Species() { Description = "", Name = "Walleye", DisplayOrder = 10});
-              await _db.InsertAsync(new Species() { Description = "Northern Pike 'Snake'", Name = "Pike", DisplayOrder = 20});
-              await _db.InsertAsync(new Species() { Description = "Panfish", Name = "Sunny", DisplayOrder = 30});
-              await _db.InsertAsync(new Species() { Description = "Panfish", Name = "Crappie", DisplayOrder = 40});
-              await _db.InsertAsync(new Species() { Description = "", Name = "Lg M Bass.", DisplayOrder = 50});
-              await _db.InsertAsync(new Species() { Description = "", Name = "Sm M Bass", DisplayOrder = 60});
-              await _db.InsertAsync(new Species() { Description = "", Name = "Muskie", DisplayOrder = 70});
-              await _db.InsertAsync(new Species() { Description = "", Name = "Catfish", DisplayOrder = 80});
+              await _db.InsertAsync(new Species() { Description = "", Name = "Walleye", DisplayOrder = 10, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true});
+              await _db.InsertAsync(new Species() { Description = "Northern Pike 'Snake'", Name = "Pike", DisplayOrder = 20, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
+              await _db.InsertAsync(new Species() { Description = "Panfish", Name = "Sunny", DisplayOrder = 30, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
+              await _db.InsertAsync(new Species() { Description = "Panfish", Name = "Crappie", DisplayOrder = 40, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
+              await _db.InsertAsync(new Species() { Description = "", Name = "Lg M Bass.", DisplayOrder = 50, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
+              await _db.InsertAsync(new Species() { Description = "", Name = "Sm M Bass", DisplayOrder = 60, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
+              await _db.InsertAsync(new Species() { Description = "", Name = "Muskie", DisplayOrder = 70, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
+              await _db.InsertAsync(new Species() { Description = "", Name = "Catfish", DisplayOrder = 80, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
+
+            await _db.InsertAsync(new AppSetting() {SettingName = "MapFilterHasBeenUsed", Value = false.ToString()});
         }
 
         #endregion

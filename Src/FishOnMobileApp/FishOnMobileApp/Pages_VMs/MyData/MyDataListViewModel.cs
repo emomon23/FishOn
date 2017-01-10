@@ -13,7 +13,7 @@ namespace FishOn.ViewModel
     public class MyDataListViewModel : BaseViewModel
     {
         public MyDataListViewModel(INavigation navigation) : base(navigation) { }
-        public MyDataListViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService) { }
+        public MyDataListViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService) { }
 
         public ICommand LakesButtonCommand
         {

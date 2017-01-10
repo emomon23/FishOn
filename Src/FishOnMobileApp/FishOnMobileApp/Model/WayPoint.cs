@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FishOn.Utils;
 using SQLite;
 using SQLite.Net.Attributes;
 
@@ -55,6 +56,14 @@ namespace FishOn.Model
             if (!Species.Any(s => s.Name != speciesCaught.Name))
             {
                 Species.Add(speciesCaught);
+            }
+        }
+
+        public void MergeSpecies(Species species) 
+        {
+            if (!Species.Any(s => s.SpeciesId == species.SpeciesId))
+            {
+                Species.Add((Species)species.Clone<Species>());
             }
         }
     }

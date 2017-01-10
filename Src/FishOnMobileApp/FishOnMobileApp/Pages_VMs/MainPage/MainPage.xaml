@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:FishOnMobileApp"
+             x:Class="FishOnMobileApp.MainPage">
+
+   <StackLayout>
+     <Button Text="Fish ON!" Command="{Binding FishOnCommand}" />
+     <Button Text="Find a Spot" Command="{Binding FindMySpotCommand}" />
+     <Button Text="My Data" Command="{Binding MyDataCommand}"></Button>
+     <Button Text="Set Lake / Water Temp" Command="{Binding SetLakeWaterTemp}" />
+     <ActivityIndicator IsRunning="{Binding IsBusy}"></ActivityIndicator>
+   </StackLayout>
+
+</ContentPage>

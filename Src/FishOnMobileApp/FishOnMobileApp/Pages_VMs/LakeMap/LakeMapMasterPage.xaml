@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FishOn.Pages_VMs.LakeMap.LakeMapMasterPage"
+             Title="Waypoint Filter">
+
+  <StackLayout>
+      <ListView HasUnevenRows="True" x:Name="speciesListView"
+                         ItemsSource="{Binding SpeciesList}">
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <ViewCell>
+              <StackLayout Orientation="Horizontal">
+                <Label FontSize="25" Text="{Binding Name}"></Label>
+                <Switch HorizontalOptions="EndAndExpand" 
+                        IsToggled="{Binding DisplaySpeciesOnLakeMap}"
+                        Toggled="FilterToggled"
+                   ></Switch>
+              </StackLayout>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+    
+      </ListView>
+ </StackLayout>
+</ContentPage>

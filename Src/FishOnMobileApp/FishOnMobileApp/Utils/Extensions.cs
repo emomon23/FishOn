@@ -70,6 +70,17 @@ namespace FishOn.Utils
             return result;
         }
 
+        public static bool ToBool(this string str)
+        {
+            var temp = str.ToLower();
+            if (temp == "true" || temp == "t" || temp == "yes" || temp == "y")
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public static double ToDouble(this string str)
         {
             double result = 0;
@@ -133,6 +144,19 @@ namespace FishOn.Utils
         {
             var jsonString = JsonConvert.SerializeObject(obj);
             return JsonConvert.DeserializeObject<T>(jsonString);
+        }
+
+        public static string GetStringValue(this List<AppSetting> settings, string name)
+        {
+            if (settings == null)
+            {
+                return null;
+            }
+
+            var result =
+                settings.SingleOrDefault(s => s.SettingName == name);
+
+            return result?.Value;
         }
     }
 }

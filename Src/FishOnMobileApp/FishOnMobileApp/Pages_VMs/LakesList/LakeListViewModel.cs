@@ -21,7 +21,7 @@ namespace FishOn.ViewModel
         ObservableCollection<Lake> _lakes;
 
         public LakeListViewModel(INavigation navigation) : base(navigation) { }
-        public LakeListViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService) { }
+        public LakeListViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService) { }
         
         public async Task Initialize()
         {
