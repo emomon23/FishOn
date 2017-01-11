@@ -1,23 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FishOn.ProvisioningPages.WayPoints.WPDetailPage">
+             x:Class="FishOn.ProvisioningPages.WayPoints.WPDetailPage"
+             Title="Way Points">
  <StackLayout>
    <StackLayout Orientation="Horizontal">
      <Label Text="Name"></Label>
      <Entry HorizontalOptions="FillAndExpand" Text="{Binding WayPoint.Name}"></Entry>
-   </StackLayout>
-   <StackLayout Orientation="Horizontal">
-     <Label Text="Lat"></Label>
-     <Entry WidthRequest="150" Text="{Binding WayPoint.Latitude}"></Entry>
+  </StackLayout>
+  
+     <Label Text="Latitude"></Label>
+     <Entry WidthRequest="150" Text="{Binding WayPoint.Latitude}"
+            HorizontalOptions="FillAndExpand"></Entry>
      
-     <Label Text="Long"></Label>
-     <Entry WidthRequest="150" Text="{Binding WayPoint.Longitude}"></Entry>
-   </StackLayout>
+     <Label Text="Longitude"></Label>
+     <Entry Text="{Binding WayPoint.Longitude}"
+            HorizontalOptions="FillAndExpand"></Entry>
+   
    
    <StackLayout Orientation="Horizontal">
-     <Label Text="WP Type (1: BoatLaunch,  2: Fish)"></Label>
-     <Entry WidthRequest="300" Text="{Binding WayPoint.WayPointType}"></Entry>
+     <Label Text="WP Type"></Label>
+     <Picker x:Name="WpTypePicker"
+       VerticalOptions="CenterAndExpand"
+       SelectedIndex="{Binding SelectedWayPointTypeIndex}"
+       HorizontalOptions="FillAndExpand"/>
    </StackLayout>
    
    <StackLayout Orientation="Horizontal">

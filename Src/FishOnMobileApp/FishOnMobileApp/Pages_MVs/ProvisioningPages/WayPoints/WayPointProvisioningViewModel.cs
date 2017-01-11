@@ -19,7 +19,7 @@ namespace FishOn.ViewModel
             ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService)
             : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService){}
 
-        public async Task InitializeAsync()
+        public override async Task InitializeAsync()
         {
             await GetWayPointList();
         }
@@ -42,7 +42,17 @@ namespace FishOn.ViewModel
 
         public WayPoint WayPoint { get; private set; }
         public string LakeName { get; set; }
-
+        
+        public int SelectedWayPointTypeIndex
+        {
+            get { return WayPoint.WayPointType == WayPoint.WayPointTypeEnumeration.BoatLaunch ? 1 : 0; }
+            set
+            {
+                WayPoint.WayPointType = value == 0
+                    ? WayPoint.WayPointTypeEnumeration.FishOn
+                    : WayPoint.WayPointTypeEnumeration.BoatLaunch;
+            }
+        }
         public ICommand SaveWayPointCommand
         {
             get

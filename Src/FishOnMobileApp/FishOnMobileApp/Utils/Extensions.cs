@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using FishOn.Model;
+using FishOn.Model.ViewModel;
 using Newtonsoft.Json;
+using Xamarin.Forms;
 
 namespace FishOn.Utils
 {
@@ -79,6 +81,11 @@ namespace FishOn.Utils
             }
 
             return false;
+        }
+
+        public static Page FindPage(this List<Page> pages, string pageTitle)
+        {
+            return pages.SingleOrDefault(p => p.Title == pageTitle);
         }
 
         public static double ToDouble(this string str)
@@ -157,6 +164,37 @@ namespace FishOn.Utils
                 settings.SingleOrDefault(s => s.SettingName == name);
 
             return result?.Value;
+        }
+
+        public static void AddItems(this Picker picker, IEnumerable<string> items)
+        {
+            foreach (var item in items)
+            {
+                picker.Items.Add(item);
+            }
+        }
+
+        public static void AddSpeciesCaught(this List<SpeciesCaughtDTOModel> list, Model.FishOn fishCaught)
+        {
+            SpeciesCaughtDTOModel speciesCaught = list.SingleOrDefault(s => s.SpeciesName == fishCaught.Species.Name);
+
+            if (speciesCaught == null)
+            {
+                speciesCaught.SpeciesName = fishCaught.Species.Name;
+                list.Add(speciesCaught);
+            }
+
+            int i = 0;
+
+            for (i = 0; i < speciesCaught.FishCaught.Count; i++)
+            {
+                if (speciesCaught.FishCaught[i].DateCaught > fishCaught.DateCaught)
+                {
+                    break;
+                }
+            }
+
+            speciesCaught.FishCaught.Insert(i, fishCaught);
         }
     }
 }

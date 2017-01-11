@@ -39,6 +39,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\AppSetting.cs" />
+    <Compile Include="Model\DTO\SpeciesCaughtDTOModel.cs" />
     <Compile Include="Pages_VMs\LakeMap\LakeMapDetailPage.xaml.cs">
       <DependentUpon>LakeMapDetailPage.xaml</DependentUpon>
     </Compile>
@@ -64,6 +65,26 @@
     <Compile Include="Pages_VMs\MyData\MyDataListPage.xaml.cs">
       <DependentUpon>MyDataListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages_VMs\ProvisioningPages\Lakes\LakesListProvisioningPage.xaml.cs">
+      <DependentUpon>LakesListProvisioningPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages_VMs\ProvisioningPages\MyFish\MyFishBySpecies.xaml.cs">
+      <DependentUpon>MyFishBySpecies.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages_VMs\ProvisioningPages\MyFish\MyFishByWayPoints.xaml.cs">
+      <DependentUpon>MyFishByWayPoints.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages_VMs\ProvisioningPages\MyFish\MyFishTabbedPage.xaml.cs">
+      <DependentUpon>MyFishTabbedPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages_VMs\ProvisioningPages\MyFish\MyFishViewModel.cs" />
+    <Compile Include="Pages_VMs\ProvisioningPages\Species\MySpeciesProvisioningPage.xaml.cs">
+      <DependentUpon>MySpeciesProvisioningPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages_VMs\ProvisioningPages\TackleBox\TackleBoxPage.xaml.cs">
+      <DependentUpon>TackleBoxPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages_VMs\ProvisioningPages\TackleBox\TackleBoxViewModel.cs" />
     <Compile Include="PlatformInterfaces\IFileHelper.cs" />
     <Compile Include="PlatformInterfaces\IFishOnCurrentLocationService.cs" />
     <Compile Include="PlatformInterfaces\ISQLite.cs" />
@@ -178,12 +199,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\MyData\MyDataListPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Pages_VMs\ProvisioningPages\WayPoints\WPDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
@@ -209,6 +224,48 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages_VMs\LakeMap\LakeMapDetailPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages_VMs\MyData\MyDataListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages_VMs\ProvisioningPages\TackleBox\TackleBoxPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages_VMs\ProvisioningPages\MyFish\MyFishTabbedPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages_VMs\ProvisioningPages\Lakes\LakesListProvisioningPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages_VMs\ProvisioningPages\Species\MySpeciesProvisioningPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages_VMs\ProvisioningPages\MyFish\MyFishBySpecies.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages_VMs\ProvisioningPages\MyFish\MyFishByWayPoints.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

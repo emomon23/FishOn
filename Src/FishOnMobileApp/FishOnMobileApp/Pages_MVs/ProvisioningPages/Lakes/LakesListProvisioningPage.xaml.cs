@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
-namespace FishOn
+namespace FishOn.Pages_VMs.ProvisioningPages.Lakes
 {
-    public partial class MyDataListPage : ContentPage
+    public partial class LakesListProvisioningPage : ContentPage
     {
-        public MyDataListPage()
+        public LakesListProvisioningPage()
         {
             InitializeComponent();
         }

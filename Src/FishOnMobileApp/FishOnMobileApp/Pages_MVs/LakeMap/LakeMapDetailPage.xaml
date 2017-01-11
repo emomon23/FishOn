@@ -11,6 +11,6 @@
             MinimumHeightRequest="500"
             MapType="Street"></maps:Map>
 
-    <Label x:Name="fadeLabel" Text="swipe from the right to the left to filter waypoints" IsVisible="{Binding IsFadeVisible}"></Label>
+    <Label FontSize="25" x:Name="fadeLabel" Text="Swipe from the right to the left to filter waypoints" IsVisible="{Binding IsFadeVisible}"></Label>
   </StackLayout>
 </ContentPage>

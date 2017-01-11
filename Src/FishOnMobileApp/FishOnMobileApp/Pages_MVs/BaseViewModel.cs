@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using FishOn.Pages_VMs.LakeMap;
+using FishOn.Pages_VMs.MyData;
 using FishOn.PlatformInterfaces;
 using FishOn.ProvisioningPages.WayPoints;
 using FishOn.Services;
@@ -56,6 +57,8 @@ namespace FishOn.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        public virtual async Task InitializeAsync() { }
 
         protected void OnPropertyChanged([CallerMemberName] string name="")
         {
@@ -112,6 +115,7 @@ namespace FishOn.ViewModel
         
         protected async Task Navigate_ToMyDataButtonsListAsync()
         {
+           // Page page = (Page) Activator.CreateInstance(typeof(MyDataListPage));
             var page = new MyDataListPage();
             page.BindingContext =  new MyDataListViewModel(page.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
 
