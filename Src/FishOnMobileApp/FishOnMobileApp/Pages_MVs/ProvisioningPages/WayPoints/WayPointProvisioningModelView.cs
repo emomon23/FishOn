@@ -9,13 +9,13 @@ using FishOn.Services;
 using FishOnMobileApp;
 using Xamarin.Forms;
 
-namespace FishOn.ViewModel
+namespace FishOn.ModelView
 {
-    public class WayPointProvisioningViewModel : BaseViewModel
+    public class WayPointProvisioningModelView : BaseModelView
     {
         private ObservableCollection<WayPoint> _speciesList;
         
-        public WayPointProvisioningViewModel(INavigation navigation, ILakeDataService lakeDataService,
+        public WayPointProvisioningModelView(INavigation navigation, ILakeDataService lakeDataService,
             ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService)
             : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService){}
 

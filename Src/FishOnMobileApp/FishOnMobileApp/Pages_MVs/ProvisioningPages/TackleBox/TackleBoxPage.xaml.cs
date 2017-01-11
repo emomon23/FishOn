@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
-namespace FishOn.Pages_VMs.ProvisioningPages.TackleBox
+namespace FishOn.Pages_MVs.ProvisioningPages.TackleBox
 {
     public partial class TackleBoxPage : ContentPage
     {

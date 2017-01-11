@@ -1,7 +1,7 @@
 ﻿using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
-namespace FishOn.Pages_VMs.LakeMap
+namespace FishOn.Pages_MVs.LakeMap
 {
     public partial class LakeMapMasterDetailPage : MasterDetailPage
     {

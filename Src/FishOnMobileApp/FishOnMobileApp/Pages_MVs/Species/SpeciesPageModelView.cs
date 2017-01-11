@@ -8,14 +8,14 @@ using FishOn.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
-namespace FishOn.ViewModel
+namespace FishOn.ModelView
 {
-    public class SpeciesPageViewModel : BaseViewModel
+    public class SpeciesPageModelView : BaseModelView
     {
         private ObservableCollection<Species> _speciesList;
        
-        public SpeciesPageViewModel(INavigation navigation) : base(navigation) { }
-        public SpeciesPageViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService) { }
+        public SpeciesPageModelView(INavigation navigation) : base(navigation) { }
+        public SpeciesPageModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService) { }
 
         public async Task Initialize()
         {

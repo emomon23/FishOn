@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
-namespace FishOn.Pages_VMs.LakeMap
+namespace FishOn.Pages_MVs.LakeMap
 {
     public partial class LakeMapDetailPage : ContentPage
     {

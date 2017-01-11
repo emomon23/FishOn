@@ -5,17 +5,17 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using FishOn.Pages_VMs.LakeMap;
-using FishOn.Pages_VMs.MyData;
+using FishOn.Pages_MVs.LakeMap;
+using FishOn.Pages_MVs.MyData;
 using FishOn.PlatformInterfaces;
 using FishOn.ProvisioningPages.WayPoints;
 using FishOn.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace FishOn.ViewModel
+namespace FishOn.ModelView
 {
-    public abstract class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseModelView : INotifyPropertyChanged
     {
         protected readonly ILakeDataService _lakeService;
         protected readonly ISpeciesDataService _speciesDataService;
@@ -28,7 +28,7 @@ namespace FishOn.ViewModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public BaseViewModel(INavigation navigation)
+        public BaseModelView(INavigation navigation)
         {
             _navigation = navigation;
             _lakeService = new LakeDataService();
@@ -38,7 +38,7 @@ namespace FishOn.ViewModel
             _appSettingService = new AppSettingService();
         }
 
-        public BaseViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService)
+        public BaseModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService)
         {
             _navigation = navigation;
             _lakeService = lakeDataService;
@@ -70,7 +70,7 @@ namespace FishOn.ViewModel
         protected async Task Navigate_ToLakeListAsync()
         {
             var lakesPage = new LakeListPage();
-            var viewModel = new LakeListViewModel(lakesPage.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
+            var viewModel = new LakeListModelView(lakesPage.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
             await viewModel.Initialize();
             lakesPage.BindingContext = viewModel;
 
@@ -80,7 +80,7 @@ namespace FishOn.ViewModel
         protected async Task Navigate_ToSpeciesListAsync()
         {
             var speciesPage = new SpeciesListPage();
-            var viewModel =  new SpeciesPageViewModel(speciesPage.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
+            var viewModel =  new SpeciesPageModelView(speciesPage.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
             await viewModel.Initialize();
             speciesPage.BindingContext = viewModel;
 
@@ -90,7 +90,7 @@ namespace FishOn.ViewModel
         protected async Task Naviage_ToLakeMapAsync()
         {
             var lakeMapPage = new LakeMapMasterDetailPage();
-            var viewModel = new LakeMapPageViewModel(lakeMapPage.Navigation, lakeMapPage.WayPointsMap, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
+            var viewModel = new LakeMapPageModelView(lakeMapPage.Navigation, lakeMapPage.WayPointsMap, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
             await viewModel.InitializeAsync();
             lakeMapPage.BindingContext = viewModel;
 
@@ -106,7 +106,7 @@ namespace FishOn.ViewModel
         protected async Task Navigate_To_WayPointProvisoning_MasterDetailPageAsync()
         {
             var page = new WPProvisoningList();
-            var viewModel = new WayPointProvisioningViewModel(page.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
+            var viewModel = new WayPointProvisioningModelView(page.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
             await viewModel.InitializeAsync();
 
             page.BindingContext = viewModel;
@@ -117,7 +117,7 @@ namespace FishOn.ViewModel
         {
            // Page page = (Page) Activator.CreateInstance(typeof(MyDataListPage));
             var page = new MyDataListPage();
-            page.BindingContext =  new MyDataListViewModel(page.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
+            page.BindingContext =  new MyDataListModelView(page.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
 
             await _navigation.PushAsync(page);
         }

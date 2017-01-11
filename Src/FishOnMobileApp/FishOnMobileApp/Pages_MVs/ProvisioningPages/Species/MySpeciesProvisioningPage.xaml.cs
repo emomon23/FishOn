@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
-namespace FishOn.Pages_VMs.ProvisioningPages.Species
+namespace FishOn.Pages_MVs.ProvisioningPages.Species
 {
     public partial class MySpeciesProvisioningPage : ContentPage
     {

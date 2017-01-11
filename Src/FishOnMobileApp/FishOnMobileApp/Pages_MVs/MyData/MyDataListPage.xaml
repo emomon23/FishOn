@@ -2,8 +2,8 @@
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:wayPoints="clr-namespace:FishOn.ProvisioningPages.WayPoints;assembly=FishOnMobileApp"
-            xmlns:tackleBox="clr-namespace:FishOn.Pages_VMs.ProvisioningPages.TackleBox;assembly=FishOnMobileApp"
-            x:Class="FishOn.Pages_VMs.MyData.MyDataListPage"
+            xmlns:tackleBox="clr-namespace:FishOn.Pages_MVs.ProvisioningPages.TackleBox;assembly=FishOnMobileApp"
+            x:Class="FishOn.Pages_MVs.MyData.MyDataListPage"
             Title="{Binding Title}"
             >
  

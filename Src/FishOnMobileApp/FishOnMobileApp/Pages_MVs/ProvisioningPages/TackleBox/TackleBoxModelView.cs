@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using FishOn.PlatformInterfaces;
 using FishOn.Services;
-using FishOn.ViewModel;
+using FishOn.ModelView;
 using Xamarin.Forms;
 
-namespace FishOn.Pages_VMs.ProvisioningPages.TackleBox
+namespace FishOn.Pages_MVs.ProvisioningPages.TackleBox
 {
-    public class TackleBoxViewModel : BaseViewModel
+    public class TackleBoxModelView : BaseModelView
     {
-        public TackleBoxViewModel(INavigation navigation, ILakeDataService lakeDataService,
+        public TackleBoxModelView(INavigation navigation, ILakeDataService lakeDataService,
            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService)
             : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService){ }
 

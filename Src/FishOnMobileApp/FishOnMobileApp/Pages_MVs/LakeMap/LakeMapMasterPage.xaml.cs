@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FishOn.Model;
-using FishOn.ViewModel;
+using FishOn.ModelView;
 using Xamarin.Forms;
 
-namespace FishOn.Pages_VMs.LakeMap
+namespace FishOn.Pages_MVs.LakeMap
 {
     public partial class LakeMapMasterPage : ContentPage
     {
@@ -25,7 +25,7 @@ namespace FishOn.Pages_VMs.LakeMap
 
             if (binding != null)
             {
-                ((LakeMapPageViewModel) binding).SpeciesFilterSwitch((Species) species);
+                ((LakeMapPageModelView) binding).SpeciesFilterSwitch((Species) species);
             }
         }
     }

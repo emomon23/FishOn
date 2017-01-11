@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModel="clr-namespace:FishOn.ViewModel;assembly=FishOnMobileApp"
+             xmlns:viewModel="clr-namespace:FishOn.ModelView;assembly=FishOnMobileApp"
              x:Class="FishOn.LakeListPage">
   <StackLayout>
       <Label Text="Enter lake names, seperated by commas"></Label>

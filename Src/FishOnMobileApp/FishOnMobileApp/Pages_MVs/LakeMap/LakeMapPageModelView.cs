@@ -8,21 +8,21 @@ using FishOn.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
-namespace FishOn.ViewModel
+namespace FishOn.ModelView
 {
-    public class LakeMapPageViewModel : BaseViewModel
+    public class LakeMapPageModelView : BaseModelView
     {
         private List<WayPoint> _wayPoints;
         private Map _lakeMap;
         private ObservableCollection<Species> _speciesList;
         private List<Species> _displaySpecies;
 
-        public LakeMapPageViewModel(INavigation navigation, Map lakeMap) : base(navigation)
+        public LakeMapPageModelView(INavigation navigation, Map lakeMap) : base(navigation)
         {
             _lakeMap = lakeMap;
         }
 
-        public LakeMapPageViewModel(INavigation navigation, Map lakeMap, ILakeDataService lakeDataService,
+        public LakeMapPageModelView(INavigation navigation, Map lakeMap, ILakeDataService lakeDataService,
             ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService)
             : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService)
         {

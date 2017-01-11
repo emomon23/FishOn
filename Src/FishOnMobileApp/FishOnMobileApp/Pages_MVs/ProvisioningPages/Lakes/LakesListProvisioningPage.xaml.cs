@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
-namespace FishOn.Pages_VMs.ProvisioningPages.Lakes
+namespace FishOn.Pages_MVs.ProvisioningPages.Lakes
 {
     public partial class LakesListProvisioningPage : ContentPage
     {

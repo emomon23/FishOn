@@ -174,9 +174,9 @@ namespace FishOn.Utils
             }
         }
 
-        public static void AddSpeciesCaught(this List<SpeciesCaughtDTOModel> list, Model.FishOn fishCaught)
+        public static void AddSpeciesCaught(this List<SpeciesCaughtViewModel> list, Model.FishOn fishCaught)
         {
-            SpeciesCaughtDTOModel speciesCaught = list.SingleOrDefault(s => s.SpeciesName == fishCaught.Species.Name);
+            SpeciesCaughtViewModel speciesCaught = list.SingleOrDefault(s => s.SpeciesName == fishCaught.Species.Name);
 
             if (speciesCaught == null)
             {

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
-namespace FishOn.Pages_VMs.ProvisioningPages.MyFish
+namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
 {
     public partial class MyFishTabbedPage : TabbedPage
     {
-        private MyFishViewModel _viewModel = null;
+        private MyFishModelView _viewModel = null;
         public MyFishTabbedPage()
         {
             InitializeComponent();
@@ -22,7 +22,7 @@ namespace FishOn.Pages_VMs.ProvisioningPages.MyFish
 
             if (BindingContext != null)
             {
-                _viewModel = (MyFishViewModel) BindingContext;
+                _viewModel = (MyFishModelView) BindingContext;
 
                 var pages = await _viewModel.GetContentPagesAsync();
                 foreach (var page in pages)

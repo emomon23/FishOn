@@ -10,9 +10,9 @@ using FishOn.Services;
 using FishOn.Utils;
 using Xamarin.Forms;
 
-namespace FishOn.ViewModel
+namespace FishOn.ModelView
 {
-    public class LakeListViewModel : BaseViewModel
+    public class LakeListModelView : BaseModelView
     {
         private Model.Lake _selectedLake;
         private string _newLakeNames;
@@ -20,8 +20,8 @@ namespace FishOn.ViewModel
 
         ObservableCollection<Lake> _lakes;
 
-        public LakeListViewModel(INavigation navigation) : base(navigation) { }
-        public LakeListViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService) { }
+        public LakeListModelView(INavigation navigation) : base(navigation) { }
+        public LakeListModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService) { }
         
         public async Task Initialize()
         {

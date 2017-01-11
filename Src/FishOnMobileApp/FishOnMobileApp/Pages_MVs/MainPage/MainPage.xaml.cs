@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
-using FishOn.ViewModel;
+using FishOn.ModelView;
 using Xamarin.Forms;
 
 namespace FishOnMobileApp
 {
     public partial class MainPage : ContentPage
     {
-        private MainPageViewModel _pageViewModel = null;
+        private MainPageModelView _pageViewModel = null;
 
         public MainPage()
         {
             InitializeComponent();
-            _pageViewModel = new MainPageViewModel(this.Navigation);
+            _pageViewModel = new MainPageModelView(this.Navigation);
             BindingContext = _pageViewModel;
         }
 

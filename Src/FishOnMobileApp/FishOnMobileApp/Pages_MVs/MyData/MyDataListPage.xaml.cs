@@ -1,11 +1,11 @@
-﻿using FishOn.ViewModel;
+﻿using FishOn.ModelView;
 using Xamarin.Forms;
 
-namespace FishOn.Pages_VMs.MyData
+namespace FishOn.Pages_MVs.MyData
 {
     public partial class MyDataListPage : TabbedPage
     {
-        private MyDataListViewModel _vm = null;
+        private MyDataListModelView _vm = null;
 
         public MyDataListPage()
         {
@@ -26,7 +26,7 @@ namespace FishOn.Pages_VMs.MyData
             
             if (Children.Count == 0)
             {
-                _vm = (MyDataListViewModel) BindingContext;
+                _vm = (MyDataListModelView) BindingContext;
 
                 if (_vm != null)
                 {

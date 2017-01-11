@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using FishOn.Utils;
 using Xamarin.Forms;
 
-namespace FishOn.ViewModel
+namespace FishOn.ModelView
 {
-    public class SimpleInputModalViewModel :BaseViewModel
+    public class SimpleInputModalModelView :BaseModelView
     {
         public delegate Task ModalClosedAsyncCallBackDelegate(bool cancelClicked, string valueProvided);
 
@@ -18,7 +18,7 @@ namespace FishOn.ViewModel
         private string _captionText;
         private string _inputBoxValue;
         
-        public SimpleInputModalViewModel(INavigation navigation, string captionText, string okButtonText = "Ok", string cancelButtonText = "Cancel", string defaultValue=null) : base(navigation)
+        public SimpleInputModalModelView(INavigation navigation, string captionText, string okButtonText = "Ok", string cancelButtonText = "Cancel", string defaultValue=null) : base(navigation)
         {
             CaptionText = captionText;
             OkButtonText = okButtonText;
@@ -35,6 +35,7 @@ namespace FishOn.ViewModel
             _modalClosedAsyncCallBack = callBack;
             var page = new SimpleInputModal();
             page.BindingContext = this;
+
 
             await _navigation.PushModalAsync(page);
         }

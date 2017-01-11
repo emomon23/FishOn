@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FishOn.Model.ViewModel
 {
-    public class SpeciesCaughtDTOModel
+    public class SpeciesCaughtViewModel
     {
         public string SpeciesName { get; set; }
         public List<Model.FishOn> FishCaught { get; set; }

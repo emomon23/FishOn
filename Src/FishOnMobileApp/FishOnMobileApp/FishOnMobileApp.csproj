@@ -39,20 +39,20 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\AppSetting.cs" />
-    <Compile Include="Model\DTO\SpeciesCaughtDTOModel.cs" />
-    <Compile Include="Pages_VMs\LakeMap\LakeMapDetailPage.xaml.cs">
+    <Compile Include="Model\ViewModel\SpeciesCaughtViewModel.cs" />
+    <Compile Include="Pages_MVs\LakeMap\LakeMapDetailPage.xaml.cs">
       <DependentUpon>LakeMapDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_VMs\LakeMap\LakeMapMasterDetailPage.xaml.cs">
+    <Compile Include="Pages_MVs\LakeMap\LakeMapMasterDetailPage.xaml.cs">
       <DependentUpon>LakeMapMasterDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_VMs\LakeMap\LakeMapMasterPage.xaml.cs">
+    <Compile Include="Pages_MVs\LakeMap\LakeMapMasterPage.xaml.cs">
       <DependentUpon>LakeMapMasterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_VMs\LakesList\LakeListPage.xaml.cs">
+    <Compile Include="Pages_MVs\LakesList\LakeListPage.xaml.cs">
       <DependentUpon>LakeListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_VMs\MainPage\MainPage.xaml.cs">
+    <Compile Include="Pages_MVs\MainPage\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\FishingLure.cs" />
@@ -62,37 +62,37 @@
     <Compile Include="Model\Species.cs" />
     <Compile Include="Model\WayPoint.cs" />
     <Compile Include="Model\WeatherCondition.cs" />
-    <Compile Include="Pages_VMs\MyData\MyDataListPage.xaml.cs">
+    <Compile Include="Pages_MVs\MyData\MyDataListPage.xaml.cs">
       <DependentUpon>MyDataListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_VMs\ProvisioningPages\Lakes\LakesListProvisioningPage.xaml.cs">
+    <Compile Include="Pages_MVs\ProvisioningPages\Lakes\LakesListProvisioningPage.xaml.cs">
       <DependentUpon>LakesListProvisioningPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_VMs\ProvisioningPages\MyFish\MyFishBySpecies.xaml.cs">
+    <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishBySpecies.xaml.cs">
       <DependentUpon>MyFishBySpecies.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_VMs\ProvisioningPages\MyFish\MyFishByWayPoints.xaml.cs">
+    <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishByWayPoints.xaml.cs">
       <DependentUpon>MyFishByWayPoints.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_VMs\ProvisioningPages\MyFish\MyFishTabbedPage.xaml.cs">
+    <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishTabbedPage.xaml.cs">
       <DependentUpon>MyFishTabbedPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_VMs\ProvisioningPages\MyFish\MyFishViewModel.cs" />
-    <Compile Include="Pages_VMs\ProvisioningPages\Species\MySpeciesProvisioningPage.xaml.cs">
+    <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishModelView.cs" />
+    <Compile Include="Pages_MVs\ProvisioningPages\Species\MySpeciesProvisioningPage.xaml.cs">
       <DependentUpon>MySpeciesProvisioningPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_VMs\ProvisioningPages\TackleBox\TackleBoxPage.xaml.cs">
+    <Compile Include="Pages_MVs\ProvisioningPages\TackleBox\TackleBoxPage.xaml.cs">
       <DependentUpon>TackleBoxPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_VMs\ProvisioningPages\TackleBox\TackleBoxViewModel.cs" />
+    <Compile Include="Pages_MVs\ProvisioningPages\TackleBox\TackleBoxModelView.cs" />
     <Compile Include="PlatformInterfaces\IFileHelper.cs" />
     <Compile Include="PlatformInterfaces\IFishOnCurrentLocationService.cs" />
     <Compile Include="PlatformInterfaces\ISQLite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Pages_VMs\ProvisioningPages\WayPoints\WPDetailPage.xaml.cs">
+    <Compile Include="Pages_MVs\ProvisioningPages\WayPoints\WPDetailPage.xaml.cs">
       <DependentUpon>WPDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_VMs\ProvisioningPages\WayPoints\WPProvisoningList.xaml.cs">
+    <Compile Include="Pages_MVs\ProvisioningPages\WayPoints\WPProvisoningList.xaml.cs">
       <DependentUpon>WPProvisoningList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Repositories\AppSettingRepo.cs" />
@@ -109,24 +109,24 @@
     <Compile Include="Services\SpeciesDataService.cs" />
     <Compile Include="Services\WaypointDataService.cs" />
     <Compile Include="Services\WeatherService.cs" />
-    <Compile Include="Pages_VMs\SimpleInputModal\SimpleInputModal.xaml.cs">
+    <Compile Include="Pages_MVs\SimpleInputModal\SimpleInputModal.xaml.cs">
       <DependentUpon>SimpleInputModal.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_VMs\Species\SpeciesListPage.xaml.cs">
+    <Compile Include="Pages_MVs\Species\SpeciesListPage.xaml.cs">
       <DependentUpon>SpeciesListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_VMs\BaseViewModel.cs" />
+    <Compile Include="Pages_MVs\BaseModelView.cs" />
     <Compile Include="Utils\Extensions.cs" />
-    <Compile Include="Pages_VMs\LakesList\LakeListViewModel.cs" />
-    <Compile Include="Pages_VMs\LakeMap\LakeMapPageViewModel.cs" />
-    <Compile Include="Pages_VMs\MainPage\MainPageViewModel.cs" />
-    <Compile Include="Pages_VMs\MyData\MyDataListViewModel.cs" />
-    <Compile Include="Pages_VMs\SimpleInputModal\SimpleInputModalViewModel.cs" />
-    <Compile Include="Pages_VMs\Species\SpeciesPageViewModel.cs" />
-    <Compile Include="Pages_VMs\ProvisioningPages\WayPoints\WayPointProvisioningViewModel.cs" />
+    <Compile Include="Pages_MVs\LakesList\LakeListModelView.cs" />
+    <Compile Include="Pages_MVs\LakeMap\LakeMapPageModelView.cs" />
+    <Compile Include="Pages_MVs\MainPage\MainPageModelView.cs" />
+    <Compile Include="Pages_MVs\MyData\MyDataListModelView.cs" />
+    <Compile Include="Pages_MVs\SimpleInputModal\SimpleInputModalModelView.cs" />
+    <Compile Include="Pages_MVs\Species\SpeciesPageModelView.cs" />
+    <Compile Include="Pages_MVs\ProvisioningPages\WayPoints\WayPointProvisioningModelView.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\MainPage\MainPage.xaml">
+    <EmbeddedResource Include="Pages_MVs\MainPage\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -181,91 +181,91 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\Species\SpeciesListPage.xaml">
+    <EmbeddedResource Include="Pages_MVs\Species\SpeciesListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\LakesList\LakeListPage.xaml">
+    <EmbeddedResource Include="Pages_MVs\LakesList\LakeListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\SimpleInputModal\SimpleInputModal.xaml">
+    <EmbeddedResource Include="Pages_MVs\SimpleInputModal\SimpleInputModal.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\ProvisioningPages\WayPoints\WPDetailPage.xaml">
+    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\WayPoints\WPDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\ProvisioningPages\WayPoints\WPProvisoningList.xaml">
+    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\WayPoints\WPProvisoningList.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\LakeMap\LakeMapMasterDetailPage.xaml">
+    <EmbeddedResource Include="Pages_MVs\LakeMap\LakeMapMasterDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\LakeMap\LakeMapMasterPage.xaml">
+    <EmbeddedResource Include="Pages_MVs\LakeMap\LakeMapMasterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\LakeMap\LakeMapDetailPage.xaml">
+    <EmbeddedResource Include="Pages_MVs\LakeMap\LakeMapDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\MyData\MyDataListPage.xaml">
+    <EmbeddedResource Include="Pages_MVs\MyData\MyDataListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\ProvisioningPages\TackleBox\TackleBoxPage.xaml">
+    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\TackleBox\TackleBoxPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\ProvisioningPages\MyFish\MyFishTabbedPage.xaml">
+    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\MyFish\MyFishTabbedPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\ProvisioningPages\Lakes\LakesListProvisioningPage.xaml">
+    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\Lakes\LakesListProvisioningPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\ProvisioningPages\Species\MySpeciesProvisioningPage.xaml">
+    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\Species\MySpeciesProvisioningPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\ProvisioningPages\MyFish\MyFishBySpecies.xaml">
+    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\MyFish\MyFishBySpecies.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_VMs\ProvisioningPages\MyFish\MyFishByWayPoints.xaml">
+    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\MyFish\MyFishByWayPoints.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

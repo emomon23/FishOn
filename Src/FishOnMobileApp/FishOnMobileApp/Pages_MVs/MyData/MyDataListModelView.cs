@@ -4,24 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using FishOn.Pages_VMs.ProvisioningPages.Lakes;
-using FishOn.Pages_VMs.ProvisioningPages.MyFish;
-using FishOn.Pages_VMs.ProvisioningPages.Species;
-using FishOn.Pages_VMs.ProvisioningPages.TackleBox;
+using FishOn.Pages_MVs.ProvisioningPages.Lakes;
+using FishOn.Pages_MVs.ProvisioningPages.MyFish;
+using FishOn.Pages_MVs.ProvisioningPages.Species;
+using FishOn.Pages_MVs.ProvisioningPages.TackleBox;
 using FishOn.PlatformInterfaces;
 using FishOn.ProvisioningPages.WayPoints;
 using FishOn.Services;
 using FishOn.Utils;
 using Xamarin.Forms;
 
-namespace FishOn.ViewModel
+namespace FishOn.ModelView
 {
-    public class MyDataListViewModel : BaseViewModel
+    public class MyDataListModelView : BaseModelView
     {
         private List<Page> _pages = new List<Page>();
 
-        public MyDataListViewModel(INavigation navigation) : base(navigation) { }
-        public MyDataListViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService) { }
+        public MyDataListModelView(INavigation navigation) : base(navigation) { }
+        public MyDataListModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService) { }
        
         public string Title
         {
@@ -36,7 +36,7 @@ namespace FishOn.ViewModel
 
             if (p != null && p.BindingContext != null)
             {
-                var pageVM = (BaseViewModel) p.BindingContext;
+                var pageVM = (BaseModelView) p.BindingContext;
                 await pageVM.InitializeAsync();
             }
         }
@@ -49,35 +49,35 @@ namespace FishOn.ViewModel
             _pages.Add(new WPProvisoningList()
             {
                 BindingContext =
-                    new WayPointProvisioningViewModel(_navigation, _lakeService, _speciesDataService,
+                    new WayPointProvisioningModelView(_navigation, _lakeService, _speciesDataService,
                         _wayPointDataService, _locationService, _appSettingService)
             });
 
             _pages.Add(new MyFishTabbedPage()
             {
                 BindingContext =
-                  new MyFishViewModel(_navigation, _lakeService, _speciesDataService,
+                  new MyFishModelView(_navigation, _lakeService, _speciesDataService,
                       _wayPointDataService, _locationService, _appSettingService)
             });
             
             _pages.Add(new TackleBoxPage()
             {
                 BindingContext =
-                   new TackleBoxViewModel(_navigation, _lakeService, _speciesDataService,
+                   new TackleBoxModelView(_navigation, _lakeService, _speciesDataService,
                        _wayPointDataService, _locationService, _appSettingService)
             });
 
             _pages.Add(new LakesListProvisioningPage()
             {
                 BindingContext =
-                  new TackleBoxViewModel(_navigation, _lakeService, _speciesDataService,
+                  new TackleBoxModelView(_navigation, _lakeService, _speciesDataService,
                       _wayPointDataService, _locationService, _appSettingService)
             });
 
             _pages.Add(new MySpeciesProvisioningPage()
             {
                 BindingContext =
-                  new TackleBoxViewModel(_navigation, _lakeService, _speciesDataService,
+                  new TackleBoxModelView(_navigation, _lakeService, _speciesDataService,
                       _wayPointDataService, _locationService, _appSettingService)
             });
 

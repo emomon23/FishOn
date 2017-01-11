@@ -7,13 +7,13 @@ using FishOn.Utils;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace FishOn.ViewModel
+namespace FishOn.ModelView
 {
-    public class MainPageViewModel : BaseViewModel
+    public class MainPageModelView : BaseModelView
     {
         private bool _initialzeCalled = false;
-        public MainPageViewModel(INavigation navigation) : base(navigation){}
-        public MainPageViewModel(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService) { }
+        public MainPageModelView(INavigation navigation) : base(navigation){}
+        public MainPageModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService) { }
 
         public async Task Initialize()
         {
@@ -24,7 +24,7 @@ namespace FishOn.ViewModel
                 var lakes = await _lakeService.GetLakesAsync();
                 if (lakes.Count == 0)
                 {
-                    var modalDialogViewModal = new SimpleInputModalViewModel(_navigation,
+                    var modalDialogViewModal = new SimpleInputModalModelView(_navigation,
                         "Tell us some of the lakes you like to fish (eg. Tonka,Big Lake)?");
 
                     await modalDialogViewModal.DisplayModalAsync(async (bool cancelClicked, string commaSeperatedListOfLakeNames) =>
