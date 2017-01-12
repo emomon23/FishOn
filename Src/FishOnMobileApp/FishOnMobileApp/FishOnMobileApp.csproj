@@ -39,7 +39,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\AppSetting.cs" />
-    <Compile Include="Model\ViewModel\SpeciesCaughtViewModel.cs" />
+    <Compile Include="Model\ViewModel\FishOnGroupBySpeciesViewModel.cs" />
+    <Compile Include="Model\ViewModel\FishOnGroupByWayPointViewModel.cs" />
     <Compile Include="Pages_MVs\LakeMap\LakeMapDetailPage.xaml.cs">
       <DependentUpon>LakeMapDetailPage.xaml</DependentUpon>
     </Compile>

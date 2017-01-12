@@ -174,27 +174,5 @@ namespace FishOn.Utils
             }
         }
 
-        public static void AddSpeciesCaught(this List<SpeciesCaughtViewModel> list, Model.FishOn fishCaught)
-        {
-            SpeciesCaughtViewModel speciesCaught = list.SingleOrDefault(s => s.SpeciesName == fishCaught.Species.Name);
-
-            if (speciesCaught == null)
-            {
-                speciesCaught.SpeciesName = fishCaught.Species.Name;
-                list.Add(speciesCaught);
-            }
-
-            int i = 0;
-
-            for (i = 0; i < speciesCaught.FishCaught.Count; i++)
-            {
-                if (speciesCaught.FishCaught[i].DateCaught > fishCaught.DateCaught)
-                {
-                    break;
-                }
-            }
-
-            speciesCaught.FishCaught.Insert(i, fishCaught);
-        }
     }
 }

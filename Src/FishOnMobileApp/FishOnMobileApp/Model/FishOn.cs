@@ -30,6 +30,14 @@ namespace FishOn.Model
        
         [Ignore]
         public virtual FishingLure Lure { get; set; }
+        
+        public string DateCaughtString
+        {
+            get
+            {
+                return DateCaught.ToString("g");
+            }
+        }
 
         [Ignore]
         public virtual WayPoint WayPoint { get; set; }

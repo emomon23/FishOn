@@ -17,6 +17,7 @@ namespace FishOn.Services
 
     public class WayPointDataService : IWayPointDataService
     {
+        private List<WayPoint> _cachedWayPoints = null;
         private IWayPointRepository _wayPointRepository;
         private ILakeRepository _lakeRepository;
         private IWeatherService _weatherService;
@@ -82,25 +83,31 @@ namespace FishOn.Services
 
         public async Task<List<WayPoint>> GetWayPointsAsync()
         {
-            var wayPoints = await _wayPointRepository.GetWayPointsAsync();
-            var lakes = await _lakeRepository.GetLakesAsync();
-            foreach (var wayPoint in wayPoints)
+            if (_cachedWayPoints == null)
             {
-                var lakeMatch = lakes.FirstOrDefault(l => l.LakeId == wayPoint.LakeId);
-                wayPoint.Lake = (Lake)lakeMatch?.Clone<Lake>();
-
-                var fishCaught = await _fishRepository.GetFishCaughtAtWayPointAsync(wayPoint.WayPointId);
-
-                foreach (var fish in fishCaught)
+                var wayPoints = await _wayPointRepository.GetWayPointsAsync();
+                var lakes = await _lakeRepository.GetLakesAsync();
+                foreach (var wayPoint in wayPoints)
                 {
-                    fish.Species = await _speciesRepository.GetSpeciesAsync(fish.SpeciesId);
-                    wayPoint.MergeSpecies(fish.Species);
+                    var lakeMatch = lakes.FirstOrDefault(l => l.LakeId == wayPoint.LakeId);
+                    wayPoint.Lake = (Lake) lakeMatch?.Clone<Lake>();
+
+                    var fishCaught = await _fishRepository.GetFishCaughtAtWayPointAsync(wayPoint.WayPointId);
+
+                    foreach (var fish in fishCaught)
+                    {
+                        fish.Species = await _speciesRepository.GetSpeciesAsync(fish.SpeciesId);
+                        fish.WayPoint = (WayPoint) wayPoint.Clone<WayPoint>();
+                        wayPoint.MergeSpecies(fish.Species);
+                    }
+
+                    wayPoint.FishCaught = fishCaught;
                 }
 
-                wayPoint.FishCaught = fishCaught;
+                _cachedWayPoints = wayPoints;
             }
 
-            return wayPoints;
+            return _cachedWayPoints;
         }
        
         private async Task SaveAsync(WayPoint wayPoint)
@@ -124,6 +131,11 @@ namespace FishOn.Services
             var weatherCondition = fishCaught.WeatherCondition;
             weatherCondition.WeatherConditionId = fishCaught.FishOnId;
             await _weatherRepository.SaveAsync(weatherCondition);
+
+            if (!(_cachedWayPoints.Any(w => w.WayPointId == wayPoint.WayPointId)))
+            {
+                _cachedWayPoints.Add(wayPoint);
+            }
            
         }
 

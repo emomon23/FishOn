@@ -1,7 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:modelView="clr-namespace:FishOn.ModelView;assembly=FishOnMobileApp"
              x:Class="FishOn.Pages_MVs.ProvisioningPages.MyFish.MyFishBySpecies"
              Title="By Species">
- 
+
+  <StackLayout>
+    <ListView x:Name="speciesHeaderListView" 
+              ItemsSource="{Binding FishCaughtBySpecies}" 
+              GroupDisplayBinding="{Binding SpeciesGroupName}"
+              GroupShortNameBinding="{Binding SpeciesGroupShortName}"
+              IsGroupingEnabled="true"
+              HasUnevenRows="true">
+      <ListView.GroupHeaderTemplate>
+        <DataTemplate>
+          <ViewCell Height="25">
+            <StackLayout VerticalOptions="FillAndExpand"
+                         Padding="5"
+                         BackgroundColor="#3498DB">
+              <Label Text="{Binding SpeciesGroupName}" TextColor="White" VerticalOptions="Center"/>
+            </StackLayout>
+          </ViewCell>
+        </DataTemplate>
+      </ListView.GroupHeaderTemplate>
+      
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <ViewCell>
+            <StackLayout Orientation="Horizontal">
+              <Label Text="{Binding WayPoint.Name}"></Label>
+              <Label HorizontalOptions="EndAndExpand" Text="{Binding DateCaughtString}"></Label>
+              
+            </StackLayout>
+          </ViewCell>
+         </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+    
+    <ActivityIndicator IsRunning="{Binding IsBusy}"></ActivityIndicator>
+  </StackLayout>
 </ContentPage>

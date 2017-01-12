@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,9 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
     {
         private List<Page> _pages = new List<Page>();
         private List<WayPoint> _wayPoints;
-        private List<SpeciesCaughtViewModel> _speciesCaught = null;
+     
+        private ObservableCollection<FishOnGroupBySpeciesViewModel> _speciesCaught = null;
+        private ObservableCollection<FishOnGroupByWayPointViewModel> _wayPointFishCaught = null;
 
         public MyFishModelView(INavigation navigation) : base(navigation) { }
         public MyFishModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService) { }
@@ -48,23 +51,29 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
             }
         }
 
-        public List<SpeciesCaughtViewModel> FishCaughtBySpecies
+     
+        public ObservableCollection<FishOnGroupBySpeciesViewModel> FishCaughtBySpecies
         {
             get
             {
                 if (_speciesCaught == null)
                 {
-                    _speciesCaught = new List<SpeciesCaughtViewModel>();
-                    foreach (var wp in _wayPoints)
-                    {
-                        foreach (var fc in wp.FishCaught)
-                        {
-                            _speciesCaught.AddSpeciesCaught(fc);
-                        }
-                    }
+                    _speciesCaught = FishOnGroupBySpeciesViewModel.MapToObservableCollection(_wayPoints);
+                }
+                return _speciesCaught;
+            }
+        }
+
+        public ObservableCollection<FishOnGroupByWayPointViewModel> FishCaughtByWayPoint
+        {
+            get
+            {
+                if (_wayPointFishCaught == null)
+                {
+                    _wayPointFishCaught = FishOnGroupByWayPointViewModel.MapToObservableCollection(_wayPoints);
                 }
 
-                return _speciesCaught;
+                return _wayPointFishCaught;
             }
         }
 
