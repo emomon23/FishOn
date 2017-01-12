@@ -107,7 +107,7 @@ namespace FishOn.ModelView
                     var lake = await _lakeService.GetLakeAsync(wayPoint.LakeId);
                     WayPoint = wayPoint;
                     LakeName = lake?.LakeName;
-                    await ShowDetailPage();
+                    await Naviage_ToWayPointProvisioningDetailPage();
                 });
             }
         }
@@ -120,17 +120,12 @@ namespace FishOn.ModelView
                 {
                     WayPoint = new WayPoint() {Name = ""};
                     LakeName = "";
-                    await ShowDetailPage();
+                    await Naviage_ToWayPointProvisioningDetailPage();
                 });
             }
         }
 
-        private async Task ShowDetailPage()
-        {
-           var detailPage = new WPDetailPage();
-            detailPage.BindingContext = this;
-            await _navigation.PushAsync(detailPage);
-        }
+       
 
 
     }

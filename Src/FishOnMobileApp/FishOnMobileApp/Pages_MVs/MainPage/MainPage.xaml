@@ -5,12 +5,18 @@
              xmlns:local="clr-namespace:FishOnMobileApp"
              x:Class="FishOnMobileApp.MainPage">
 
-   <StackLayout>
-     <Button Text="Fish ON!" Command="{Binding FishOnCommand}" />
-     <Button Text="Find a Spot" Command="{Binding FindMySpotCommand}" />
-     <Button Text="My Data" Command="{Binding MyDataCommand}"></Button>
-     <Button Text="Set Lake / Water Temp" Command="{Binding SetLakeWaterTemp}" />
-     <ActivityIndicator IsRunning="{Binding IsBusy}"></ActivityIndicator>
+   <StackLayout Padding="10, 10, 10, 10">
+     <Frame HorizontalOptions="CenterAndExpand" OutlineColor="Gray">
+        <Image Source="fish_on_logo.png" Aspect="AspectFit"  WidthRequest="140" HeightRequest="140"/>
+     </Frame>
+     
+     <StackLayout VerticalOptions="EndAndExpand">
+       <Button Text="Fish ON!" Command="{Binding FishOnCommand}" />
+       <Button Text="Find a Spot" Command="{Binding FindMySpotCommand}" />
+       <Button Text="My Data" Command="{Binding MyDataCommand}"></Button>
+       <Button Text="Set Lake / Water Temp" Command="{Binding SetLakeWaterTemp}" />
+       <ActivityIndicator IsRunning="{Binding IsBusy}"></ActivityIndicator>
+     </StackLayout>
    </StackLayout>
 
 </ContentPage>

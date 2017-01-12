@@ -22,6 +22,8 @@ namespace FishOn.Model
         [Indexed]
         public int WayPointId { get; set; }
      
+        public string Method { get; set; }
+
         [Indexed]
         public int SpeciesId { get; set; }
 

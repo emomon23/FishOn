@@ -51,6 +51,12 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
             }
         }
 
+        public Model.FishOn EditingFish { get; private set; }
+        public async Task EditFishOnAsync(Model.FishOn fish)
+        {
+            EditingFish = fish;
+            await Navigate_ToFishOnProvisioningPage();
+        }
      
         public ObservableCollection<FishOnGroupBySpeciesViewModel> FishCaughtBySpecies
         {

@@ -75,6 +75,9 @@
     <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishByWayPoints.xaml.cs">
       <DependentUpon>MyFishByWayPoints.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishDetailPage.xaml.cs">
+      <DependentUpon>MyFishDetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishTabbedPage.xaml.cs">
       <DependentUpon>MyFishTabbedPage.xaml</DependentUpon>
     </Compile>
@@ -267,6 +270,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages_MVs\ProvisioningPages\MyFish\MyFishByWayPoints.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\MyFish\MyFishDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

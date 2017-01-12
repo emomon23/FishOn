@@ -16,6 +16,8 @@ namespace FishOn.Model
         public string Color { get; set; }
         public double Size { get; set; }
         public double Weight { get; set; }
+        public string Method { get; set; }
+        public string Note { get; set; }
 
         [Ignore]
         public FishOn FishCaught { get; set; }

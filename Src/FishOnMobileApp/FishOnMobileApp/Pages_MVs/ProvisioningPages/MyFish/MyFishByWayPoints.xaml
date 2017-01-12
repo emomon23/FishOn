@@ -10,7 +10,8 @@
               GroupDisplayBinding="{Binding WayPointName}"
               GroupShortNameBinding="{Binding WayPointNameShortName}"
               IsGroupingEnabled="true"
-              HasUnevenRows="true">
+              HasUnevenRows="true"
+              ItemTapped="FishOnSelectedAsync">
       <ListView.GroupHeaderTemplate>
         <DataTemplate>
           <ViewCell Height="25">

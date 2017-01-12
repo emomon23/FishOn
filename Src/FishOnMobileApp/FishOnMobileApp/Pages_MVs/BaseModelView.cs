@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FishOn.Pages_MVs.LakeMap;
 using FishOn.Pages_MVs.MyData;
+using FishOn.Pages_MVs.ProvisioningPages.MyFish;
 using FishOn.PlatformInterfaces;
 using FishOn.ProvisioningPages.WayPoints;
 using FishOn.Services;
@@ -103,16 +104,7 @@ namespace FishOn.ModelView
             await _navigation.PopToRootAsync(true);
         }
 
-        protected async Task Navigate_To_WayPointProvisoning_MasterDetailPageAsync()
-        {
-            var page = new WPProvisoningList();
-            var viewModel = new WayPointProvisioningModelView(page.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
-            await viewModel.InitializeAsync();
-
-            page.BindingContext = viewModel;
-            await _navigation.PushAsync(page);
-        }
-        
+      
         protected async Task Navigate_ToMyDataButtonsListAsync()
         {
            // Page page = (Page) Activator.CreateInstance(typeof(MyDataListPage));
@@ -120,6 +112,22 @@ namespace FishOn.ModelView
             page.BindingContext =  new MyDataListModelView(page.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
 
             await _navigation.PushAsync(page);
+        }
+
+        protected async Task Naviage_ToWayPointProvisioningDetailPage()
+        {
+            var detailPage = new WPDetailPage();
+            detailPage.BindingContext = this;
+            await _navigation.PushAsync(detailPage);
+        }
+
+        protected async Task Navigate_ToFishOnProvisioningPage()
+        {
+            var detailPage = new MyFishDetailPage()
+            {
+                BindingContext = this
+            };
+            await _navigation.PushAsync(detailPage);
         }
 
         #endregion
