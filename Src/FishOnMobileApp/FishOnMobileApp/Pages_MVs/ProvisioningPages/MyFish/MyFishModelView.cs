@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using FishOn.Model;
 using FishOn.Model.ViewModel;
 using FishOn.PlatformInterfaces;
@@ -51,13 +52,14 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
             }
         }
 
-        public Model.FishOn EditingFish { get; private set; }
+        public Model.FishOn FishCaught { get; private set; }
         public async Task EditFishOnAsync(Model.FishOn fish)
         {
-            EditingFish = fish;
+            FishCaught = fish;
             await Navigate_ToFishOnProvisioningPage();
         }
-     
+
+
         public ObservableCollection<FishOnGroupBySpeciesViewModel> FishCaughtBySpecies
         {
             get
@@ -83,6 +85,128 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
             }
         }
 
+        #region WeatherAccordianNode
+
+        protected int _weatherExpandingHeight = 0;
+        public int WeatherExpandedHeight
+        {
+            get
+            {
+                return _weatherExpandingHeight;
+            }
+            private set
+            {
+                _weatherExpandingHeight = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public ICommand ExpandHideWeatherData
+        {
+            get
+            {
+                return new Command(() =>
+                {
+                    if (WeatherExpanderButtonText == "+")
+                    {
+                        WeatherExpandedHeight = 200;
+                        WeatherExpanderButtonText = "-";
+                     
+                    }
+                    else
+                    {
+                        WeatherExpandedHeight = 0;
+                        WeatherExpanderButtonText = "+";
+                    
+                    }
+                });
+            }
+        }
+
+        protected string _weatherExpanderButtonText = "+";
+        public string WeatherExpanderButtonText
+        {
+            get
+            {
+                return _weatherExpanderButtonText;
+            }
+            private set
+            {
+                _weatherExpanderButtonText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region LureAccordianNode 
+
+        protected int _lureExpandingHeight = 0;
+        public int LureExpandedHeight
+        {
+            get
+            {
+                return _lureExpandingHeight;
+            }
+            private set
+            {
+                _lureExpandingHeight = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand ExpandHideLureData
+        {
+            get
+            {
+                return new Command(() =>
+                {
+                    if (LureExpanderButtonText == "+")
+                    {
+                        LureExpandedHeight = 200;
+                        LureExpanderButtonText = "-";
+                        IsLureExpanded = true;
+                    }
+                    else
+                    {
+                        LureExpandedHeight = 0;
+                        LureExpanderButtonText = "+";
+                        IsLureExpanded = false;
+                    }
+                });
+            }
+        }
+
+        protected string _lureExpanderButtonText = "+";
+        public string LureExpanderButtonText
+        {
+            get
+            {
+                return _lureExpanderButtonText;
+            }
+            private set
+            {
+                _lureExpanderButtonText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isLureExpanded = false;
+        public bool IsLureExpanded
+        {
+            get
+            {
+                return _isLureExpanded;
+            }
+            private set
+            {
+                _isLureExpanded = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        #endregion
     }
 
 }
