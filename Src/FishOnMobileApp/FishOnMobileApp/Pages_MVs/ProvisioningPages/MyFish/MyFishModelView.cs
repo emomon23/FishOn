@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using FishOn.Model;
 using FishOn.Model.ViewModel;
 using FishOn.PlatformInterfaces;
 using FishOn.Services;
-using FishOn.Utils;
 using FishOn.ModelView;
+using FishOn.Pages_MVs.AccordionViewModel;
 using Xamarin.Forms;
 
 namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
@@ -24,7 +20,17 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
         private ObservableCollection<FishOnGroupByWayPointViewModel> _wayPointFishCaught = null;
 
         public MyFishModelView(INavigation navigation) : base(navigation) { }
-        public MyFishModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService) { }
+
+        public MyFishModelView(INavigation navigation, ILakeDataService lakeDataService,
+            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService,
+            IFishOnCurrentLocationService locationService, IAppSettingService appSettingService)
+            : base(
+                navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService
+            )
+        {
+            LureAccordion = new AccordionNodeViewModel("Fishing Lure", 200, Color.Blue, Color.White, Color.Black);
+            WeatherAccordion = new AccordionNodeViewModel("Weather Conditions", 200, Color.Blue, Color.White, Color.Black);
+        }
 
         public string Title
         {
@@ -85,128 +91,9 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
             }
         }
 
-        #region WeatherAccordianNode
 
-        protected int _weatherExpandingHeight = 0;
-        public int WeatherExpandedHeight
-        {
-            get
-            {
-                return _weatherExpandingHeight;
-            }
-            private set
-            {
-                _weatherExpandingHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        
-        public ICommand ExpandHideWeatherData
-        {
-            get
-            {
-                return new Command(() =>
-                {
-                    if (WeatherExpanderButtonText == "+")
-                    {
-                        WeatherExpandedHeight = 200;
-                        WeatherExpanderButtonText = "-";
-                     
-                    }
-                    else
-                    {
-                        WeatherExpandedHeight = 0;
-                        WeatherExpanderButtonText = "+";
-                    
-                    }
-                });
-            }
-        }
-
-        protected string _weatherExpanderButtonText = "+";
-        public string WeatherExpanderButtonText
-        {
-            get
-            {
-                return _weatherExpanderButtonText;
-            }
-            private set
-            {
-                _weatherExpanderButtonText = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region LureAccordianNode 
-
-        protected int _lureExpandingHeight = 0;
-        public int LureExpandedHeight
-        {
-            get
-            {
-                return _lureExpandingHeight;
-            }
-            private set
-            {
-                _lureExpandingHeight = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ICommand ExpandHideLureData
-        {
-            get
-            {
-                return new Command(() =>
-                {
-                    if (LureExpanderButtonText == "+")
-                    {
-                        LureExpandedHeight = 200;
-                        LureExpanderButtonText = "-";
-                        IsLureExpanded = true;
-                    }
-                    else
-                    {
-                        LureExpandedHeight = 0;
-                        LureExpanderButtonText = "+";
-                        IsLureExpanded = false;
-                    }
-                });
-            }
-        }
-
-        protected string _lureExpanderButtonText = "+";
-        public string LureExpanderButtonText
-        {
-            get
-            {
-                return _lureExpanderButtonText;
-            }
-            private set
-            {
-                _lureExpanderButtonText = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _isLureExpanded = false;
-        public bool IsLureExpanded
-        {
-            get
-            {
-                return _isLureExpanded;
-            }
-            private set
-            {
-                _isLureExpanded = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-        #endregion
-    }
+        public AccordionNodeViewModel LureAccordion { get; private set; }
+        public AccordionNodeViewModel WeatherAccordion { get; private set; }
+   }
 
 }
