@@ -28,7 +28,7 @@ namespace FishOn.ModelView
                         "Tell us some of the lakes you like to fish (eg. Tonka,Big Lake)?");
 
                     await modalDialogViewModal.DisplayModalAsync(
-                        async (bool cancelClicked, string commaSeperatedListOfLakeNames) =>
+                        async (bool cancelClicked, string commaSeperatedListOfLakeNames, bool dontMatter) =>
                         {
                             if (!cancelClicked && commaSeperatedListOfLakeNames.IsNotNullOrEmpty())
                             {

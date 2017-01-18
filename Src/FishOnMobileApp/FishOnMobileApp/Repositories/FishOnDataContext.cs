@@ -35,6 +35,7 @@ namespace FishOn.Repositories
         Task<List<FishingLure>>  GetLuresAsync();
         Task<FishingLure> GetLureAsync(int fishingLureId);
         Task DeleteFishCaughtAsync(Model.FishOn fishCaught);
+        Task DeleteLakeAsync(Lake lake);
     }
 
     public class FishOnDataContext : IFishOnDataContext
@@ -119,8 +120,20 @@ namespace FishOn.Repositories
         {
             foreach (var lake in newLakes)
             {
-                var result = await _db.InsertAsync(lake);
+                if (lake.LakeId == 0)
+                {
+                    await _db.InsertAsync(lake);
+                }
+                else
+                {
+                    await _db.UpdateAsync(lake);
+                }
             }
+        }
+
+        public async Task DeleteLakeAsync(Lake lake)
+        {
+            await _db.DeleteAsync(lake);
         }
 
         public async Task<Lake> GetLakeAsync(string lakeName)

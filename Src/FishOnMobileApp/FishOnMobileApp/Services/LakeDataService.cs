@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FishOn.Model;
 using FishOn.Repositories;
+using FishOn.Utils;
 
 namespace FishOn.Services
 {
@@ -12,7 +13,7 @@ namespace FishOn.Services
         Task<List<Lake>> GetLakesAsync();
         Task<Lake> GetLakeAsync(int lakeId);
         Task SaveAsync(Lake lake);
-        Task DeleteAsync(int lakeId);
+        Task DeleteAsync(Lake lake);
         Task<int> FindClosestLakeIdAsync(double latitude, double longitude);
         Task<List<Lake>> CreateNewLakesAsync(string[] lakeNames);
         Task<Lake> GetOrCreateLakeAsync(string lakeName);
@@ -54,7 +55,7 @@ namespace FishOn.Services
 
             foreach (string rawLakeName in lakeNames)
             {
-                var lakeName = rawLakeName.Replace("Lake", "").Replace("lake", "").Trim();
+                var lakeName = rawLakeName.Replace("Lake", "").Replace("lake", "").Trim().LeadWithUpperCase();
 
                 //Don't create duplicate lake names
                 if (!currentLakes.Any(l => l.LakeName.Equals(lakeName, StringComparison.CurrentCultureIgnoreCase)) && lakeNames.Count(l => l.Equals(lakeName, StringComparison.CurrentCultureIgnoreCase)) <2 )
@@ -75,12 +76,12 @@ namespace FishOn.Services
 
         public async Task SaveAsync(Lake lake)
         {
-
+            await _lakeRepo.SaveAsync(new List<Lake>() {lake});
         }
 
-        public async Task DeleteAsync(int lakeId)
+        public async Task DeleteAsync(Lake lake)
         {
-
+            await _lakeRepo.DeleteAsync(lake);
         }
     }
 }

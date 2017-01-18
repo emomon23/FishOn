@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using FishOn.Model;
 using FishOn.Pages_MVs.LakeMap;
 using FishOn.Pages_MVs.MyData;
+using FishOn.Pages_MVs.ProvisioningPages.Lakes;
 using FishOn.Pages_MVs.ProvisioningPages.MyFish;
 using FishOn.PlatformInterfaces;
 using FishOn.ProvisioningPages.WayPoints;
@@ -91,6 +92,7 @@ namespace FishOn.ModelView
             await _navigation.PushAsync(lakesPage);
         }
 
+       
         protected async Task Navigate_ToSpeciesListAsync()
         {
             var speciesPage = new SpeciesListPage();

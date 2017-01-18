@@ -67,6 +67,7 @@
     <Compile Include="Pages_MVs\MyData\MyDataListPage.xaml.cs">
       <DependentUpon>MyDataListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages_MVs\ProvisioningPages\Lakes\LakeListProvisioningModelView.cs" />
     <Compile Include="Pages_MVs\ProvisioningPages\Lakes\LakesListProvisioningPage.xaml.cs">
       <DependentUpon>LakesListProvisioningPage.xaml</DependentUpon>
     </Compile>

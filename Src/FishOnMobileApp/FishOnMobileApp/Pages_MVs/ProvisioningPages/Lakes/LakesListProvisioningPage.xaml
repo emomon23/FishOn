@@ -1,7 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:modelView="clr-namespace:FishOn.ModelView;assembly=FishOnMobileApp"
              x:Class="FishOn.Pages_MVs.ProvisioningPages.Lakes.LakesListProvisioningPage"
              Title="Lakes">
-  <Label Text="{Binding MainText}" VerticalOptions="Center" HorizontalOptions="Center" />
+  
+  
+  <StackLayout>
+
+    <StackLayout BackgroundColor="Blue" Orientation="Horizontal" HeightRequest="40">
+      <Label Text="Lakes" FontSize="25" TextColor="White" />
+      <Button Text="Add Lakes" HorizontalOptions="EndAndExpand" Command="{Binding AddLakesCommand}"></Button>
+    </StackLayout>
+    
+     <ListView x:Name="lakeListView" ItemsSource="{Binding LakeList}" RowHeight="40">
+       <ListView.ItemTemplate>
+         <DataTemplate>
+           <ViewCell>
+             <StackLayout>
+               <StackLayout.GestureRecognizers>
+                 <TapGestureRecognizer
+                    Command="{Binding Path=BindingContext.EditLakeCommand, 
+                                         Source={modelView:ElementSource lakeListView}}"
+                     CommandParameter="{Binding}" />
+               </StackLayout.GestureRecognizers>
+               
+                <Label Text="{Binding LakeName}" FontSize="24"/>
+             </StackLayout>
+           </ViewCell>
+         </DataTemplate>
+       </ListView.ItemTemplate>
+     </ListView>
+  </StackLayout>
 </ContentPage>

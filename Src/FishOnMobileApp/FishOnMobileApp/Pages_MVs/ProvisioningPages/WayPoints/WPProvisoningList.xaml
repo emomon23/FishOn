@@ -17,15 +17,14 @@
           <ViewCell>
             <StackLayout Margin="5,5">
               <StackLayout Orientation="Horizontal">
-                  <Label Text="{Binding Name}" FontSize="24">
-                    <Label.GestureRecognizers>
-                      <TapGestureRecognizer
-                        Command="{Binding Path=BindingContext.EditWayPoint, 
+                 <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer
+                       Command="{Binding Path=BindingContext.EditWayPoint, 
                                          Source={viewModel:ElementSource wayPointListView}}"
-                        CommandParameter="{Binding}">
-                      </TapGestureRecognizer>
-                    </Label.GestureRecognizers>
-                  </Label>
+                        CommandParameter="{Binding}" />
+                 </StackLayout.GestureRecognizers>
+                
+                  <Label Text="{Binding Name}" FontSize="24"/>
               
                   <Label HorizontalOptions="EndAndExpand" Text="{Binding DateFirstCreated}"></Label>    
               </StackLayout>

@@ -10,7 +10,7 @@ namespace FishOn.Repositories
         Task<Lake> GetLakeAsync(string lakeName);
         Task<Lake> GetLakeAsync(int lakeId);
         Task SaveAsync(List<Lake> lake);
-        Task DeleteAsync(int lakeId);
+        Task DeleteAsync(Lake lake);
     }
 
     public class LakeRepository : BaseRepository, ILakeRepository
@@ -45,9 +45,10 @@ namespace FishOn.Repositories
             await db.SaveNewLakesAsync(lakes);
         }
 
-        public async Task DeleteAsync(int lakeId)
+        public async Task DeleteAsync(Lake lake)
         {
-            
+            var db = await GetDB();
+            await db.DeleteLakeAsync(lake);
         }
     }
 }

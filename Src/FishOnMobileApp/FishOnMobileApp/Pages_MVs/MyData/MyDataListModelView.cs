@@ -70,7 +70,7 @@ namespace FishOn.ModelView
             _pages.Add(new LakesListProvisioningPage()
             {
                 BindingContext =
-                  new TackleBoxModelView(_navigation, _lakeService, _speciesDataService,
+                  new LakeListProvisioningModelView(_navigation, _lakeService, _speciesDataService,
                       _wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
             });
 

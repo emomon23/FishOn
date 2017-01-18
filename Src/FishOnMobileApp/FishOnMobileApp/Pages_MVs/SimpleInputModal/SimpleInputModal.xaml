@@ -6,6 +6,7 @@
     <Label x:Name="lblCaption" Text="{Binding CaptionText}"></Label>
     <Entry x:Name="txtValue" Text="{Binding InputBoxValue}"></Entry>
     <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+       <Button Text="Delete" Command="{Binding DeleteClickCommand}" IsVisible="{Binding ShowDeleteButton}"></Button>
        <Button Text="{Binding CancelButtonText}" Command="{Binding CancelClickCommand}"></Button>
        <Button Text ="{Binding OkButtonText}" Command="{Binding OkClickCommand}"></Button>
     </StackLayout>

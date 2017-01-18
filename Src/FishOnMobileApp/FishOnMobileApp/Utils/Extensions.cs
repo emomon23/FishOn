@@ -105,6 +105,23 @@ namespace FishOn.Utils
             return !string.IsNullOrEmpty(str);
         }
 
+        public static string LeadWithUpperCase(this string str)
+        {
+            if (str.IsNullOrEmpty())
+            {
+                return str;
+            }
+
+            if (str.Length == 1)
+            {
+                return str.ToUpper();
+            }
+
+            var result = $"{str.Substring(0, 1).ToUpper()}{str.Substring(1)}";
+
+            return result;
+        }
+
         public static bool IsDate(this string str)
         {
             DateTime d;

@@ -3,7 +3,7 @@
             xmlns:wayPoints="clr-namespace:FishOn.ProvisioningPages.WayPoints;assembly=FishOnMobileApp"
             xmlns:tackleBox="clr-namespace:FishOn.Pages_MVs.ProvisioningPages.TackleBox;assembly=FishOnMobileApp"
             x:Class="FishOn.Pages_MVs.ProvisioningPages.MyFish.MyFishTabbedPage"
-            Title="{Binding Title}"
+            Title="My Fish"
             >
 
 </TabbedPage>

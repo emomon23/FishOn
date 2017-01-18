@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:modelView="clr-namespace:FishOn.ModelView;assembly=FishOnMobileApp"
-             x:Class="FishOn.Pages_MVs.ProvisioningPages.MyFish.MyFishDetailPage">
+             x:Class="FishOn.Pages_MVs.ProvisioningPages.MyFish.MyFishDetailPage"
+             Title="My Fish Caught">
 
   
   <ScrollView VerticalOptions="FillAndExpand">
