@@ -10,21 +10,29 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
 {
     public partial class MyFishBySpecies : ContentPage
     {
+        private MyFishModelView _modelView = null;
+
         public MyFishBySpecies()
         {
             InitializeComponent();
         }
 
-        protected async void FishOnSelectedAsync(Object sender, ItemTappedEventArgs e)
+        protected override async void OnAppearing()
         {
             if (BindingContext != null)
             {
-                var modelView = (MyFishModelView) BindingContext;
-                var fish = (Model.FishOn) (e.Item);
-
-                await modelView.EditFishOnAsync(fish);
-
+                _modelView = (MyFishModelView) BindingContext;
             }
+
+            speciesHeaderListView.ItemsSource = null;
+            speciesHeaderListView.ItemsSource = _modelView.FishCaughtBySpecies;
+        }
+
+        protected async void FishOnSelectedAsync(Object sender, ItemTappedEventArgs e)
+        {
+           
+                var fish = (Model.FishOn) (e.Item);
+                await _modelView.EditFishOnAsync(fish);
         }
     }
 }

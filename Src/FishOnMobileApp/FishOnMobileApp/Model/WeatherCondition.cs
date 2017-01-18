@@ -20,5 +20,10 @@ namespace FishOn.Model
         public string Moon_Label { get; set; }
         public double Moon_Age { get; set; }
         public int Moon_IlluminationPercent { get; set; }
+
+        public string MoonSummary
+        {
+            get { return $"{Moon_Label} ({Moon_IlluminationPercent}%) full moon"; }
+        }
     }
 }

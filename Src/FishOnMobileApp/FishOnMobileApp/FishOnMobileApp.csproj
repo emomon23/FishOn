@@ -107,9 +107,11 @@
     <Compile Include="Repositories\FishOnDataContext.cs" />
     <Compile Include="Repositories\LakeRepository.cs" />
     <Compile Include="Repositories\SpeciesRepository.cs" />
+    <Compile Include="Repositories\TestDataSeeder.cs" />
     <Compile Include="Repositories\WayPointRepository.cs" />
     <Compile Include="Repositories\WeatherRepository.cs" />
     <Compile Include="Services\AppSettingService.cs" />
+    <Compile Include="Services\FishCaughtDataService.cs" />
     <Compile Include="Services\LakeDataService.cs" />
     <Compile Include="Services\SpeciesDataService.cs" />
     <Compile Include="Services\WaypointDataService.cs" />

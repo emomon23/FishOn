@@ -105,6 +105,22 @@ namespace FishOn.Utils
             return !string.IsNullOrEmpty(str);
         }
 
+        public static bool IsDate(this string str)
+        {
+            DateTime d;
+
+            return DateTime.TryParse(str, out d);
+        }
+
+        public static DateTime ToDate(this string str)
+        {
+            DateTime result;
+
+            DateTime.TryParse(str, out result);
+            return result;
+        }
+
+
         public static void MoveUp(this List<Species> species, Species speciesToMove)
         {
             int index = FindIndex(species, speciesToMove);
@@ -114,6 +130,20 @@ namespace FishOn.Utils
                 speciesToMove.DisplayOrder = species[index - 1].DisplayOrder;
                 species[index - 1].DisplayOrder = temp;
             }
+        }
+
+        public static void MoveFishCaughtToDifferentWayPoint(this List<WayPoint> originalList, Model.FishOn fishCaught)
+        {
+            var originalFish = originalList.SelectMany(w => w.FishCaught).SingleOrDefault(f => f.FishOnId == fishCaught.FishOnId);
+            if (originalFish != null)
+            {
+                var originalWayPointId = originalFish.OriginalWayPointId;
+                var originalWayPoint = originalList.SingleOrDefault(w => w.WayPointId == originalWayPointId);
+                originalWayPoint.FishCaught.Remove(originalFish);
+            }
+
+            var movedToWayPoint = originalList.SingleOrDefault(w => w.WayPointId == fishCaught.WayPointId);
+            movedToWayPoint.FishCaught.Add(fishCaught);
         }
 
         public static void MoveDown(this List<Species> species, Species speciesToMove)

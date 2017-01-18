@@ -30,11 +30,5 @@
      <Label Text="Lake"></Label>
      <Entry HorizontalOptions="FillAndExpand" Text="{Binding LakeName}"></Entry>
    </StackLayout>
-   
-   <StackLayout Orientation="Horizontal">
-     <Button Text="Cancel" Command="{Binding CancelWayPointAddEditCommand}"></Button>
-     <Button Text="Delete" Command="{Binding DeleteWayPointCommand}"></Button>
-     <Button HorizontalOptions="EndAndExpand" Text="Save" Command="{Binding SaveWayPointCommand}"></Button>
-   </StackLayout>
  </StackLayout>
 </ContentPage>

@@ -13,8 +13,8 @@ namespace FishOn.Pages_MVs.ProvisioningPages.TackleBox
     public class TackleBoxModelView : BaseModelView
     {
         public TackleBoxModelView(INavigation navigation, ILakeDataService lakeDataService,
-           ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService)
-            : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService){ }
+           ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService)
+            : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService){ }
 
     }
 }

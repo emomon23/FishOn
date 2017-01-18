@@ -47,7 +47,7 @@ namespace FishOn.Model
             {
                 DateCaught = DateTime.Now.AddMinutes(-5),
                 SpeciesId = speciesCaught.SpeciesId,
-                WaterTemp = SessionData.CurrentWaterTemp,
+                WaterTemp = SessionData.CurrentWaterTemp.ToString(),
                 WeatherCondition = weatherCondition,
                 Species = speciesCaught
             };

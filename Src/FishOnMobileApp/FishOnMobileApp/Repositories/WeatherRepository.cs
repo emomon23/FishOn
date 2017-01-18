@@ -14,6 +14,10 @@ namespace FishOn.Repositories
 
         public async Task SaveAsync(WeatherCondition weatherCondition)
         {
+            if (weatherCondition == null)
+            {
+                return;
+            }
             var db = await GetDB();
             await db.SaveWeatherConditionAsync(weatherCondition);
         }

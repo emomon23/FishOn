@@ -21,7 +21,7 @@ namespace FishOn.ModelView
         private List<Page> _pages = new List<Page>();
 
         public MyDataListModelView(INavigation navigation) : base(navigation) { }
-        public MyDataListModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService) { }
+        public MyDataListModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService) { }
        
         public string Title
         {
@@ -50,35 +50,35 @@ namespace FishOn.ModelView
             {
                 BindingContext =
                     new WayPointProvisioningModelView(_navigation, _lakeService, _speciesDataService,
-                        _wayPointDataService, _locationService, _appSettingService)
+                        _wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
             });
 
             _pages.Add(new MyFishTabbedPage()
             {
                 BindingContext =
                   new MyFishModelView(_navigation, _lakeService, _speciesDataService,
-                      _wayPointDataService, _locationService, _appSettingService)
+                      _wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
             });
             
             _pages.Add(new TackleBoxPage()
             {
                 BindingContext =
                    new TackleBoxModelView(_navigation, _lakeService, _speciesDataService,
-                       _wayPointDataService, _locationService, _appSettingService)
+                       _wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
             });
 
             _pages.Add(new LakesListProvisioningPage()
             {
                 BindingContext =
                   new TackleBoxModelView(_navigation, _lakeService, _speciesDataService,
-                      _wayPointDataService, _locationService, _appSettingService)
+                      _wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
             });
 
             _pages.Add(new MySpeciesProvisioningPage()
             {
                 BindingContext =
                   new TackleBoxModelView(_navigation, _lakeService, _speciesDataService,
-                      _wayPointDataService, _locationService, _appSettingService)
+                      _wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
             });
 
 

@@ -13,9 +13,9 @@ namespace FishOn.ModelView
     {
         private bool _initialzeCalled = false;
         public MainPageModelView(INavigation navigation) : base(navigation){}
-        public MainPageModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService) { }
+        public MainPageModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService) { }
 
-        public async Task Initialize()
+        public override async Task InitializeAsync()
         {
             if (!_initialzeCalled)
             {
@@ -27,13 +27,19 @@ namespace FishOn.ModelView
                     var modalDialogViewModal = new SimpleInputModalModelView(_navigation,
                         "Tell us some of the lakes you like to fish (eg. Tonka,Big Lake)?");
 
-                    await modalDialogViewModal.DisplayModalAsync(async (bool cancelClicked, string commaSeperatedListOfLakeNames) =>
+                    await modalDialogViewModal.DisplayModalAsync(
+                        async (bool cancelClicked, string commaSeperatedListOfLakeNames) =>
                         {
                             if (!cancelClicked && commaSeperatedListOfLakeNames.IsNotNullOrEmpty())
                             {
                                 await _lakeService.CreateNewLakesAsync(commaSeperatedListOfLakeNames.Split(','));
                             }
                         });
+                }
+                else
+                {
+                    //no await here, just get them cached in the background.
+                    _wayPointDataService.GetWayPointsAsync();
                 }
             }
 

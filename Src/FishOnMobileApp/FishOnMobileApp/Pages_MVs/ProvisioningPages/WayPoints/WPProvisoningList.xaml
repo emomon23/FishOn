@@ -4,19 +4,20 @@
              xmlns:viewModel="clr-namespace:FishOn.ModelView;assembly=FishOnMobileApp"
              x:Class="FishOn.ProvisioningPages.WayPoints.WPProvisoningList"
              Title="Way Points">
-  <StackLayout Padding="5,0,5,0">
-    <StackLayout Orientation="Horizontal">
-      <Label Text="Way Points"></Label>
-      <Button Text="Add WP" HorizontalOptions="EndAndExpand" Command="{Binding AddWayPoint}"></Button>
-    </StackLayout>
 
-    <ListView x:Name="wayPointListView" ItemsSource="{Binding WayPointList}" SelectedItem="{Binding WayPointSelected}"  >
+  <StackLayout Orientation="Horizontal" BackgroundColor="Blue" HeightRequest="40">
+    <Label Text="Way Points" FontSize="24"></Label>
+    <Button Text="Add WP" HorizontalOptions="EndAndExpand" Command="{Binding AddWayPoint}"></Button>
+  </StackLayout>
+  
+  <StackLayout Padding="5,0,5,0">
+    <ListView x:Name="wayPointListView" ItemsSource="{Binding WayPointList}" RowHeight="80" >
       <ListView.ItemTemplate>
         <DataTemplate>
-          <ViewCell Height="500">
-            <StackLayout>
+          <ViewCell>
+            <StackLayout Margin="5,5">
               <StackLayout Orientation="Horizontal">
-                  <Label Text="{Binding Name}">
+                  <Label Text="{Binding Name}" FontSize="24">
                     <Label.GestureRecognizers>
                       <TapGestureRecognizer
                         Command="{Binding Path=BindingContext.EditWayPoint, 
@@ -28,7 +29,7 @@
               
                   <Label HorizontalOptions="EndAndExpand" Text="{Binding DateFirstCreated}"></Label>    
               </StackLayout>
-              <Label Text="{Binding Lake.LakeName}" ></Label>
+              <Label  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Text="{Binding Lake.LakeName}" FontSize="18" ></Label>
             </StackLayout>
           </ViewCell>
         </DataTemplate>

@@ -5,12 +5,14 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using FishOn.Model;
 using FishOn.Pages_MVs.LakeMap;
 using FishOn.Pages_MVs.MyData;
 using FishOn.Pages_MVs.ProvisioningPages.MyFish;
 using FishOn.PlatformInterfaces;
 using FishOn.ProvisioningPages.WayPoints;
 using FishOn.Services;
+using FishOnMobileApp;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -24,6 +26,7 @@ namespace FishOn.ModelView
         protected readonly INavigation _navigation;
         protected readonly IFishOnCurrentLocationService _locationService;
         protected readonly IAppSettingService _appSettingService;
+        protected readonly IFishCaughtDataService _fishOnDataService;
 
         private bool _isBusy = false;
 
@@ -37,9 +40,10 @@ namespace FishOn.ModelView
             _speciesDataService = new SpeciesDataService();
             _locationService = DependencyService.Get<IFishOnCurrentLocationService>();
             _appSettingService = new AppSettingService();
+            _fishOnDataService = new FishCaughtDataService();
         }
 
-        public BaseModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService)
+        public BaseModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishOnDataService)
         {
             _navigation = navigation;
             _lakeService = lakeDataService;
@@ -47,6 +51,7 @@ namespace FishOn.ModelView
             _wayPointDataService = wayPointDataService;
             _locationService = locationService;
             _appSettingService = appSettingService;
+            _fishOnDataService = fishOnDataService;
         }
 
         public bool IsBusy
@@ -57,6 +62,14 @@ namespace FishOn.ModelView
                 _isBusy = value;
                 OnPropertyChanged();
             }
+        }
+
+        protected async Task<bool> AreYouSureAsync(string prompt)
+        {
+            var answer =  await App.Current.MainPage.DisplayAlert("Are you sure?",
+                       prompt, "Yes", "No");
+
+            return answer;
         }
 
         public virtual async Task InitializeAsync() { }
@@ -71,7 +84,7 @@ namespace FishOn.ModelView
         protected async Task Navigate_ToLakeListAsync()
         {
             var lakesPage = new LakeListPage();
-            var viewModel = new LakeListModelView(lakesPage.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
+            var viewModel = new LakeListModelView(lakesPage.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService, _fishOnDataService);
             await viewModel.Initialize();
             lakesPage.BindingContext = viewModel;
 
@@ -81,7 +94,7 @@ namespace FishOn.ModelView
         protected async Task Navigate_ToSpeciesListAsync()
         {
             var speciesPage = new SpeciesListPage();
-            var viewModel =  new SpeciesPageModelView(speciesPage.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
+            var viewModel =  new SpeciesPageModelView(speciesPage.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService, _fishOnDataService);
             await viewModel.Initialize();
             speciesPage.BindingContext = viewModel;
 
@@ -91,7 +104,7 @@ namespace FishOn.ModelView
         protected async Task Naviage_ToLakeMapAsync()
         {
             var lakeMapPage = new LakeMapMasterDetailPage();
-            var viewModel = new LakeMapPageModelView(lakeMapPage.Navigation, lakeMapPage.WayPointsMap, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
+            var viewModel = new LakeMapPageModelView(lakeMapPage.Navigation, lakeMapPage.WayPointsMap, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService, _fishOnDataService);
             await viewModel.InitializeAsync();
             lakeMapPage.BindingContext = viewModel;
 
@@ -99,7 +112,7 @@ namespace FishOn.ModelView
             
         }
 
-        protected async Task Navigate_BackToLandingPageAsync()
+        protected async Task Navigate_BackToLandingPageAsync(string displayMessage = null)
         {
             await _navigation.PopToRootAsync(true);
         }
@@ -109,7 +122,7 @@ namespace FishOn.ModelView
         {
            // Page page = (Page) Activator.CreateInstance(typeof(MyDataListPage));
             var page = new MyDataListPage();
-            page.BindingContext =  new MyDataListModelView(page.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService);
+            page.BindingContext =  new MyDataListModelView(page.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService, _fishOnDataService);
 
             await _navigation.PushAsync(page);
         }

@@ -14,13 +14,15 @@ namespace FishOnMobileApp
         {
             InitializeComponent();
             _pageViewModel = new MainPageModelView(this.Navigation);
+          
+
             BindingContext = _pageViewModel;
             
         }
 
         protected override async void OnAppearing()
         {
-            await _pageViewModel.Initialize();
+            await _pageViewModel.InitializeAsync();
        }
 
     }

@@ -5,142 +5,177 @@
              x:Class="FishOn.Pages_MVs.ProvisioningPages.MyFish.MyFishDetailPage">
 
   
-  <StackLayout>
+  <ScrollView VerticalOptions="FillAndExpand">
+    <StackLayout HeightRequest="1000" VerticalOptions="FillAndExpand">
 
-      <StackLayout>
-          <StackLayout Orientation="Horizontal">
-                <Label Text="Species"></Label>
-                <Picker x:Name="SpeciesPicker"
-                  VerticalOptions="CenterAndExpand"
-                  SelectedIndex="{Binding SelectedSpeciesIndex}"
-                  HorizontalOptions="FillAndExpand"/>
-          </StackLayout>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal">
+                  <Label Text="Species"></Label>
+                  <Picker x:Name="SpeciesPicker"
+                    VerticalOptions="CenterAndExpand"
+                    SelectedIndex="{Binding SpeciesPickerSelectedIndex, Mode=TwoWay}"
+                    HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
   
-          <StackLayout Orientation="Horizontal">
-            <Label Text="Date Caught"></Label>
-          </StackLayout>
+            <StackLayout Orientation="Horizontal">
+              <Label Text="Date Caught"></Label>
+              <Entry Text="{Binding FishCaught.DateTimeCaughtString}"></Entry>
+            </StackLayout>
+ 
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Way Point"></Label>
+                <Picker x:Name="WayPointPicker"
+                         VerticalOptions="CenterAndExpand"
+                         HorizontalOptions="FillAndExpand"
+                         SelectedIndex="{Binding WayPointPickerSelectedIndex, Mode=TwoWay}"/>
+            </StackLayout>
 
-         <StackLayout Orientation="Horizontal">
-          <Label Text="Notes"></Label>
+        
+           <StackLayout Orientation="Horizontal">
+             <Label Text="Method"></Label>
+             <Entry HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.Method, Mode=TwoWay}"/>
+           </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Notes"></Label>
+                <Entry HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.Note, Mode=TwoWay}"/>
+            </StackLayout>
+
         </StackLayout>
 
+      <!-- Lure Accordian Node -->
+      <StackLayout  BackgroundColor="{Binding LureAccordion.HeaderBackGroundColor}" Margin="0, 30, 0, 0">
+
+        <BoxView HeightRequest="1" Color="{Binding LureAccordion.LineColor}"  HorizontalOptions="FillAndExpand"></BoxView>
+
+        <!-- Accordian Node Header -->
+        <!-- Padding: Left, Top, Right, Buttom -->
+        <StackLayout Orientation="Horizontal" Padding="5, 10,10,10">
+          <StackLayout.GestureRecognizers>
+            <TapGestureRecognizer
+               Command="{Binding LureAccordion.ExpandContractAccordion}">
+            </TapGestureRecognizer>
+          </StackLayout.GestureRecognizers>
+          <Label TextColor="{Binding LureAccordion.HeaderTextColor}" Text="{Binding LureAccordion.HeaderText}" />
+          <Label TextColor="{Binding LureAccordion.HeaderTextColor}"  HorizontalOptions="EndAndExpand" Text="{Binding LureAccordion.IconText}" />
+        </StackLayout>
+
+        <BoxView HeightRequest="1" Color="{Binding LureAccordion.LineColor}" HorizontalOptions="FillAndExpand"></BoxView>
       </StackLayout>
 
-    <!-- Lure Accordian Node -->
-    <StackLayout  BackgroundColor="{Binding LureAccordion.HeaderBackGroundColor}" Margin="0, 30, 0, 0">
 
-      <BoxView HeightRequest="1" Color="{Binding LureAccordion.LineColor}"  HorizontalOptions="FillAndExpand"></BoxView>
+      <!-- ********************************************************
+                                  CONTENT: Lure
+               ******************************************************** -->
+         <StackLayout HeightRequest="{Binding LureAccordion.ContentHeight}" IsVisible="{Binding LureAccordion.IsExpanded}">
 
-      <!-- Accordian Node Header -->
-      <!-- Padding: Left, Top, Right, Buttom -->
-      <StackLayout Orientation="Horizontal" Padding="5, 10,10,10">
-        <StackLayout.GestureRecognizers>
-          <TapGestureRecognizer
-             Command="{Binding LureAccordion.ExpandContractAccordion}">
-          </TapGestureRecognizer>
-        </StackLayout.GestureRecognizers>
-        <Label TextColor="{Binding LureAccordion.HeaderTextColor}" Text="{Binding LureAccordion.HeaderText}" />
-        <Label TextColor="{Binding LureAccordion.HeaderTextColor}"  HorizontalOptions="EndAndExpand" Text="{Binding LureAccordion.IconText}" />
-      </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Lure" />
+                  <Picker x:Name="LurePicker"
+                    VerticalOptions="CenterAndExpand"
+                    SelectedIndex="{Binding LurePickerSelectedIndex, Mode=TwoWay}"
+                    HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
+           
+           <StackLayout IsVisible="{Binding LureAccordion.SubContentIsVisible}">
+               <StackLayout Orientation="Horizontal">
+                    <Label Text="Lure Name" />
+                    <Entry HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.Lure.Name, Mode=TwoWay}"  />
+               </StackLayout>
 
-      <BoxView HeightRequest="1" Color="{Binding LureAccordion.LineColor}" HorizontalOptions="FillAndExpand"></BoxView>
-    </StackLayout>
+               <StackLayout Orientation="Horizontal">
+                  <Label Text="Color" />
+                 <Entry  HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.Lure.Color, Mode=TwoWay}"></Entry>
+               </StackLayout>
 
+               <StackLayout Orientation="Horizontal">
+                  <Label Text="Size" />
+                 <Entry HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.Lure.Size, Mode=TwoWay}"></Entry>
+               </StackLayout>
 
-    <!-- ********************************************************
-                                CONTENT: Lure
-             ******************************************************** -->
-       <StackLayout HeightRequest="{Binding LureAccordion.ContentHeight}" IsVisible="{Binding LureAccordion.IsExpanded}">
+               <StackLayout Orientation="Horizontal">
+                  <Label Text="Weight" />
+                 <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding FishCaught.Lure.Weight, Mode=TwoWay}"></Entry>
+               </StackLayout>
 
-         <StackLayout Orientation="Horizontal">
-              <Label Text="Name"></Label>
-         </StackLayout>
-
-         <StackLayout Orientation="Horizontal">
-           <Label Text="Color"></Label>
-         </StackLayout>
-
-         <StackLayout Orientation="Horizontal">
-           <Label Text="Size"></Label>
-         </StackLayout>
-
-         <StackLayout Orientation="Horizontal">
-           <Label Text="Weight"></Label>
-         </StackLayout>
-
-         <StackLayout Orientation="Horizontal">
-           <Label Text="Method Used"></Label>
-         </StackLayout>
-
-         <StackLayout Orientation="Horizontal">
-           <Label Text="Lure Note"></Label>
-         </StackLayout>
+               <StackLayout Orientation="Horizontal">
+                 <Label Text="Note" />
+                 <Entry HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.Lure.Note, Mode=TwoWay}"></Entry>
+               </StackLayout>
        
-      </StackLayout>
-
-
-    <!-- Weather Accordian Node -->
-    <StackLayout  BackgroundColor="{Binding WeatherAccordion.HeaderBackGroundColor}">
-      <BoxView HeightRequest="1" Color="{Binding WeatherAccordion.LineColor}"  HorizontalOptions="FillAndExpand"></BoxView>
-
-      <!-- Accordian Node Header -->
-      <StackLayout Orientation="Horizontal" Padding="5,10,10, 10">
-        <StackLayout.GestureRecognizers>
-          <TapGestureRecognizer
-             Command="{Binding WeatherAccordion.ExpandContractAccordion}">
-          </TapGestureRecognizer>
-        </StackLayout.GestureRecognizers>
-        <Label TextColor="{Binding WeatherAccordion.HeaderTextColor}" Text="{Binding WeatherAccordion.HeaderText}" />
-        <Label TextColor="{Binding WeatherAccordion.HeaderTextColor}"  HorizontalOptions="EndAndExpand" Text="{Binding WeatherAccordion.IconText}" />
-      </StackLayout>
-
-      <BoxView HeightRequest="1" Color="Gray"  HorizontalOptions="FillAndExpand"></BoxView>
-    </StackLayout>
-
-
-    <!-- ********************************************************
-                                CONTENT: Weather
-             ********************************************************    -->
-        <StackLayout HeightRequest="{Binding WeatherAccordion.ContentHeight}" IsVisible="{Binding WeatherAccordion.IsExpanded}">
-          <StackLayout Orientation="Horizontal">
-            <Label Text="Air Temp"></Label>
-          </StackLayout>
-
-          <StackLayout Orientation="Horizontal">
-            <Label Text="Water Temp"></Label>
-          </StackLayout>
-
-
-          <StackLayout Orientation="Horizontal">
-            <Label Text="Wind"></Label>
-          </StackLayout>
-
-          <StackLayout Orientation="Horizontal">
-            <Label Text="Berometric Pressure"></Label>
-          </StackLayout>
-
-          <StackLayout Orientation="Horizontal">
-            <Label Text="Dew Point"></Label>
-          </StackLayout>
-
-          <StackLayout Orientation="Horizontal">
-            <Label Text="Visibility"></Label>
-          </StackLayout>
-
-          <StackLayout Orientation="Horizontal">
-            <Label Text="Humidity"></Label>
-          </StackLayout>
-
-          <StackLayout Orientation="Horizontal">
-            <Label Text=""></Label>
-          </StackLayout>
-
-
-          <StackLayout Orientation="Horizontal">
-            <Label Text="Moon Illumination"></Label>
-          </StackLayout>
-
+               <StackLayout Orientation="Horizontal">
+                 <Label Text="Lure Method" />
+                 <Entry HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.Lure.Method, Mode=TwoWay}"></Entry>
+               </StackLayout>
+           </StackLayout>
         </StackLayout>
-    </StackLayout>
-  
+
+
+      <!-- Weather Accordian Node -->
+      <StackLayout  BackgroundColor="{Binding WeatherAccordion.HeaderBackGroundColor}">
+        <BoxView HeightRequest="1" Color="{Binding WeatherAccordion.LineColor}"  HorizontalOptions="FillAndExpand"></BoxView>
+
+        <!-- Accordian Node Header -->
+        <StackLayout Orientation="Horizontal" Padding="5,10,10, 10">
+          <StackLayout.GestureRecognizers>
+            <TapGestureRecognizer
+               Command="{Binding WeatherAccordion.ExpandContractAccordion}">
+            </TapGestureRecognizer>
+          </StackLayout.GestureRecognizers>
+          <Label TextColor="{Binding WeatherAccordion.HeaderTextColor}" Text="{Binding WeatherAccordion.HeaderText}" />
+          <Label TextColor="{Binding WeatherAccordion.HeaderTextColor}"  HorizontalOptions="EndAndExpand" Text="{Binding WeatherAccordion.IconText}" />
+        </StackLayout>
+
+        <BoxView HeightRequest="1" Color="Gray"  HorizontalOptions="FillAndExpand"></BoxView>
+      </StackLayout>
+
+
+      <!-- ********************************************************
+                                  CONTENT: Weather
+               ********************************************************    -->
+          <StackLayout HeightRequest="{Binding WeatherAccordion.ContentHeight}" IsVisible="{Binding WeatherAccordion.IsExpanded}">
+            <StackLayout Orientation="Horizontal">
+              <Label Text="Air Temp"></Label>
+              <Entry HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.WeatherCondition.AirTemp, Mode=TwoWay}" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+              <Label Text="Water Temp"/>
+              <Entry HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.WaterTemp, Mode=TwoWay}" />
+            </StackLayout>
+
+
+            <StackLayout Orientation="Horizontal">
+              <Label Text="Wind"/>
+              <Entry HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.WeatherCondition.WindSpeed, Mode=TwoWay}" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+              <Label Text="Berometric Pressure"/>
+              <Entry HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.WeatherCondition.BerometricPressure, Mode=TwoWay}" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+              <Label Text="Dew Point"/>
+              <Entry HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.WeatherCondition.DewPoint, Mode=TwoWay}" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+              <Label Text="Visibility"/>
+              <Entry HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.WeatherCondition.Visibility, Mode=TwoWay}" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+              <Label Text="Humidity"/>
+              <Entry HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.WeatherCondition.HumidityPercent, Mode=TwoWay}" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+              <Label Text="Moon"/>
+              <Label HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.WeatherCondition.MoonSummary}"></Label>
+            </StackLayout>
+
+          </StackLayout>
+      </StackLayout>
+  </ScrollView>
 </ContentPage>

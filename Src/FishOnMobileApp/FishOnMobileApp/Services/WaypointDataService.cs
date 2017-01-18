@@ -13,6 +13,8 @@ namespace FishOn.Services
         Task CreateNewFishOnAsync(double latitude, double longitude, Species speciesCaught);
         Task SaveWayPointProvisioningAsync(WayPoint wayPoint);
         Task DeleteWayPointAsync(WayPoint wayPoint);
+        void RemoveFishFromCache(Model.FishOn fishCaught);
+        void UpdateCache(Model.FishOn fishCaught);
     }
 
     public class WayPointDataService : IWayPointDataService
@@ -47,7 +49,7 @@ namespace FishOn.Services
 
         public async Task SaveWayPointProvisioningAsync(WayPoint wayPoint)
         {
-            await _wayPointRepository.SaveWayPointProvisioningAsync(wayPoint);
+            await SaveAsync(wayPoint);
         }
 
         public async Task CreateNewFishOnAsync(double latitude, double longitude, Species speciesCaught)
@@ -98,6 +100,11 @@ namespace FishOn.Services
                     {
                         fish.Species = await _speciesRepository.GetSpeciesAsync(fish.SpeciesId);
                         fish.WayPoint = (WayPoint) wayPoint.Clone<WayPoint>();
+
+                        if (fish.FishingLureId.HasValue && fish.FishingLureId.Value != 0)
+                        {
+                            fish.Lure = await _fishRepository.GetFishingLureAsync(fish.FishingLureId.Value);
+                        }
                         wayPoint.MergeSpecies(fish.Species);
                     }
 
@@ -109,7 +116,21 @@ namespace FishOn.Services
 
             return _cachedWayPoints;
         }
-       
+
+        public void RemoveFishFromCache(Model.FishOn fishCaught)
+        {
+            var wayPoint = _cachedWayPoints.SingleOrDefault(w => w.WayPointId == fishCaught.WayPointId);
+            wayPoint.FishCaught.Remove(fishCaught);
+        }
+
+        public void UpdateCache(Model.FishOn fishCaught)
+        {
+            if (_cachedWayPoints != null)
+            {
+                _cachedWayPoints.MoveFishCaughtToDifferentWayPoint(fishCaught);
+            }    
+        }
+
         private async Task SaveAsync(WayPoint wayPoint)
         {
             if (wayPoint.WayPointId == 0)
@@ -117,20 +138,36 @@ namespace FishOn.Services
                 await _wayPointRepository.SaveAsync(wayPoint);
             }
 
-            var fishCaught = wayPoint.FishCaught.FirstOrDefault(f => f.FishOnId == 0);
-            fishCaught.WayPointId = wayPoint.WayPointId;
-
-            if (fishCaught.Lure != null && fishCaught.Lure.FishingLureId == 0)
+            var fishesCaught = wayPoint.FishCaught.Where(f => f.FishOnId == 0 || f.WayPointId == 0);
+            foreach (var fishCaught in fishesCaught)
             {
-                var lure = fishCaught.Lure;
-                await _fishRepository.SaveNewLureAsync(lure);
-                fishCaught.FishingLureId = lure.FishingLureId;
+                fishCaught.WayPointId = wayPoint.WayPointId;
+
+                if (fishCaught.Lure != null && fishCaught.Lure.FishingLureId == 0)
+                {
+                    var lure = fishCaught.Lure;
+                    if (lure.IsValid)
+                    {
+                        await _fishRepository.SaveLureAsync(lure);
+                        fishCaught.FishingLureId = lure.FishingLureId;
+                    }
+                }
+
+                await _fishRepository.SaveFishOnAsync(fishCaught);
+
+                if (fishCaught.WeatherCondition != null)
+                {
+                    var weatherCondition = fishCaught.WeatherCondition;
+                    weatherCondition.WeatherConditionId = fishCaught.FishOnId;
+                    await _weatherRepository.SaveAsync(weatherCondition);
+                }
+                
             }
 
-            await _fishRepository.SaveFishOnAsync(fishCaught);
-            var weatherCondition = fishCaught.WeatherCondition;
-            weatherCondition.WeatherConditionId = fishCaught.FishOnId;
-            await _weatherRepository.SaveAsync(weatherCondition);
+            if (_cachedWayPoints == null)
+            {
+                _cachedWayPoints = new List<WayPoint>();
+            }
 
             if (!(_cachedWayPoints.Any(w => w.WayPointId == wayPoint.WayPointId)))
             {

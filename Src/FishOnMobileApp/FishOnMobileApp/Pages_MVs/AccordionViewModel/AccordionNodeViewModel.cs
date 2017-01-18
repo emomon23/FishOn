@@ -13,8 +13,7 @@ namespace FishOn.Pages_MVs.AccordionViewModel
 
         private bool _isExpanded = false;
         private string _headerText;
-
-
+       
         //What the height should be when expanded
         private int _expandedContentHeight;
 
@@ -31,9 +30,11 @@ namespace FishOn.Pages_MVs.AccordionViewModel
         //What is currrently displaying to the user
         private string _currentIconButtonText = "+";
 
+        private bool _subContentIsVisible = false;
+
         #endregion
 
-        public AccordionNodeViewModel(string headerText, int expandedContentHeight, Color headerBackgroundColor, Color headerTextColor, Color? lineColor = null, string iconExpandText = "+", string icondeContractText = "-")
+        public AccordionNodeViewModel(string headerText, int expandedContentHeight, Color headerBackgroundColor, Color headerTextColor, Color? lineColor = null, string iconExpandText = "+", string icondeContractText = "-", bool expandInitially = false)
         {
 
             HeaderText = headerText;
@@ -43,6 +44,11 @@ namespace FishOn.Pages_MVs.AccordionViewModel
             HeaderBackGroundColor = headerBackgroundColor;
             HeaderTextColor = headerTextColor;
             LineColor = lineColor ?? headerTextColor;
+
+            if (expandInitially)
+            {
+                ExpandContractAccordion.Execute(null);
+            }
         }
 
         public int ContentHeight
@@ -54,6 +60,7 @@ namespace FishOn.Pages_MVs.AccordionViewModel
                 OnPropertyChanged();
             }
         }
+
 
         public string HeaderText
         {
@@ -91,19 +98,49 @@ namespace FishOn.Pages_MVs.AccordionViewModel
             }
         }
 
+        public bool SubContentIsVisible
+        {
+            get
+            {
+                return _subContentIsVisible;
+            }
+            private set
+            {
+                _subContentIsVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public void ShowSubContent()
+        {
+            SubContentIsVisible = true;
+            ContentHeight = _expandedContentHeight;
+        }
+
+        public void HideSubContent(int? reduceSize = null)
+        {
+            SubContentIsVisible = false;
+
+            if (reduceSize.HasValue)
+            {
+                ContentHeight = reduceSize.Value;
+            }
+        }
+
         public Color HeaderBackGroundColor { get; private set; }
 
         public Color HeaderTextColor { get; private set; }
 
         public Color LineColor { get; private set; }
 
-
+        
         public ICommand ExpandContractAccordion
         {
             get
             {
                 return new Command(() =>
                 {
+                  
                     if (IsExpanded)
                     {
                         IsExpanded = false;

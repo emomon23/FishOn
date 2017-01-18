@@ -64,7 +64,8 @@ namespace FishOn.Services
             }
 
             await _lakeRepo.SaveAsync(newLakes);
-            return await _lakeRepo.GetLakesAsync();
+            var result = await _lakeRepo.GetLakesAsync();
+            return result;
         }
 
         public async Task<int> FindClosestLakeIdAsync(double latitude, double longitude)

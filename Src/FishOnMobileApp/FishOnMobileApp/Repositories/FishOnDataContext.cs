@@ -26,12 +26,15 @@ namespace FishOn.Repositories
         Task SaveWayPointAsync(WayPoint wp);
         Task<WayPoint> GetWayPointAsync(double latitude, double longitude);
         Task SaveFishOnAsync(Model.FishOn fishCaught);
-        Task SaveNewLureAsync(FishingLure lure);
+        Task SaveLureAsync(FishingLure lure);
         Task SaveWeatherConditionAsync(WeatherCondition wc);
         Task<List<Model.FishOn>> GetFishCaughtAtWayPointAsync(int wayPointId);
         Task DeleteWayPointAsync(WayPoint wayPoint);
         Task<List<AppSetting>> GetAppSettingsAsync();
         Task SaveAppSettingAsync(AppSetting setting);
+        Task<List<FishingLure>>  GetLuresAsync();
+        Task<FishingLure> GetLureAsync(int fishingLureId);
+        Task DeleteFishCaughtAsync(Model.FishOn fishCaught);
     }
 
     public class FishOnDataContext : IFishOnDataContext
@@ -70,6 +73,8 @@ namespace FishOn.Repositories
                 await CreateDatabaseAsync();
                 await SeedDatabaseAsync();
             }
+
+            await TestDataSeeder.SeedTestDataAsync();
         }
 
         #endregion
@@ -212,7 +217,19 @@ namespace FishOn.Repositories
 
         public async Task SaveFishOnAsync(Model.FishOn fishCaught)
         {
-            await _db.InsertAsync(fishCaught);
+            if (fishCaught.FishOnId == 0)
+            {
+                await _db.InsertAsync(fishCaught);
+            }
+            else
+            {
+                await _db.UpdateAsync(fishCaught);
+            }
+        }
+
+        public async Task DeleteFishCaughtAsync(Model.FishOn fishCaught)
+        {
+            await _db.DeleteAsync(fishCaught);
         }
 
         public async Task<List<Model.FishOn>> GetFishCaughtAtWayPointAsync(int wayPointId)
@@ -220,11 +237,43 @@ namespace FishOn.Repositories
             return await _db.Table<Model.FishOn>().Where(f => f.WayPointId == wayPointId).ToListAsync();
         }
 
-        public async Task SaveNewLureAsync(FishingLure lure)
+        public async Task SaveLureAsync(FishingLure lure)
         {
-            await _db.InsertAsync(lure);
+            if (lure == null)
+            {
+                return;
+            }
+
+            if (lure.FishingLureId == 0)
+            {
+                await _db.InsertAsync(lure);
+                return;
+            }
+
+            await _db.UpdateAsync(lure);
         }
-        
+
+        public async Task<List<FishingLure>> GetLuresAsync()
+        {
+            return await _db.Table<FishingLure>().ToListAsync();
+        }
+
+        public async Task<FishingLure> GetLureAsync(int fishingLureId)
+        {
+            if (fishingLureId == 0)
+            {
+                return null;
+            }
+
+            var query = await _db.Table<FishingLure>().Where(l => l.FishingLureId == fishingLureId).ToListAsync();
+            if (query != null && query.Any())
+            {
+                return query[0];
+            }
+
+            return null;
+        }
+
         #endregion
 
         #region DBCreation Seeding
@@ -247,7 +296,7 @@ namespace FishOn.Repositories
               await _db.InsertAsync(new Species() { Description = "Northern Pike 'Snake'", Name = "Pike", DisplayOrder = 20, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
               await _db.InsertAsync(new Species() { Description = "Panfish", Name = "Sunny", DisplayOrder = 30, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
               await _db.InsertAsync(new Species() { Description = "Panfish", Name = "Crappie", DisplayOrder = 40, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
-              await _db.InsertAsync(new Species() { Description = "", Name = "Lg M Bass.", DisplayOrder = 50, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
+              await _db.InsertAsync(new Species() { Description = "", Name = "Lg M Bass", DisplayOrder = 50, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
               await _db.InsertAsync(new Species() { Description = "", Name = "Sm M Bass", DisplayOrder = 60, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
               await _db.InsertAsync(new Species() { Description = "", Name = "Muskie", DisplayOrder = 70, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
               await _db.InsertAsync(new Species() { Description = "", Name = "Catfish", DisplayOrder = 80, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
