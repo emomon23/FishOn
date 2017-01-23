@@ -13,6 +13,7 @@ namespace FishOn.Utils
 {
     public static class Extensions
     {
+        private static Random _rnd = new Random(DateTime.Now.Millisecond);
         public static string GetValue(this XElement element, string xPathQuery)
         {
             var resultElement = XPathQuery(element, xPathQuery);
@@ -22,6 +23,20 @@ namespace FishOn.Utils
             }
 
             return null;
+        }
+
+        public static string PickOne(this string[] strArray)
+        {
+            if (strArray == null || strArray.Length == 0)
+            {
+                return "";
+            }
+
+            if (strArray.Length == 1)
+                return strArray[0];
+
+            var index = _rnd.Next(0, strArray.Length - 1);
+            return strArray[index];
         }
 
         public static XElement XPathQuery(this XElement element, string xPathQuery)
@@ -120,6 +135,12 @@ namespace FishOn.Utils
             var result = $"{str.Substring(0, 1).ToUpper()}{str.Substring(1)}";
 
             return result;
+        }
+
+        public static void GoBackOnePage(this INavigation navigation)
+        {
+            var currentPage = navigation.NavigationStack[navigation.NavigationStack.Count - 1];
+            navigation.RemovePage(currentPage);
         }
 
         public static bool IsDate(this string str)

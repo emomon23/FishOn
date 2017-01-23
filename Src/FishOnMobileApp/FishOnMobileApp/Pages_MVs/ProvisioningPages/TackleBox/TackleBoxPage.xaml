@@ -1,7 +1,55 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentPage  xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:modelView="clr-namespace:FishOn.ModelView;assembly=FishOnMobileApp"
              x:Class="FishOn.Pages_MVs.ProvisioningPages.TackleBox.TackleBoxPage"
-             Title="Tackle Box">
-  <Label Text="{Binding MainText}" VerticalOptions="Center" HorizontalOptions="Center" />
+            Title="Tackle Box">
+
+  <StackLayout>
+
+    <!-- Header -->
+    <StackLayout Orientation="Horizontal" BackgroundColor="Green">
+        <Label Text="Fising Lure" TextColor="White" FontSize="24"/>
+
+        <!-- Add button -->
+        <StackLayout WidthRequest="50" BackgroundColor="Transparent" Padding="20">
+           <StackLayout.GestureRecognizers>
+               <TapGestureRecognizer
+                  Command="{Binding AddNewLureCommand}"
+                 />
+           </StackLayout.GestureRecognizers>
+           <Label FontSize="12" HorizontalOptions="Center" Text="Add"></Label>
+        </StackLayout>
+      
+        <Label HorizontalOptions="EndAndExpand" TextColor="White" FontSize="16" Text="# Caught" ></Label>
+    </StackLayout>
+  
+    
+    <ScrollView HorizontalOptions="FillAndExpand">
+      <ListView x:Name="tackleBoxListView"
+                ItemsSource="{Binding FishingLures}"
+                HasUnevenRows="true"
+             
+                >
+
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <ViewCell>
+              <StackLayout Orientation="Horizontal" Padding="5,5">
+                <StackLayout.GestureRecognizers>
+                  <TapGestureRecognizer
+                     Command="{Binding Path=BindingContext.EditLureCommand, 
+                                         Source={modelView:ElementSource tackleBoxListView}}"
+                      CommandParameter="{Binding}" />
+                </StackLayout.GestureRecognizers>
+                
+                <Label Text="{Binding LureDescriptionSummary}" FontSize="18"></Label>
+                <Label HorizontalOptions="EndAndExpand" FontSize="16" Text="{Binding NumberOfFishCaught}"></Label>
+              </StackLayout>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+    </ScrollView>
+  </StackLayout>
 </ContentPage>

@@ -25,6 +25,9 @@ namespace FishOn.Model
             get { return $"{Name} {Color} {Size} {Weight}"; }
         }
 
+        [Ignore]
+        public int NumberOfFishCaught { get; set; }
+
         public bool IsValid
         {
             get { return Name.IsNotNullOrEmpty(); }

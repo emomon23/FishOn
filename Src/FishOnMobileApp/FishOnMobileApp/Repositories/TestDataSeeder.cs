@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FishOn.Model;
 using FishOn.Services;
+using FishOn.Utils;
 using FishOn = FishOn.Model.FishOn;
 
 namespace FishOn.Repositories
@@ -14,6 +15,7 @@ namespace FishOn.Repositories
         private static IWayPointDataService _wpService = new WayPointDataService();
         private static ISpeciesDataService _speciesDataService = new SpeciesDataService();
         private static ILakeDataService _lakeDataService = new LakeDataService();
+        private static List<FishingLure> _lures = null;
         private static List<Species> _specieses = null;
         private static Random _rnd = new Random(DateTime.Now.Millisecond);
 
@@ -24,7 +26,9 @@ namespace FishOn.Repositories
                 return;
             }
 
+            
             _specieses = await _speciesDataService.GetSpeciesAsync();
+
             var lakes = await CreateLakesAsync("Tonka", "Lotus", "Waconia", "Leech", "Pine Mtn", "Auburn", "Pleasent");
             var halstedWP = await CreateWayPointAsync(44.908303482587, -93.5001525712633, "Halsted Bay", lakes[0],
                     WayPoint.WayPointTypeEnumeration.FishOn);
@@ -98,6 +102,8 @@ namespace FishOn.Repositories
             return (await _lakeDataService.GetLakesAsync()).Any(l => l.LakeName == "Pleasent");
         }
 
+      
+
         private  async  static Task CreateFishOnAsync(WayPoint wp, string speciesName, string method, string notes)
         {
             var species = _specieses.SingleOrDefault(s => s.Name == speciesName);
@@ -122,12 +128,40 @@ namespace FishOn.Repositories
                     Moon_IlluminationPercent = 100,
                     DewPoint = _rnd.Next(25,100),
                     Visibility = 25
-                }
+                },
+                Lure = CreateRandomFishingLure()
             };
 
             wp.FishCaught.Add(fo);
 
             await _wpService.SaveWayPointProvisioningAsync(wp);
+        }
+
+        private static FishingLure CreateRandomFishingLure()
+        {
+            var lureNames = new string[]
+                {"Yozuri", "Rapala SR-7", "Rapala SR-5", "Mozutzu FT", "Purple Jig", "Popper", "Buzzbait"};
+
+            var colors = new string[] {"Red", "Yellow", "Green", "Firetiger", "Purple", "Orange", "White"};
+            var methods = new string[]
+
+                {"Jig up and down slow", "Pop on top", "Troll 1.4-2.7", "Troll Fast", "Bobber fish"};
+
+            var notes = new string[]
+            {
+                "Works great on minnetonka", "A good hay creek lure", "Not so great in winter", "An ice fishing lure",
+                "Too light for muskie", "Too big for Bass"
+            };
+
+            return new FishingLure()
+            {
+                Color = colors.PickOne(),
+                Method = methods.PickOne(),
+                Name = lureNames.PickOne(),
+                Note = notes.PickOne(),
+                Size = _rnd.Next(1, 50),
+                Weight = _rnd.Next(1, 100)
+            };
         }
 
         private async static Task<WayPoint> CreateWayPointAsync(double lat, double longitude, string name, Lake lake,

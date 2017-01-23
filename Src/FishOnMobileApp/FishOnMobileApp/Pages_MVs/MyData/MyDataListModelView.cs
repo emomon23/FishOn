@@ -60,13 +60,7 @@ namespace FishOn.ModelView
                       _wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
             });
             
-            _pages.Add(new TackleBoxPage()
-            {
-                BindingContext =
-                   new TackleBoxModelView(_navigation, _lakeService, _speciesDataService,
-                       _wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
-            });
-
+           
             _pages.Add(new LakesListProvisioningPage()
             {
                 BindingContext =
@@ -74,11 +68,15 @@ namespace FishOn.ModelView
                       _wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
             });
 
+            _pages.Add(new TackleBoxPage()
+            {
+                 BindingContext = new TackleBoxModelView(_navigation, _lakeService, _speciesDataService,_wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
+            });
+
+            
             _pages.Add(new MySpeciesProvisioningPage()
             {
-                BindingContext =
-                  new TackleBoxModelView(_navigation, _lakeService, _speciesDataService,
-                      _wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
+                 BindingContext = new MySpeciestProvisioningViewModel(_navigation, _lakeService, _speciesDataService,_wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
             });
 
 

@@ -14,5 +14,13 @@ namespace FishOn.Pages_MVs.ProvisioningPages.TackleBox
         {
             InitializeComponent();
         }
+
+        protected override async void OnAppearing()
+        {
+            var mv = (TackleBoxModelView) BindingContext;
+            await mv.InitializeAsync();
+        }
     }
+
+  
 }

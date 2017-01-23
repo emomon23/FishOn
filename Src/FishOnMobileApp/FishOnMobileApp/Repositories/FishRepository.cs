@@ -13,9 +13,11 @@ namespace FishOn.Repositories
         Task SaveFishOnAsync(Model.FishOn fishCaught);
         Task<bool> SaveLureAsync(FishingLure lure);
         Task<List<Model.FishOn>> GetFishCaughtAtWayPointAsync(int wayPointId);
-        Task<List<FishingLure>> GetAvailableLuresAsync();
+        Task<List<Model.FishOn>> GetFishCaughtFromLure(int lureId);
+        Task<List<FishingLure>> GetAvailableLuresAsync(bool withFishCaughtCount);
         Task<FishingLure> GetFishingLureAsync(int fishingLureId);
         Task DeleteFishCaughtAsync(Model.FishOn fishCaught);
+        Task DeleteLureAsync(FishingLure lure);
     }
 
     public class FishRepository: BaseRepository, IFishRepository
@@ -36,6 +38,14 @@ namespace FishOn.Repositories
             return fishCaught;
         }
 
+        public async Task<List<Model.FishOn>> GetFishCaughtFromLure(int lureId)
+        {
+            var db = await GetDB();
+            var fishCaught = await db.GetFishCaughtOnLure(lureId);
+
+            return fishCaught;
+        }
+
         public async Task<bool> SaveLureAsync(FishingLure lure)
         {
             if (!lure.IsValid)
@@ -46,6 +56,12 @@ namespace FishOn.Repositories
             var db = await GetDB();
             await db.SaveLureAsync(lure);
             return true;
+        }
+
+        public async Task DeleteLureAsync(FishingLure lure)
+        {
+            var db = await GetDB();
+            await db.DeleteLureAsync(lure);
         }
 
         public async Task DeleteFishCaughtAsync(Model.FishOn fishCaught)
@@ -60,10 +76,21 @@ namespace FishOn.Repositories
             return await db.GetLureAsync(fishingLureId);
         }
 
-        public async Task<List<FishingLure>> GetAvailableLuresAsync()
+        public async Task<List<FishingLure>> GetAvailableLuresAsync(bool withFishCaughtCount)
         {
             var db = await GetDB();
-            return await db.GetLuresAsync();
+            var result = await db.GetLuresAsync();
+
+            if (withFishCaughtCount)
+            {
+                foreach (var lure in result)
+                {
+                    var fishCaught = await db.GetFishCaughtOnLure(lure.FishingLureId);
+                    lure.NumberOfFishCaught = fishCaught == null? 0 : fishCaught.Count;
+                }
+            }
+
+            return result;
         }
     }
 }

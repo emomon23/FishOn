@@ -27,8 +27,10 @@ namespace FishOn.Repositories
         Task<WayPoint> GetWayPointAsync(double latitude, double longitude);
         Task SaveFishOnAsync(Model.FishOn fishCaught);
         Task SaveLureAsync(FishingLure lure);
+        Task DeleteLureAsync(FishingLure lure);
         Task SaveWeatherConditionAsync(WeatherCondition wc);
         Task<List<Model.FishOn>> GetFishCaughtAtWayPointAsync(int wayPointId);
+        Task<List<Model.FishOn>> GetFishCaughtOnLure(int lureId);
         Task DeleteWayPointAsync(WayPoint wayPoint);
         Task<List<AppSetting>> GetAppSettingsAsync();
         Task SaveAppSettingAsync(AppSetting setting);
@@ -67,7 +69,7 @@ namespace FishOn.Repositories
         
         public async Task  InitializeAsync()
         {
-           // _sqLite.DeleteDatabase();
+            _sqLite.DeleteDatabase();
 
             if (!_sqLite.DoesDBExist)
             {
@@ -240,6 +242,8 @@ namespace FishOn.Repositories
             }
         }
 
+
+
         public async Task DeleteFishCaughtAsync(Model.FishOn fishCaught)
         {
             await _db.DeleteAsync(fishCaught);
@@ -248,6 +252,11 @@ namespace FishOn.Repositories
         public async Task<List<Model.FishOn>> GetFishCaughtAtWayPointAsync(int wayPointId)
         {
             return await _db.Table<Model.FishOn>().Where(f => f.WayPointId == wayPointId).ToListAsync();
+        }
+
+        public async Task<List<Model.FishOn>> GetFishCaughtOnLure(int lureId)
+        {
+            return await _db.Table<Model.FishOn>().Where(f => f.FishingLureId == lureId).ToListAsync();
         }
 
         public async Task SaveLureAsync(FishingLure lure)
@@ -264,6 +273,14 @@ namespace FishOn.Repositories
             }
 
             await _db.UpdateAsync(lure);
+        }
+
+        public async Task DeleteLureAsync(FishingLure lure)
+        {
+            if (lure.FishingLureId > 0)
+            {
+                var l = _db.DeleteAsync(lure);
+            }
         }
 
         public async Task<List<FishingLure>> GetLuresAsync()

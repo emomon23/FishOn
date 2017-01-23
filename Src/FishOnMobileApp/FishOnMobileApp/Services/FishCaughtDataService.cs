@@ -5,14 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using FishOn.Model;
 using FishOn.Repositories;
+using FishOn = FishOn.Model.FishOn;
 
 namespace FishOn.Services
 {
     public interface IFishCaughtDataService
     {
         Task UpdateFishCaughtAsync(Model.FishOn fishCaught);
-        Task<List<FishingLure>> GetAvailableLuresAsync();
+        Task<List<FishingLure>> GetAvailableLuresAsync(bool withFishCaughtCount = false);
         Task DeleteFishCaughtAsync(Model.FishOn fishCaught);
+        Task DeleteLureAsync(FishingLure lure);
+        Task SaveLureAsync(FishingLure lure);
     }
 
     public class FishCaughtDataService : IFishCaughtDataService
@@ -62,9 +65,27 @@ namespace FishOn.Services
             await _fishRepository.DeleteFishCaughtAsync(fishCaught);
         }
 
-        public async Task<List<FishingLure>> GetAvailableLuresAsync()
+        public async Task<List<FishingLure>> GetAvailableLuresAsync(bool withFishCaughtCount = false)
         {
-           return await _fishRepository.GetAvailableLuresAsync();
+           return await _fishRepository.GetAvailableLuresAsync(withFishCaughtCount);
+        }
+
+        public async Task DeleteLureAsync(FishingLure lure)
+        {
+            var fishCaught = await _fishRepository.GetFishCaughtFromLure(lure.FishingLureId);
+
+            await _fishRepository.DeleteLureAsync(lure);
+
+            foreach (var fishOn in fishCaught)
+            {
+                fishOn.FishingLureId = 0;
+                await _fishRepository.SaveFishOnAsync(fishOn);
+            }
+       }
+
+        public async Task SaveLureAsync(FishingLure lure)
+        {
+            await _fishRepository.SaveLureAsync(lure);
         }
     }
 }
