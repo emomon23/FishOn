@@ -10,7 +10,8 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
 {
     public partial class MyFishDetailPage : ContentPage
     {
-        private MyFishModelView _modelView = null;
+        /*
+        private MyFishListModelView _modelView = null;
 
         public MyFishDetailPage()
         {
@@ -47,6 +48,7 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
                 LurePicker.SelectedIndex = _modelView.LurePickerSelectedIndex;
             }
         }
+        */
     }
 }
 

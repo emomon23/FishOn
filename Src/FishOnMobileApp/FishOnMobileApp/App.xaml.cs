@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using FishOn.Pages_MVs;
 using Xamarin.Forms;
 
 namespace FishOnMobileApp
@@ -12,7 +12,12 @@ namespace FishOnMobileApp
         public App()
         {
             InitializeComponent();
-            MainPage = new NavigationPage(new FishOnMobileApp.MainPage());
+            MainPage = new NavigationPage(new FishOnMobileApp.MainPage())
+            {
+                BarBackgroundColor = StyleSheet.NavigationPage_BarBackgroundColor,
+                BarTextColor = StyleSheet.NavigationPage_BarTextColor
+            };
+
         }
 
         protected override void OnStart()

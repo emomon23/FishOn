@@ -10,7 +10,7 @@ namespace FishOn.Services
         Task<List<Species>> GetSpeciesAsync();
         Task<List<Species>> GetSpeciesAsync(int lakeId);
         Task SaveAsync(Species species);
-        Task DeleteAsync(int speciesId);
+        Task DeleteAsync(Species species);
     }
 
     public class SpeciesDataService : ISpeciesDataService
@@ -39,12 +39,12 @@ namespace FishOn.Services
 
         public async Task SaveAsync(Species species)
         {
-
+            await _speciesRepository.SaveAsync(species);
         }
 
-        public async Task DeleteAsync(int speciesId)
+        public async Task DeleteAsync(Species species)
         {
-
+            await _speciesRepository.DeleteAvailableAsync(species);
         }
     }
 }

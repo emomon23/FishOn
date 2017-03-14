@@ -38,6 +38,9 @@ namespace FishOn.Repositories
         Task<FishingLure> GetLureAsync(int fishingLureId);
         Task DeleteFishCaughtAsync(Model.FishOn fishCaught);
         Task DeleteLakeAsync(Lake lake);
+        Task SaveSpeciesAsync(Species species);
+        Task DeleteAvailableAsync(Species species);
+
     }
 
     public class FishOnDataContext : IFishOnDataContext
@@ -101,7 +104,7 @@ namespace FishOn.Repositories
 
         public async Task<List<Species>> GetSpeciesAsync()
         {
-            return await _db.Table<Species>().ToListAsync();
+            return await _db.Table<Species>().Where(s => s.IsDeleted == false).ToListAsync();
         }
 
         public async Task UpdateSpecies(IList<Species> specieses)
@@ -114,10 +117,38 @@ namespace FishOn.Repositories
             await _db.InsertAsync(species);
         }
 
+        public async Task DeleteAvailableAsync(Species species)
+        {
+            //See if we can physically delete the species
+            var speciesHasBeenCaught = (await _db.Table<Model.FishOn>().Where(f => f.SpeciesId == species.SpeciesId).ToListAsync()).Any();
+
+            if (speciesHasBeenCaught)
+            {
+                species.IsDeleted = true;
+                await SaveSpeciesAsync(species);
+            }
+            else
+            {
+                await _db.DeleteAsync(species);
+            }
+        }
+
+        public async Task SaveSpeciesAsync(Species species)
+        {
+            if (species.SpeciesId == 0)
+            {
+                await CreateNewSpecies(species);
+                return;
+            }
+
+            _db.UpdateAsync(species);
+
+        }
+
         #endregion
 
         #region Lakes
-        
+
         public async Task SaveNewLakesAsync(List<Lake> newLakes)
         {
             foreach (var lake in newLakes)
@@ -277,15 +308,29 @@ namespace FishOn.Repositories
 
         public async Task DeleteLureAsync(FishingLure lure)
         {
-            if (lure.FishingLureId > 0)
+            if (lure.FishingLureId == 0)
             {
-                var l = _db.DeleteAsync(lure);
+                return;
+            }
+
+            var fishWereCaughWithLure =
+                (await _db.Table<Model.FishOn>().Where(f => f.FishingLureId == lure.FishingLureId).ToListAsync()).Any();
+
+            if (fishWereCaughWithLure)
+            {
+                lure.IsDeleted = true;
+                await SaveLureAsync(lure);
+
+            }
+            else
+            {
+                await _db.DeleteAsync(lure);
             }
         }
 
         public async Task<List<FishingLure>> GetLuresAsync()
         {
-            return await _db.Table<FishingLure>().ToListAsync();
+            return await _db.Table<FishingLure>().Where(l => l.IsDeleted == false).ToListAsync();
         }
 
         public async Task<FishingLure> GetLureAsync(int fishingLureId)
@@ -322,14 +367,14 @@ namespace FishOn.Repositories
 
         private async Task SeedDatabaseAsync()
         {
-              await _db.InsertAsync(new Species() { Description = "", Name = "Walleye", DisplayOrder = 10, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true});
-              await _db.InsertAsync(new Species() { Description = "Northern Pike 'Snake'", Name = "Pike", DisplayOrder = 20, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
-              await _db.InsertAsync(new Species() { Description = "Panfish", Name = "Sunny", DisplayOrder = 30, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
-              await _db.InsertAsync(new Species() { Description = "Panfish", Name = "Crappie", DisplayOrder = 40, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
-              await _db.InsertAsync(new Species() { Description = "", Name = "Lg M Bass", DisplayOrder = 50, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
-              await _db.InsertAsync(new Species() { Description = "", Name = "Sm M Bass", DisplayOrder = 60, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
-              await _db.InsertAsync(new Species() { Description = "", Name = "Muskie", DisplayOrder = 70, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
-              await _db.InsertAsync(new Species() { Description = "", Name = "Catfish", DisplayOrder = 80, IsAvailableOnCatchList = true, DisplaySpeciesOnLakeMap = true });
+              await _db.InsertAsync(new Species() { Description = "", Name = "Walleye", DisplayOrder = 10, IsAvailableOnCatchList = true, imageIcon = "walleye.png",DisplaySpeciesOnLakeMap = true});
+              await _db.InsertAsync(new Species() { Description = "Northern Pike 'Snake'", Name = "Pike", DisplayOrder = 20, IsAvailableOnCatchList = true, imageIcon = "pike.png", DisplaySpeciesOnLakeMap = true });
+              await _db.InsertAsync(new Species() { Description = "Panfish", Name = "Sunny", DisplayOrder = 30, IsAvailableOnCatchList = true, imageIcon = "sunfish.png" ,DisplaySpeciesOnLakeMap = true });
+              await _db.InsertAsync(new Species() { Description = "Panfish", Name = "Crappie", DisplayOrder = 40, IsAvailableOnCatchList = true, imageIcon = "crappie.png", DisplaySpeciesOnLakeMap = true });
+              await _db.InsertAsync(new Species() { Description = "", Name = "Lg M Bass", DisplayOrder = 50, IsAvailableOnCatchList = true, imageIcon = "largemouth.png" ,DisplaySpeciesOnLakeMap = true });
+              await _db.InsertAsync(new Species() { Description = "", Name = "Sm M Bass", DisplayOrder = 60, IsAvailableOnCatchList = true, imageIcon = "smallmouth.png",DisplaySpeciesOnLakeMap = true });
+              await _db.InsertAsync(new Species() { Description = "", Name = "Muskie", DisplayOrder = 70, IsAvailableOnCatchList = true, imageIcon = "muskie.gif", DisplaySpeciesOnLakeMap = true });
+              await _db.InsertAsync(new Species() { Description = "", Name = "Catfish", DisplayOrder = 80, IsAvailableOnCatchList = true, imageIcon = "catfish.gif", DisplaySpeciesOnLakeMap = true });
 
             await _db.InsertAsync(new AppSetting() {SettingName = "MapFilterHasBeenUsed", Value = false.ToString()});
         }

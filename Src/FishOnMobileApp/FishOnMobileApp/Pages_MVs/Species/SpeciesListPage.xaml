@@ -5,25 +5,14 @@
              x:Class="FishOn.SpeciesListPage"
              Title="Species Selectiion">
   
-  <StackLayout>
-       <ListView HasUnevenRows="True" x:Name="speciesListView"
-                      ItemsSource="{Binding SpeciesList}" SelectedItem="{Binding SelectedSpecies}" >
-       <ListView.ItemTemplate>
-         <DataTemplate>
-            <ViewCell>
-               <StackLayout>
-                  <Button Text="{Binding Name}" 
-                          Command="{Binding Path=BindingContext.SelectSpeciesCommand, 
-                                   Source={viewModel:ElementSource speciesListView}}"
-                          CommandParameter="{Binding}"/>
-               </StackLayout>
-            </ViewCell> 
-         </DataTemplate>
-       </ListView.ItemTemplate>
-      </ListView>
-      <ActivityIndicator IsRunning="{Binding IsBusy}"></ActivityIndicator>
-  </StackLayout>
-  
- 
- 
+    <ScrollView>
+      <StackLayout x:Name="speciesBtnContainer">
+          <ActivityIndicator IsVisible="{Binding IsBusy}"
+                                IsRunning="{Binding IsBusy}"
+                                Color="Black"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="CenterAndExpand"
+                               />
+      </StackLayout>
+    </ScrollView>
 </ContentPage>

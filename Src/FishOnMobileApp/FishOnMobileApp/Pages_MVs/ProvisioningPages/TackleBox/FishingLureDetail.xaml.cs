@@ -34,7 +34,7 @@ namespace FishOn.Pages_MVs.ProvisioningPages.TackleBox
 
         protected override void OnAppearing()
         {
-            if (_modelView == null)
+            if (_modelView == null && BindingContext != null)
             {
                 _modelView = (TackleBoxModelView)BindingContext;
             }

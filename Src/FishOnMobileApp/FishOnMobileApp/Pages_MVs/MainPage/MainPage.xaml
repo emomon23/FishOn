@@ -3,20 +3,40 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:FishOnMobileApp"
-             x:Class="FishOnMobileApp.MainPage">
+             x:Class="FishOnMobileApp.MainPage"
+             Title="Fish On Mobile">
 
-   <StackLayout Padding="10, 10, 10, 10">
-     <Frame HorizontalOptions="CenterAndExpand" OutlineColor="Gray">
-        <Image Source="fish_on_logo.png" Aspect="AspectFit"  WidthRequest="140" HeightRequest="140"/>
-     </Frame>
-     
-     <StackLayout VerticalOptions="EndAndExpand">
-       <Button Text="Fish ON!" Command="{Binding FishOnCommand}" />
-       <Button Text="Find a Spot" Command="{Binding FindMySpotCommand}" />
-       <Button Text="My Data" Command="{Binding MyDataCommand}"></Button>
-       <Button Text="Set Lake / Water Temp" Command="{Binding SetLakeWaterTemp}" />
-       <ActivityIndicator IsRunning="{Binding IsBusy}"></ActivityIndicator>
-     </StackLayout>
-   </StackLayout>
+  
+    <Grid>
+        <Image Source="fishing_rod.png" Opacity="0.3"/>
 
+      <StackLayout Padding="10,40,10,10">
+        <StackLayout x:Name="logoContainer">
+         
+        </StackLayout>
+
+        <!--
+        <Frame HorizontalOptions="CenterAndExpand" OutlineColor="{Binding AccentColor}">
+          <Image Source="fish_on_logo.png" Aspect="AspectFit"  WidthRequest="140" HeightRequest="140"/>
+          <Frame.GestureRecognizers>
+             <TapGestureRecognizer Command="{Binding FishOnCommand}"></TapGestureRecognizer>
+          </Frame.GestureRecognizers>
+        </Frame>
+        -->
+      
+        <StackLayout x:Name="buttonPanel" VerticalOptions="EndAndExpand" HorizontalOptions="CenterAndExpand" Margin="0,0,0,90">
+            <StackLayout x:Name="findSpotPanel" Orientation="Horizontal" Spacing="0" Padding="0">
+                    
+            </StackLayout>
+                
+            <StackLayout x:Name="smallButtonsContainer" Orientation="Horizontal" Spacing="0" Padding="0">
+                   
+            </StackLayout>
+        </StackLayout>
+           
+
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"></ActivityIndicator>
+        
+      </StackLayout>
+    </Grid>
 </ContentPage>

@@ -36,7 +36,7 @@ namespace FishOn.ModelView
         {
             get
             {
-                return new Command<Species>((Species speciesCaught) =>
+                return new Command<string>((string speciesName) =>
                 {
                     IsBusy = true;
                  
@@ -45,6 +45,8 @@ namespace FishOn.ModelView
                         if (p.HasValue)
                         {
                             var position = p.Value;
+                            var speciesCaught = _speciesList.FirstOrDefault(s => s.Name == speciesName);
+
                             await _wayPointDataService.CreateNewFishOnAsync(position.Latitude, position.Longitude,
                                 speciesCaught);
 

@@ -1,9 +1,56 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:modelView="clr-namespace:FishOn.ModelView;assembly=FishOnMobileApp"
              x:Class="FishOn.Pages_MVs.ProvisioningPages.Species.MySpeciesProvisioningPage"
              Title ="Species">
-  
-  <Label Text="{Binding MainText}" VerticalOptions="Center" HorizontalOptions="Center" 
-        />
+
+  <StackLayout>
+
+    <!-- Header -->
+    <StackLayout Orientation="Horizontal" BackgroundColor="Green">
+      <Label Text="Species" TextColor="White" FontSize="24"/>
+
+      <!-- Add button -->
+      <StackLayout WidthRequest="50" BackgroundColor="Transparent" Padding="20">
+        <StackLayout.GestureRecognizers>
+          <TapGestureRecognizer
+             Command="{Binding AddNewSpecies}"
+                 />
+        </StackLayout.GestureRecognizers>
+         <Label FontSize="12" HorizontalOptions="Center" Text="Add"></Label>
+      </StackLayout>
+   
+    </StackLayout>
+
+
+    <ScrollView HorizontalOptions="FillAndExpand">
+      <ListView x:Name="availableSpecies"
+                ItemsSource="{Binding AvailableSpecies}"
+                HasUnevenRows="true"
+             >
+
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <ViewCell>
+              <StackLayout Orientation="Horizontal" Padding="5,5">
+                <StackLayout.GestureRecognizers>
+                  <!-- Single Tap Gester -->
+                  <TapGestureRecognizer
+                     Command="{Binding Path=BindingContext.EditSpeciesCommand, 
+                                         Source={modelView:ElementSource availableSpecies}}"
+                      CommandParameter="{Binding}" />
+                  </StackLayout.GestureRecognizers>
+
+                <Label Text="{Binding Name}" FontSize="18"></Label>
+                <Switch HorizontalOptions="EndAndExpand" IsToggled="{Binding IsAvailableOnCatchList}" Toggled="SpeciesFished_OnToggled">
+                  
+                </Switch>
+             </StackLayout>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+    </ScrollView>
+  </StackLayout>
 </ContentPage>

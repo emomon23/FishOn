@@ -17,8 +17,11 @@ namespace FishOn.Pages_MVs.ProvisioningPages.TackleBox
 
         protected override async void OnAppearing()
         {
-            var mv = (TackleBoxModelView) BindingContext;
-            await mv.InitializeAsync();
+            if (BindingContext != null)
+            {
+                var mv = (TackleBoxModelView) BindingContext;
+                await mv.InitializeAsync();
+            }
         }
     }
 

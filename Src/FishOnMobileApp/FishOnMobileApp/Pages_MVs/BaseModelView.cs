@@ -5,7 +5,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using FishOn.Model;
+using FishOn.Pages_MVs;
 using FishOn.Pages_MVs.LakeMap;
 using FishOn.Pages_MVs.MyData;
 using FishOn.Pages_MVs.ProvisioningPages.Lakes;
@@ -13,6 +15,7 @@ using FishOn.Pages_MVs.ProvisioningPages.MyFish;
 using FishOn.PlatformInterfaces;
 using FishOn.ProvisioningPages.WayPoints;
 using FishOn.Services;
+using FishOn.Utils;
 using FishOnMobileApp;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -55,6 +58,14 @@ namespace FishOn.ModelView
             _fishOnDataService = fishOnDataService;
         }
 
+        //for bindings
+        public Color ButtonBackColor => StyleSheet.Button_BackColor;
+        public Color ButtonTextColor => StyleSheet.Button_TextColor;
+        public Color AccentColor => StyleSheet.NavigationPage_BarTextColor;
+
+        public double HalfPageWidth => Application.Current.MainPage.Width / 2;
+        public double HalfPageHeight => Application.Current.MainPage.Height / 2;
+
         public bool IsBusy
         {
             get { return _isBusy; }
@@ -84,22 +95,21 @@ namespace FishOn.ModelView
 
         protected async Task Navigate_ToLakeListAsync()
         {
-            var lakesPage = new LakeListPage();
-            var viewModel = new LakeListModelView(lakesPage.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService, _fishOnDataService);
-            await viewModel.Initialize();
-            lakesPage.BindingContext = viewModel;
-
+            var viewModel = new LakeListModelView(_navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService, _fishOnDataService);
+            await viewModel.InitializeAsync();
+            var lakesPage = new LakeListPage(viewModel);
+         
             await _navigation.PushAsync(lakesPage);
         }
 
        
         protected async Task Navigate_ToSpeciesListAsync()
         {
-            var speciesPage = new SpeciesListPage();
-            var viewModel =  new SpeciesPageModelView(speciesPage.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService, _fishOnDataService);
+            var viewModel = new SpeciesPageModelView(this._navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService, _fishOnDataService);
             await viewModel.Initialize();
-            speciesPage.BindingContext = viewModel;
 
+            var speciesPage = new SpeciesListPage(viewModel);
+          
             await _navigation.PushAsync(speciesPage);
         }
 
@@ -123,7 +133,12 @@ namespace FishOn.ModelView
         protected async Task Navigate_ToMyDataButtonsListAsync()
         {
            // Page page = (Page) Activator.CreateInstance(typeof(MyDataListPage));
-            var page = new MyDataListPage();
+            var page = new MyDataListPage()
+            {
+                BarBackgroundColor = StyleSheet.NavigationPage_BarBackgroundColor,
+                BarTextColor = StyleSheet.TabbedPage_TabFontColor
+            };
+
             page.BindingContext =  new MyDataListModelView(page.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService, _fishOnDataService);
 
             await _navigation.PushAsync(page);

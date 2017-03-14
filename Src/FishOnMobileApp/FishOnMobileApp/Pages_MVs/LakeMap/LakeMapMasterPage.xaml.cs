@@ -19,7 +19,6 @@ namespace FishOn.Pages_MVs.LakeMap
         //Xamarin switch doesn't support binding, this is a work around, until I find / implement a better solution
         protected void FilterToggled(object sender, Xamarin.Forms.ToggledEventArgs e)
         {
-            var x = e.Value;
             var binding = this.BindingContext;
             var species = ((Switch) sender).BindingContext;
 

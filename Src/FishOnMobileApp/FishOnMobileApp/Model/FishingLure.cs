@@ -19,6 +19,7 @@ namespace FishOn.Model
         public double Weight { get; set; }
         public string Method { get; set; }
         public string Note { get; set; }
+        public bool IsDeleted { get; set; }
 
         public string LureDescriptionSummary
         {

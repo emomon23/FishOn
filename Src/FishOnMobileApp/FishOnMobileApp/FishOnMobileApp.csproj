@@ -71,19 +71,13 @@
     <Compile Include="Pages_MVs\ProvisioningPages\Lakes\LakesListProvisioningPage.xaml.cs">
       <DependentUpon>LakesListProvisioningPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishBySpecies.xaml.cs">
-      <DependentUpon>MyFishBySpecies.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishByWayPoints.xaml.cs">
-      <DependentUpon>MyFishByWayPoints.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishDetailPage.xaml.cs">
       <DependentUpon>MyFishDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishTabbedPage.xaml.cs">
-      <DependentUpon>MyFishTabbedPage.xaml</DependentUpon>
+    <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishList.xaml.cs">
+      <DependentUpon>MyFishList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishModelView.cs" />
+    <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishListModelView.cs" />
     <Compile Include="Pages_MVs\ProvisioningPages\Species\MySpeciesProvisioningPage.xaml.cs">
       <DependentUpon>MySpeciesProvisioningPage.xaml</DependentUpon>
     </Compile>
@@ -95,6 +89,7 @@
       <DependentUpon>TackleBoxPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages_MVs\ProvisioningPages\TackleBox\TackleBoxModelView.cs" />
+    <Compile Include="Pages_MVs\StyleSheet.cs" />
     <Compile Include="PlatformInterfaces\IFileHelper.cs" />
     <Compile Include="PlatformInterfaces\IFishOnCurrentLocationService.cs" />
     <Compile Include="PlatformInterfaces\ISQLite.cs" />
@@ -136,6 +131,8 @@
     <Compile Include="Pages_MVs\SimpleInputModal\SimpleInputModalModelView.cs" />
     <Compile Include="Pages_MVs\Species\SpeciesPageModelView.cs" />
     <Compile Include="Pages_MVs\ProvisioningPages\WayPoints\WayPointProvisioningModelView.cs" />
+    <Compile Include="Utils\ImgButtonGenerator.cs" />
+    <Compile Include="Utils\ListViewAlternatingRowProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages_MVs\MainPage\MainPage.xaml">
@@ -253,12 +250,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\MyFish\MyFishTabbedPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Pages_MVs\ProvisioningPages\Lakes\LakesListProvisioningPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
@@ -271,18 +262,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\MyFish\MyFishBySpecies.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\MyFish\MyFishByWayPoints.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Pages_MVs\ProvisioningPages\MyFish\MyFishDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
@@ -290,6 +269,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages_MVs\ProvisioningPages\TackleBox\FishingLureDetail.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\MyFish\MyFishList.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

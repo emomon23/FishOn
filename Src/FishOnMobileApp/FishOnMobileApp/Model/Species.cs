@@ -9,6 +9,7 @@ namespace FishOn.Model
         public Species()
         {
             IsAvailableOnCatchList = true;
+            imageIcon = "fish.png";
         }
 
         [PrimaryKey, AutoIncrement]
@@ -18,5 +19,7 @@ namespace FishOn.Model
         public bool IsAvailableOnCatchList { get; set; }
         public int DisplayOrder { get; set; }
         public bool DisplaySpeciesOnLakeMap { get; set; }
+        public bool IsDeleted { get; set; }
+        public string imageIcon { get; set; }
     }
 }

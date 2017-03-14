@@ -25,12 +25,13 @@ namespace FishOn.Model.ViewModel
 
         public static ObservableCollection<FishOnGroupByWayPointViewModel> MapToObservableCollection(List<WayPoint> wps)
         {
+            var result = new ObservableCollection<FishOnGroupByWayPointViewModel>();
+
             if (wps == null || wps.Count == 0)
             {
-                return null;
+                return result;
             }
-
-            var result = new ObservableCollection<FishOnGroupByWayPointViewModel>();
+            
             FishOnGroupByWayPointViewModel wpGroup = null;
 
             int id = 0;

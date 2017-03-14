@@ -9,7 +9,7 @@
   <ScrollView VerticalOptions="FillAndExpand">
     <StackLayout HeightRequest="1000" VerticalOptions="FillAndExpand">
 
-        <StackLayout>
+      <StackLayout>
             <StackLayout Orientation="Horizontal">
                   <Label Text="Species"></Label>
                   <Picker x:Name="SpeciesPicker"
@@ -68,7 +68,7 @@
       <!-- ********************************************************
                                   CONTENT: Lure
                ******************************************************** -->
-         <StackLayout HeightRequest="{Binding LureAccordion.ContentHeight}" IsVisible="{Binding LureAccordion.IsExpanded}">
+      <StackLayout HeightRequest="{Binding LureAccordion.ContentHeight}" IsVisible="{Binding LureAccordion.IsExpanded}">
 
             <StackLayout Orientation="Horizontal">
                 <Label Text="Lure" />
@@ -134,7 +134,7 @@
       <!-- ********************************************************
                                   CONTENT: Weather
                ********************************************************    -->
-          <StackLayout HeightRequest="{Binding WeatherAccordion.ContentHeight}" IsVisible="{Binding WeatherAccordion.IsExpanded}">
+      <StackLayout HeightRequest="{Binding WeatherAccordion.ContentHeight}" IsVisible="{Binding WeatherAccordion.IsExpanded}">
             <StackLayout Orientation="Horizontal">
               <Label Text="Air Temp"></Label>
               <Entry HorizontalOptions="FillAndExpand" Text="{Binding FishCaught.WeatherCondition.AirTemp, Mode=TwoWay}" />
@@ -177,6 +177,6 @@
             </StackLayout>
 
           </StackLayout>
-      </StackLayout>
+    </StackLayout>
   </ScrollView>
 </ContentPage>

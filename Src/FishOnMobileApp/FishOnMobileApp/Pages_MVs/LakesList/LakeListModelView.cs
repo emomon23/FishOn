@@ -23,7 +23,7 @@ namespace FishOn.ModelView
         public LakeListModelView(INavigation navigation) : base(navigation) { }
         public LakeListModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService) { }
         
-        public async Task Initialize()
+        public async override Task InitializeAsync()
         {
             var list = await _lakeService.GetLakesAsync();
             var observable = new ObservableCollection<Lake>(list);
@@ -113,9 +113,9 @@ namespace FishOn.ModelView
         {
             get
             {
-                return new Command<Lake>((Lake selectedLake) =>
+                return new Command<string>((string selectedLake) =>
                 {
-                    SelectedLake = selectedLake;
+                    SelectedLake = _lakes.FirstOrDefault(l => l.LakeName == selectedLake);
                 });
             }
         }

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FishOn.Pages_MVs.ProvisioningPages.MyFish.MyFishList"
+             x:Name="My Fish"
+             Title="My Fish">
+
+  <StackLayout x:Name="mainLayout" Spacing="0" Margin="0,0,0,0" Padding="0,0,0,0">
+    <ScrollView IsVisible="{Binding ViewByWayPoint}">
+      <StackLayout x:Name="byWayPointLayout" Spacing="0">
+
+      </StackLayout>
+    </ScrollView>
+    
+    <ScrollView IsVisible="{Binding ViewBySpeices}">
+      <StackLayout x:Name="bySpeciesLayout" Spacing="0" IsVisible="{Binding ViewBySpeices}">
+
+      </StackLayout>
+    </ScrollView>
+
+    <StackLayout x:Name="toggleButtonsLayout" Orientation="Horizontal" VerticalOptions="EndAndExpand">
+
+    </StackLayout>
+  </StackLayout>
+</ContentPage>

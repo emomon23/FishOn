@@ -22,12 +22,7 @@ namespace FishOn.ModelView
 
         public MyDataListModelView(INavigation navigation) : base(navigation) { }
         public MyDataListModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService) { }
-       
-        public string Title
-        {
-            get { return "Data List"; }
-        }
-
+     
         public async Task InitializeNewPageContextAsync(string pageTitle)
         {
             //Don't iniitalize every content page on the tab
@@ -53,10 +48,10 @@ namespace FishOn.ModelView
                         _wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
             });
 
-            _pages.Add(new MyFishTabbedPage()
+            _pages.Add(new MyFishList()
             {
                 BindingContext =
-                  new MyFishModelView(_navigation, _lakeService, _speciesDataService,
+                  new MyFishListModelView(_navigation, _lakeService, _speciesDataService,
                       _wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
             });
             
@@ -65,7 +60,7 @@ namespace FishOn.ModelView
             {
                 BindingContext =
                   new LakeListProvisioningModelView(_navigation, _lakeService, _speciesDataService,
-                      _wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
+                      _wayPointDataService, _locationService, _appSettingService, _fishOnDataService) 
             });
 
             _pages.Add(new TackleBoxPage()
@@ -78,7 +73,7 @@ namespace FishOn.ModelView
             {
                  BindingContext = new MySpeciestProvisioningViewModel(_navigation, _lakeService, _speciesDataService,_wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
             });
-
+            
 
 
             return _pages;

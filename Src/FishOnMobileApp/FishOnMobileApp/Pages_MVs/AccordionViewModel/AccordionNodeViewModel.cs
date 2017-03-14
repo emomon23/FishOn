@@ -54,7 +54,7 @@ namespace FishOn.Pages_MVs.AccordionViewModel
         public int ContentHeight
         {
             get { return _currentContentHeight; }
-            private set
+            set
             {
                 _currentContentHeight = value;
                 OnPropertyChanged();
@@ -160,6 +160,151 @@ namespace FishOn.Pages_MVs.AccordionViewModel
         protected void OnPropertyChanged([CallerMemberName] string name = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
+    public class AcNodeConfiguration
+    {
+        public AcNodeConfiguration()
+        {
+            iconContractedText = "-";
+            iconExpandedText = "+";
+            HeaderBackGroundColor = Color.Silver;
+            HeaderTextColor = Color.Black;
+            FontFamily = Device.OnPlatform("MarkerFelt-Thin", "Droid Sans Mono", "Comic Sans MS");
+         
+        }
+
+        public string HeaderText { get; set; }    
+        public double ExpandedContentHeight { get; set; }
+        public Color HeaderBackGroundColor { get; set; }
+        public Color HeaderTextColor { get; set; }
+        public Color LineColor { get; set; }
+        public string iconExpandedText { get; set; }
+        public string iconContractedText { get; set; }
+        public bool ExpandInitially { get; set; }
+        public FontAttributes ? HeaderFontAttributes { get; set; }
+        public double FontSize { get; set; }
+        public string FontFamily { get; set; }
+
+        public double GetFontSize()
+        {
+            Label lblDummy = new Label();
+            if (FontSize > 0)
+            {
+                return FontSize;
+            }
+
+            return Device.GetNamedSize(NamedSize.Default, lblDummy);
+        }
+    }
+
+    public static class AccordionFactory
+    {
+        public static StackLayout CreateNewNode(AcNodeConfiguration configuration, View contentView)
+        {
+            if (configuration.ExpandedContentHeight == 0)
+            {
+                configuration.ExpandedContentHeight = contentView.Height;
+            }
+            AccordionNodeViewModel accordionNodeView = new AccordionNodeViewModel(configuration.HeaderText, 
+                                                                                    (int)configuration.ExpandedContentHeight,
+                                                                                    configuration.HeaderBackGroundColor,
+                                                                                    configuration.HeaderTextColor, 
+                                                                                    configuration.LineColor, 
+                                                                                    configuration.iconExpandedText, 
+                                                                                    configuration.iconContractedText,
+                                                                                    configuration.ExpandInitially);
+            var result = new StackLayout()
+            {
+                BindingContext = accordionNodeView,
+                Spacing = 0,
+                Margin = new Thickness(0, 0, 0, 0)
+            };
+
+            result.Children.Add(BuildHeaderLayout(configuration));
+            result.Children.Add(BuildContentLayout(contentView));
+
+            return result;
+        }
+
+        private static StackLayout BuildHeaderLayout(AcNodeConfiguration configuration)
+        {
+            //Header layout
+            StackLayout headerLayout = new StackLayout()
+            {
+                Margin = new Thickness(0, 0, 0, 0)
+            };
+            headerLayout.SetBinding(StackLayout.BackgroundColorProperty, "HeaderBackGroundColor");
+
+            //Line one
+            BoxView lineOne = new BoxView() { HeightRequest = 1, HorizontalOptions = LayoutOptions.FillAndExpand };
+            lineOne.SetBinding(BoxView.ColorProperty, "LineColor");
+            headerLayout.Children.Add(lineOne);
+
+            headerLayout.Children.Add(BuildHeaderLabelsLayout(configuration));
+
+            //Line two
+            BoxView lineTwo = new BoxView() { HeightRequest = 1, HorizontalOptions = LayoutOptions.FillAndExpand };
+            lineTwo.SetBinding(BoxView.ColorProperty, "LineColor");
+            headerLayout.Children.Add(lineTwo);
+
+            return headerLayout;
+        }
+
+        private static View BuildContentLayout(View content)
+        {
+            var stackLayout = new StackLayout();
+            stackLayout.SetBinding(StackLayout.IsVisibleProperty, "IsExpanded");
+            stackLayout.SetBinding(StackLayout.HeightRequestProperty, "ContentHeight");
+
+            stackLayout.Children.Add(content);
+
+            var result = new ScrollView();
+            result.Content = stackLayout;
+            return result;
+        }
+
+        private static StackLayout BuildHeaderLabelsLayout(AcNodeConfiguration configuration)
+        {
+            StackLayout headerLabelsLayout = new StackLayout
+            {
+                Orientation = StackOrientation.Horizontal,
+                Padding = new Thickness(5, 10, 10, 10)
+            };
+
+            TapGestureRecognizer headerTapGestureRecognizer = new TapGestureRecognizer();
+            headerTapGestureRecognizer.SetBinding(TapGestureRecognizer.CommandProperty, "ExpandContractAccordion");
+            headerLabelsLayout.GestureRecognizers.Add(headerTapGestureRecognizer);
+
+            headerLabelsLayout.Children.Add(CreateLabel("HeaderText", "HeaderTextColor", configuration, null));
+            headerLabelsLayout.Children.Add(CreateLabel("IconText", "HeaderTextColor", configuration, LayoutOptions.EndAndExpand));
+          
+            return headerLabelsLayout;
+        }
+
+        private static Label CreateLabel(string textBinding, string textColorBinding, AcNodeConfiguration configuration,
+            LayoutOptions? layoutOptions)
+        {
+            Label lbl = new Label();
+            lbl.SetBinding(Label.TextProperty, textBinding);
+            lbl.SetBinding(Label.TextColorProperty, textColorBinding);
+
+
+            lbl.FontFamily = configuration.FontFamily;
+            lbl.FontSize = configuration.GetFontSize();
+
+            if (configuration.HeaderFontAttributes.HasValue)
+            {
+                lbl.FontAttributes = configuration.HeaderFontAttributes.Value;
+            }
+
+            if (layoutOptions.HasValue)
+            {
+                lbl.HorizontalOptions = layoutOptions.Value;
+            }
+
+            return lbl;
         }
     }
 }

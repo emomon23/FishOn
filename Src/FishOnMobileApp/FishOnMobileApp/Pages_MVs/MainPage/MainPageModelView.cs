@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using FishOn.PlatformInterfaces;
@@ -21,8 +22,10 @@ namespace FishOn.ModelView
             {
                 //We don't want to execute this logic everytime the view appears
                 _initialzeCalled = true;
+
+                //If not lakes exist, prompt the user for this one time
                 var lakes = await _lakeService.GetLakesAsync();
-                if (lakes.Count == 0)
+                if (!lakes.Any())
                 {
                     var modalDialogViewModal = new SimpleInputModalModelView(_navigation,
                         "Tell us some of the lakes you like to fish (eg. Tonka,Big Lake)?");

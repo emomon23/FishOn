@@ -9,6 +9,8 @@ namespace FishOn.Repositories
     {
         Task<List<Species>> GetSpeciesAsync();
         Task<Species> GetSpeciesAsync(int speciesId);
+        Task SaveAsync(Species species);
+        Task DeleteAvailableAsync(Species species);
     }
 
     public class SpeciesRepository : BaseRepository, ISpeciesRepository
@@ -36,5 +38,24 @@ namespace FishOn.Repositories
             return _cachedSpecies.SingleOrDefault(s => s.SpeciesId == speciesId);
         }
 
+        public async Task DeleteAvailableAsync(Species species)
+        {
+            var db = await GetDB();
+            db.DeleteAvailableAsync(species);
+
+            _cachedSpecies.Remove(species);
+        }
+
+        public async Task SaveAsync(Species species)
+        {
+            var db = await GetDB();
+            var isNewSpecies = species.SpeciesId == 0;
+            db.SaveSpeciesAsync(species);
+
+            if (isNewSpecies)
+            {
+                _cachedSpecies.Add(species);
+            }
+        }
     }
 }
