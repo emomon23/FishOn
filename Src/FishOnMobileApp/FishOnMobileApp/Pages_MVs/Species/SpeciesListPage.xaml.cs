@@ -26,8 +26,8 @@ namespace FishOn
 
             foreach (var species in speciesList)
             {
-                ImgBtnGenerator.AddButton(speciesBtnContainer, _vm.SelectSpeciesCommand, StyleSheet.Species_Button_Width,
-                    StyleSheet.Species_Button_Height, species.Name, species.imageIcon, StyleSheet.Species_Font_Size, StyleSheet.Button_BackColor);
+                ImgBtnGenerator.AddButton(speciesBtnContainer, _vm.SelectSpeciesCommand, StyleSheet.Button_List_Width,
+                    StyleSheet.Button_List_Height, species.Name, species.imageIcon, StyleSheet.Species_Font_Size, StyleSheet.Button_BackColor);
             }
         }
     }

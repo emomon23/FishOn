@@ -22,8 +22,28 @@ namespace FishOn.Utils
             _textColor = StyleSheet.NavigationPage_BarTextColor;
         }
 
-        public View CreateButton(ICommand command, double width, double height, string text, string image = null,  double? fontSize = null, Color ? backColorOverride = null)
+        public View CreateButton(ICommand command, double width, double height, string text, string image = null,
+            double? fontSize = null, Color? backColorOverride = null)
         {
+            var result = CreateButtonView(width, height, text, image, fontSize, backColorOverride);
+            AddTapGestureToView(result, command, text);
+
+            return result;
+        }
+
+        public View CreateButton(Func<Task> asycFunction, double width, double height, string text, string image = null,
+            double? fontSize = null, Color? backColorOverride = null)
+        {
+            var result = CreateButtonView(width, height, text, image, fontSize, backColorOverride);
+            AddTapGestureToView(result, asycFunction, text);
+
+            return result;
+        }
+
+        private View CreateButtonView(double width, double height, string text, string image = null,
+            double? fontSize = null, Color? backColorOverride = null)
+        { 
+
             backColorOverride = backColorOverride.HasValue ? backColorOverride : _backColor;
 
             StackLayout layout = new StackLayout()
@@ -33,7 +53,8 @@ namespace FishOn.Utils
                 BackgroundColor = backColorOverride.Value,
                 WidthRequest = width,
                 HeightRequest = height,
-                Orientation = StackOrientation.Horizontal
+                Orientation = StackOrientation.Horizontal,
+                AutomationId = $"imgBtn{text}"  //Used to prevent duplicates
             };
 
             if (text.IsNullOrEmpty())
@@ -72,29 +93,68 @@ namespace FishOn.Utils
                 layout.Children.Add(lbl);
             }
           
+            return layout;
+        }
+
+        public static void ConvertToButton(View view, ICommand command)
+        {
+            AddTapGestureToView(view, command, null);
+        }
+
+        private static void AddTapGestureToView(View view, ICommand command, object objText)
+        {
             TapGestureRecognizer tap = new TapGestureRecognizer()
             {
                 Command = new Command(async () =>
                 {
-                    await layout.ScaleTo(.95, 200, Easing.BounceIn);
-                    layout.ScaleTo(1, 200);
-                    command.Execute(text);
+                    await view.ScaleTo(.95, 200, Easing.BounceIn);
+                    view.ScaleTo(1, 200);
+                    command.Execute(objText);
                 })
             };
-            
-            layout.GestureRecognizers.Add(tap);
 
-            return layout;
+            view.GestureRecognizers.Add(tap);
         }
 
+        private static void AddTapGestureToView(View view, Func<Task> asyncFunction, object objText)
+        {
+            TapGestureRecognizer tap = new TapGestureRecognizer()
+            {
+                Command = new Command(async () =>
+                {
+                    await view.ScaleTo(.95, 200, Easing.BounceIn);
+                    view.ScaleTo(1, 200);
+                    await asyncFunction();
+                })
+            };
+
+            view.GestureRecognizers.Add(tap);
+        }
 
         public static void AddButton(StackLayout container, ICommand command, double width,
                                         double height, string text = null, string image = null, double? fontSize=null, Color ? backColor=null)
         {
-            var bg = ImgBtnGenerator.GetInstance();
-            var button = bg.CreateButton(command, width, height, text, image, fontSize, backColor);
-            container.Children.Add(button);
+            //We don't add duplicates to the stacklayout
+            if (container.Children.All(c => c.AutomationId != $"imgBtn{text}"))
+            {
+                var bg = ImgBtnGenerator.GetInstance();
+                var button = bg.CreateButton(command, width, height, text, image, fontSize, backColor);
+                container.Children.Add(button);
+            }
         }
+
+        public static void AddButton(StackLayout container, Func<Task> asyncFunction, double width,
+                                       double height, string text = null, string image = null, double? fontSize = null, Color? backColor = null)
+        {
+            //We don't add duplicates to the stacklayout
+            if (container.Children.All(c => c.AutomationId != $"imgBtn{text}"))
+            {
+                var bg = ImgBtnGenerator.GetInstance();
+                var button = bg.CreateButton(asyncFunction, width, height, text, image, fontSize, backColor);
+                container.Children.Add(button);
+            }
+        }
+
 
         public static ImgBtnGenerator GetInstance()
         {

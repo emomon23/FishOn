@@ -35,9 +35,15 @@ namespace FishOn.Pages_MVs
         public static double Big_Button_Width = 275;
         public static double Big_Button_Height = 70;
 
-        public static double Species_Button_Width = 350;
-        public static double Species_Button_Height = 50;
+        public static double Button_List_Width = 355;
+        public static double Button_List_Height = 50;
         public static double Species_Font_Size = 24;
+
+        public static int ModalDialog_LabelFontSize = 28;
+        public static int ModalDialog_EntryFontSize = 20;
+        public static Color ModalDialog_LabelBackColor = NavigationPage_BarBackgroundColor;
+        public static Color ModalDialog_EntryTextColor = Color.Black;
+        public static Color ModalDialog_LabelTextColor = NavigationPage_BarTextColor;
 
     }
 }

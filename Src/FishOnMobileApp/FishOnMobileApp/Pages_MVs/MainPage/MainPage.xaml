@@ -8,7 +8,7 @@
 
   
     <Grid>
-        <Image Source="fishing_rod.png" Opacity="0.3"/>
+       <Image Source="fishing_rod.png" Opacity="0.3"/>
 
       <StackLayout Padding="10,40,10,10">
         <StackLayout x:Name="logoContainer">

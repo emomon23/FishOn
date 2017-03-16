@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Xml.Linq;
 using FishOn.Model;
 using FishOn.Model.ViewModel;
@@ -114,7 +117,7 @@ namespace FishOn.Utils
         {
             return string.IsNullOrEmpty(str);
         }
-
+        
         public static bool IsNotNullOrEmpty(this string str)
         {
             return !string.IsNullOrEmpty(str);
@@ -214,6 +217,50 @@ namespace FishOn.Utils
 
             return -1;
         }
+
+        public static void CreateAddToolbarButton(this ContentPage page, Func<Func<Task>, Task> addFunction, Func<Task> callBack)
+        {
+            page.ToolbarItems.Add(new ToolbarItem("Add", null, async () =>
+            {
+                await addFunction(callBack);
+            }));
+
+            //Add a space
+            page.ToolbarItems.Add(new ToolbarItem(" ", null, () =>
+            {
+
+            }));
+        }
+
+        public static void CreateSaveToolbarButton(this ContentPage page, Func<Task> saveFunction , Func<Task> deleteFunction = null)
+        {
+            if (deleteFunction != null)
+            {
+                page.ToolbarItems.Add(new ToolbarItem("Delete", null, async () =>
+                {
+                    await deleteFunction();
+                }));
+
+
+                //Add a space
+                page.ToolbarItems.Add(new ToolbarItem(" ", null, () =>
+                {
+
+                }));
+            }
+
+            page.ToolbarItems.Add(new ToolbarItem("Save", null, async () =>
+            {
+                await saveFunction();
+            }));
+
+            //Add a space
+            page.ToolbarItems.Add(new ToolbarItem(" ", null, () =>
+            {
+
+            }));
+        }
+
 
         public static object Clone<T>(this Object obj)
         {

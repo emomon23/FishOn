@@ -6,7 +6,6 @@
              Title="Select Lake">
   
  
-  <AbsoluteLayout>
       <StackLayout x:Name="mainLayout" AbsoluteLayout.LayoutBounds="1,1,1,1" AbsoluteLayout.LayoutFlags="All">
         <ScrollView>
           <StackLayout x:Name="lakesBtnContainer"></StackLayout>
@@ -23,7 +22,4 @@
         </StackLayout>
 
     </StackLayout>
-
-  </AbsoluteLayout>
-  
 </ContentPage>

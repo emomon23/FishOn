@@ -20,9 +20,20 @@ namespace FishOn.ModelView
 
         ObservableCollection<Lake> _lakes;
 
-        public LakeListModelView(INavigation navigation) : base(navigation) { }
-        public LakeListModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService) { }
-        
+        public LakeListModelView(INavigation navigation) : base(navigation)
+        {
+        }
+
+        public LakeListModelView(INavigation navigation, ILakeDataService lakeDataService,
+            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService,
+            IFishOnCurrentLocationService locationService, IAppSettingService appSettingService,
+            IFishCaughtDataService fishCaughtDataService)
+            : base(
+                navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService,
+                fishCaughtDataService)
+        {
+        }
+
         public async override Task InitializeAsync()
         {
             var list = await _lakeService.GetLakesAsync();
@@ -39,10 +50,7 @@ namespace FishOn.ModelView
 
         public ObservableCollection<Lake> LakesList
         {
-            get
-            {
-                return _lakes;
-            }
+            get { return _lakes; }
             private set
             {
                 _lakes = value;
@@ -52,10 +60,7 @@ namespace FishOn.ModelView
 
         public string NewLakeNamesSeperatedByComma
         {
-            get
-            {
-                return _newLakeNames;
-            }
+            get { return _newLakeNames; }
             set
             {
                 _newLakeNames = value;
@@ -65,10 +70,7 @@ namespace FishOn.ModelView
 
         public Lake SelectedLake
         {
-            get
-            {
-                return _selectedLake;
-            }
+            get { return _selectedLake; }
             set
             {
                 _selectedLake = value;
@@ -78,10 +80,7 @@ namespace FishOn.ModelView
 
         public int WaterTemp
         {
-            get
-            {
-                return _waterTemp;
-            }
+            get { return _waterTemp; }
             set
             {
                 _waterTemp = value;
@@ -89,25 +88,23 @@ namespace FishOn.ModelView
             }
         }
 
-        public Command AddNewLakesCommand
+        public async Task AddNewLakes(Func<Task> postSaveCallback)
         {
-            get
-            {
-                return new Command(async () =>
+            var simpleViewVM = new SimpleInputModalModelView(_navigation,
+                "Enter as many lake names, seperated by a comma, as you like", "Save");
+
+            await simpleViewVM.DisplayModalAsync(
+                async (bool cancelClicked, string lakeNamesProvided, bool deleteclicked) =>
                 {
-                    if (NewLakeNamesSeperatedByComma.IsNotNullOrEmpty())
+                    if (!cancelClicked)
                     {
-                        var lakes = await _lakeService.CreateNewLakesAsync(NewLakeNamesSeperatedByComma.Split(','));
+                        var lakes = await _lakeService.CreateNewLakesAsync(lakeNamesProvided.Split(','));
                         LakesList = new ObservableCollection<Lake>(lakes);
-                        NewLakeNamesSeperatedByComma = "";
-                    }
-                    else
-                    {
-                        //alert, you must provide some lakes!
+                        await postSaveCallback();
                     }
                 });
-            }
         }
+
 
         public Command LakeSelectedCommand
         {

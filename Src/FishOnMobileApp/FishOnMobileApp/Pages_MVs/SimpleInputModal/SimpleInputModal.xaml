@@ -2,13 +2,16 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FishOn.SimpleInputModal">
-  <StackLayout>
-    <Label x:Name="lblCaption" Text="{Binding CaptionText}"></Label>
-    <Entry x:Name="txtValue" Text="{Binding InputBoxValue}"></Entry>
-    <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
-       <Button Text="Delete" Command="{Binding DeleteClickCommand}" IsVisible="{Binding ShowDeleteButton}"></Button>
-       <Button Text="{Binding CancelButtonText}" Command="{Binding CancelClickCommand}"></Button>
-       <Button Text ="{Binding OkButtonText}" Command="{Binding OkClickCommand}"></Button>
+
+  <Grid>
+    <Image Source="fishing_rod.png" Opacity="0.3"/>
+    
+    <StackLayout VerticalOptions="CenterAndExpand">
+      <Label x:Name="lblCaption" Text="{Binding CaptionText}" FontSize="{Binding LabelFontSize}" TextColor="{Binding LabelTextColor}" BackgroundColor="{Binding LabelBackColor}"></Label>
+      <Entry x:Name="txtValue" Text="{Binding InputBoxValue}" FontSize="{Binding EntryFontSize}" TextColor="{Binding EntryTextColor}"></Entry>
+      <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" x:Name="btnContainer">
+      
+      </StackLayout>
     </StackLayout>
-  </StackLayout>
+   </Grid>
 </ContentPage>

@@ -78,6 +78,10 @@
       <DependentUpon>MyFishList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishListModelView.cs" />
+    <Compile Include="Pages_MVs\ProvisioningPages\Settings\SettingsListPage.xaml.cs">
+      <DependentUpon>SettingsListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages_MVs\ProvisioningPages\Settings\SettingsListViewModel.cs" />
     <Compile Include="Pages_MVs\ProvisioningPages\Species\MySpeciesProvisioningPage.xaml.cs">
       <DependentUpon>MySpeciesProvisioningPage.xaml</DependentUpon>
     </Compile>
@@ -275,6 +279,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages_MVs\ProvisioningPages\MyFish\MyFishList.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\Settings\SettingsListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

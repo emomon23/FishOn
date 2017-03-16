@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FishOn.Pages_MVs;
 using FishOn.Utils;
 using Xamarin.Forms;
 
@@ -49,10 +50,7 @@ namespace FishOn.ModelView
             _modalClosedAsyncCallBack = callBack;
             var deleteButtonText = _showDelete? "Delete" : null;
 
-            var page = new SimpleInputModal();
-            page.BindingContext = this;
-
-
+            var page = new SimpleInputModal(this);
             await _navigation.PushModalAsync(page);
         }
 
@@ -102,41 +100,55 @@ namespace FishOn.ModelView
             }
         }
 
-        public Command OkClickCommand
+        public Color EntryTextColor
         {
             get
             {
-                return new Command(async () =>
-                {
-                    var copyValue = InputBoxValue.Substring(0);
-                    await _navigation.PopModalAsync();
-                    _modalClosedAsyncCallBack?.Invoke(false, copyValue, false);
-                });
+                return StyleSheet.ModalDialog_EntryTextColor;
+            } 
+        }
+
+        public Color LabelTextColor
+        {
+            get
+            {
+                return StyleSheet.ModalDialog_LabelTextColor;
             }
         }
 
-        public Command CancelClickCommand
+        public Color LabelBackColor
         {
-            get
-            {
-                return new Command(async() =>
-                {
-                    await _navigation.PopModalAsync();
-                    _modalClosedAsyncCallBack?.Invoke(true, "", false);
-                });
-            }
+            get { return StyleSheet.ModalDialog_LabelBackColor; }
         }
 
-        public Command DeleteClickCommand
+        public int LabelFontSize
         {
-            get
-            {
-                return new Command(async () =>
-                {
-                    await _navigation.PopModalAsync();
-                    _modalClosedAsyncCallBack?.Invoke(true, "", true);
-                });
-            }
+            get { return StyleSheet.ModalDialog_LabelFontSize; }
+        }
+
+        public int EntryFontSize
+        {
+            get { return StyleSheet.ModalDialog_EntryFontSize;  }
+        }
+
+        public async Task OkClick()
+        {
+            var copyValue = InputBoxValue.Substring(0);
+            await _navigation.PopModalAsync();
+            _modalClosedAsyncCallBack?.Invoke(false, copyValue, false);
+        }
+
+        public async Task CancelClick()
+        {
+            await _navigation.PopModalAsync();
+            _modalClosedAsyncCallBack?.Invoke(true, "", false);
+        }
+
+        public async Task DeleteClick()
+        {
+            await _navigation.PopModalAsync();
+            _modalClosedAsyncCallBack?.Invoke(true, "", true);
+
         }
     }
 }
