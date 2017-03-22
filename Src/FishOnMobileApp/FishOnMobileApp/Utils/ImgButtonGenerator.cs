@@ -9,6 +9,12 @@ using Xamarin.Forms;
 
 namespace FishOn.Utils
 {
+    public enum AlignImageEnumeration
+    {
+        Right,
+        Left
+    }
+
     public class ImgBtnGenerator
     {
         private Color _backColor;
@@ -26,22 +32,39 @@ namespace FishOn.Utils
             double? fontSize = null, Color? backColorOverride = null)
         {
             var result = CreateButtonView(width, height, text, image, fontSize, backColorOverride);
-            AddTapGestureToView(result, command, text);
+            AddTapGestureToView(result.layout, command, text);
 
-            return result;
+            return result.layout;
         }
 
         public View CreateButton(Func<Task> asycFunction, double width, double height, string text, string image = null,
             double? fontSize = null, Color? backColorOverride = null)
         {
             var result = CreateButtonView(width, height, text, image, fontSize, backColorOverride);
-            AddTapGestureToView(result, asycFunction, text);
+            AddTapGestureToView(result.layout, asycFunction, text);
 
-            return result;
+            return result.layout;
         }
 
-        private View CreateButtonView(double width, double height, string text, string image = null,
-            double? fontSize = null, Color? backColorOverride = null)
+        public View CreateButton(Func<string, Task> asycFunction, double width, double height, string text, string image = null,
+           double? fontSize = null, Color? backColorOverride = null, AlignImageEnumeration alignImage = AlignImageEnumeration.Left)
+        {
+            var result = CreateButtonView(width, height, text, image, fontSize, backColorOverride, alignImage);
+
+            if (alignImage == AlignImageEnumeration.Left)
+            {
+                AddTapGestureToView(result.layout, asycFunction, text);
+            }
+            else
+            {
+                AddTapGestureToView(result, asycFunction, text);
+            }
+
+            return result.layout;
+        }
+
+        private ImageButtonContents CreateButtonView(double width, double height, string text, string image = null,
+            double? fontSize = null, Color? backColorOverride = null, AlignImageEnumeration alignImage = AlignImageEnumeration.Left)
         { 
 
             backColorOverride = backColorOverride.HasValue ? backColorOverride : _backColor;
@@ -65,22 +88,23 @@ namespace FishOn.Utils
                 layout.Padding = new Thickness(2,2,2,2);
             }
 
+            Image img = null;
             if (image.IsNotNullOrEmpty())
             {
-                Image img = new Image()
+                img = new Image()
                 {
                     Source = image,
                     WidthRequest = text.IsNotNullOrEmpty()? width / 5 : width,
                     HeightRequest = text.IsNotNullOrEmpty()? height / 1.8 : height,
                     BackgroundColor = Color.Transparent
                 };
-
-                layout.Children.Add(img);
             }
+
+            Label lbl = null;
 
             if (text.IsNotNullOrEmpty())
             {
-                Label lbl = new Label()
+               lbl = new Label()
                 {
                     TextColor = _textColor,
                     Text = $" {text.ToUpper()}",
@@ -89,11 +113,33 @@ namespace FishOn.Utils
                     HeightRequest = height - 10,
                     VerticalTextAlignment = TextAlignment.Center
                 };
+            }
 
+            if (alignImage == AlignImageEnumeration.Left && img != null)
+            {
+                layout.Children.Add(img);
+            }
+
+            if (lbl != null)
+            {
                 layout.Children.Add(lbl);
             }
-          
-            return layout;
+
+            if (alignImage == AlignImageEnumeration.Right && img != null)
+            {
+                StackLayout alignRight = new StackLayout()
+                {
+                    Padding = new Thickness(0, 10, 0, 0),
+                    HorizontalOptions = LayoutOptions.EndAndExpand,
+                    Children = { img }
+                };
+
+                layout.Children.Add(alignRight);
+                layout.Padding = 0;
+                layout.Margin = .5;
+            }
+
+            return new ImageButtonContents() {lbl = lbl, layout = layout, img = img};
         }
 
         public static void ConvertToButton(View view, ICommand command)
@@ -131,6 +177,36 @@ namespace FishOn.Utils
             view.GestureRecognizers.Add(tap);
         }
 
+        private static void AddTapGestureToView(View view, Func<string, Task> asyncFunction, string text)
+        {
+            TapGestureRecognizer tap = new TapGestureRecognizer()
+            {
+                Command = new Command(async () =>
+                {
+                    await view.ScaleTo(.95, 200, Easing.BounceIn);
+                    view.ScaleTo(1, 200);
+                    await asyncFunction(text);
+                })
+            };
+
+            view.GestureRecognizers.Add(tap);
+        }
+
+        private static void AddTapGestureToView(ImageButtonContents contents, Func<string, Task> asyncFunction, string text)
+        {
+            TapGestureRecognizer tap = new TapGestureRecognizer()
+            {
+                Command = new Command(async () =>
+                {
+                    await contents.img.ScaleTo(.95, 200, Easing.BounceIn);
+                    contents.img.ScaleTo(1, 200);
+                    await asyncFunction(text);
+                })
+            };
+
+            contents.layout.GestureRecognizers.Add(tap);
+        }
+
         public static void AddButton(StackLayout container, ICommand command, double width,
                                         double height, string text = null, string image = null, double? fontSize=null, Color ? backColor=null)
         {
@@ -155,6 +231,33 @@ namespace FishOn.Utils
             }
         }
 
+        public static void AddButton(StackLayout container, Func<string, Task> asyncFunction, double width,
+                                      double height, string text = null, string image = null, double? fontSize = null, Color? backColor = null, AlignImageEnumeration alignImage = AlignImageEnumeration.Left)
+        {
+            //We don't add duplicates to the stacklayout
+            if (container.Children.All(c => c.AutomationId != $"imgBtn{text}"))
+            {
+                var bg = ImgBtnGenerator.GetInstance();
+                var button = bg.CreateButton(asyncFunction, width, height, text, image, fontSize, backColor, alignImage);
+                container.Children.Add(button);
+            }
+        }
+
+        public static void BindEntryEnterKeyPress_ToButtonClick(Entry textBox, Func<Task> btnFunction)
+        {
+            textBox.Completed += async (object sender, EventArgs e) =>
+            {
+                await btnFunction();
+            };
+        }
+
+        public static void BindEntryEnterKeyPress_ToButtonClick(Entry textBox, ICommand btnCommand)
+        {
+            textBox.Completed += (object sender, EventArgs e) =>
+            {
+                btnCommand.Execute(null);
+            };
+        }
 
         public static ImgBtnGenerator GetInstance()
         {
@@ -175,6 +278,12 @@ namespace FishOn.Utils
             return result;
         }
 
+        internal class ImageButtonContents
+        {
+            public Label lbl { get; set; }
+            public Image img { get; set; }
+            public StackLayout layout { get; set; }
+        }
 
     }
 }

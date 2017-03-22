@@ -78,6 +78,7 @@
       <DependentUpon>MyFishList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages_MVs\ProvisioningPages\MyFish\MyFishListModelView.cs" />
+    <Compile Include="Pages_MVs\ProvisioningPages\Settings\ProvisioningPageDefinition.cs" />
     <Compile Include="Pages_MVs\ProvisioningPages\Settings\SettingsListPage.xaml.cs">
       <DependentUpon>SettingsListPage.xaml</DependentUpon>
     </Compile>

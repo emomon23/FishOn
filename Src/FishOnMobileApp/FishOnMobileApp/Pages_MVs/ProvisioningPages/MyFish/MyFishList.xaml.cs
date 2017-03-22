@@ -13,22 +13,14 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
 {
     public partial class MyFishList : ContentPage
     {
-        private MyFishListModelView _viewModel;
+        private MyFishListModelView _vm;
 
-        public MyFishList()
+        public MyFishList(MyFishListModelView vm)
         {
             InitializeComponent();
-        }
-
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
-            if (this.BindingContext != null)
-            {
-                _viewModel = (MyFishListModelView)this.BindingContext;
-                await _viewModel.InitializeAsync();
-            }
-
+            _vm = vm;
+            this.BindingContext = vm;
+            
             AddToggleButtons();
             AddAccordions();
         }
@@ -41,7 +33,7 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
                 return;
             }
 
-            foreach (var wayPoint in _viewModel.FishCaughtByWayPoint)
+            foreach (var wayPoint in _vm.FishCaughtByWayPoint)
             {
                 var fishListView = CreateFishListView(wayPoint);
                 var acWayPointNode = AccordionFactory.CreateNewNode(
@@ -59,7 +51,7 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
                 byWayPointLayout.Children.Add(acWayPointNode);
             }
 
-            foreach (var fishSpeciesCaught in _viewModel.FishCaughtBySpecies)
+            foreach (var fishSpeciesCaught in _vm.FishCaughtBySpecies)
             {
                 var contentListView = CreateFishListView(fishSpeciesCaught);
                 var acSpeciesNode = AccordionFactory.CreateNewNode(
@@ -114,7 +106,7 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
 
             result.ItemSelected += async (sender, args) =>
             {
-                await _viewModel.FishTapped((Model.FishOn)args.SelectedItem);
+                await _vm.FishTapped((Model.FishOn)args.SelectedItem);
             };
 
             return result;
@@ -161,7 +153,7 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
             
             result.ItemSelected += async (sender, args) =>
             {
-                await _viewModel.FishTapped((Model.FishOn)args.SelectedItem);
+                await _vm.FishTapped((Model.FishOn)args.SelectedItem);
             };
            
             return result;

@@ -10,20 +10,18 @@ namespace FishOn.Pages_MVs.ProvisioningPages.Species
 {
     public partial class MySpeciesProvisioningPage : ContentPage
     {
-        public MySpeciesProvisioningPage()
+        private MySpeciestProvisioningViewModel _vm;
+        public MySpeciesProvisioningPage(MySpeciestProvisioningViewModel vm)
         {
             InitializeComponent();
+            _vm = vm;
+            this.BindingContext = vm;
         }
 
         protected async void SpeciesFished_OnToggled(object sender, ToggledEventArgs e)
         {
-            if (this.BindingContext != null)
-            {
-               var bc = (MySpeciestProvisioningViewModel) this.BindingContext;
-               var species =  (Model.Species) ((Switch)sender).BindingContext;
-
-               await bc.ToggleSelectedSpecies(species);
-            }
+            var species = (Model.Species)((Switch)sender).BindingContext;
+            await _vm.ToggleSelectedSpecies(species);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,7 +15,8 @@ namespace FishOn.ModelView
     public class WayPointProvisioningModelView : BaseModelView
     {
         private ObservableCollection<WayPoint> _speciesList;
-        
+        private List<Lake> _lakeList;
+
         public WayPointProvisioningModelView(INavigation navigation, ILakeDataService lakeDataService,
             ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService)
             : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService){}
@@ -22,12 +24,18 @@ namespace FishOn.ModelView
         public override async Task InitializeAsync()
         {
             await GetWayPointList();
+           _lakeList = await _lakeService.GetLakesAsync();
         }
 
         private async Task GetWayPointList()
         {
             var wayPoints = await _wayPointDataService.GetWayPointsAsync();
             WayPointList = new ObservableCollection<WayPoint>(wayPoints);
+        }
+
+        public List<Lake> LakeList
+        {
+            get { return _lakeList; }
         }
 
         public ObservableCollection<WayPoint> WayPointList
@@ -53,6 +61,30 @@ namespace FishOn.ModelView
                     : WayPoint.WayPointTypeEnumeration.BoatLaunch;
             }
         }
+
+        public int SelectedLakeIndex
+        {
+            get
+            {
+                int result = 0;
+                for (int i = 0; i < _lakeList.Count; i++)
+                {
+                    if (_lakeList[i].LakeId == WayPoint.LakeId)
+                    {
+                        result = i;
+                        break;
+                    }
+                }
+
+                return result;
+            }
+            set
+            {
+                WayPoint.LakeId = _lakeList[value].LakeId;
+                WayPoint.Lake = _lakeList[value];
+            }  
+        }
+
         public ICommand SaveWayPointCommand
         {
             get

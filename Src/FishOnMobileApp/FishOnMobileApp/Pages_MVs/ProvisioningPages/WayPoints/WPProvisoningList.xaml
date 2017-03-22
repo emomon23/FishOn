@@ -4,7 +4,7 @@
              xmlns:viewModel="clr-namespace:FishOn.ModelView;assembly=FishOnMobileApp"
              x:Class="FishOn.ProvisioningPages.WayPoints.WPProvisoningList"
              Title="Way Points">
-
+    
   <StackLayout Orientation="Horizontal" BackgroundColor="Blue" HeightRequest="40">
     <Label Text="Way Points" FontSize="24"></Label>
     <Button Text="Add WP" HorizontalOptions="EndAndExpand" Command="{Binding AddWayPoint}"></Button>
@@ -14,7 +14,7 @@
     <ListView x:Name="wayPointListView" ItemsSource="{Binding WayPointList}" RowHeight="80" >
       <ListView.ItemTemplate>
         <DataTemplate>
-          <ViewCell Appearing="Cell_OnAppearing">
+          <ViewCell>
             <StackLayout Margin="0" Spacing="0" Padding="0">
               <StackLayout Orientation="Horizontal">
                  <StackLayout.GestureRecognizers>
@@ -35,5 +35,4 @@
       </ListView.ItemTemplate>
     </ListView>
   </StackLayout>
-  
 </ContentPage>

@@ -12,13 +12,13 @@
         </ScrollView>
     
         <StackLayout Orientation="Horizontal">
-          <Label Text="Lake Selected:"></Label>
-          <Label Text="{Binding SelectedLake.LakeName}"></Label>
+          <Label FontSize="{Binding Default_Label_Font_Size}" Text="Lake Selected:"></Label>
+          <Label FontSize="{Binding Default_Label_Font_Size}" Text="{Binding SelectedLake.LakeName}"></Label>
         </StackLayout>
        
         <StackLayout Orientation="Horizontal">
-          <Label Text="Water Temp?"></Label>
-          <Entry Text="{Binding WaterTemp}" Placeholder="Water Temp?"></Entry>
+          <Label FontSize="{Binding Default_Label_Font_Size}" Text="Water Temp?"></Label>
+          <Entry x:Name="txtWaterTemp" FontSize="{Binding Default_Label_Font_Size}" Text="{Binding WaterTemp}" Placeholder="Water Temp?"></Entry>
         </StackLayout>
 
     </StackLayout>

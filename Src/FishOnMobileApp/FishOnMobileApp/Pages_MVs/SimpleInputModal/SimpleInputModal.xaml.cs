@@ -32,6 +32,13 @@ namespace FishOn
                    StyleSheet.Small_Button_Height, vm.OkButtonText, "ok.ico",
                    backColor: StyleSheet.NavigationPage_BarBackgroundColor);
 
+            ImgBtnGenerator.BindEntryEnterKeyPress_ToButtonClick(txtValue, vm.OkClick);
+
+        }
+
+        protected async override void OnAppearing()
+        {
+            txtValue.Focus();
         }
     }
 }

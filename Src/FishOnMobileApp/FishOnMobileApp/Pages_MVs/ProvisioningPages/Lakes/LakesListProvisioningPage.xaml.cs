@@ -10,9 +10,12 @@ namespace FishOn.Pages_MVs.ProvisioningPages.Lakes
 {
     public partial class LakesListProvisioningPage : ContentPage
     {
-        public LakesListProvisioningPage()
+        private LakeListProvisioningModelView _vm;
+        public LakesListProvisioningPage(LakeListProvisioningModelView vm)
         {
             InitializeComponent();
+            _vm = vm;
+            this.BindingContext = vm;
         }
     }
 }

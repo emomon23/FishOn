@@ -41,41 +41,7 @@ namespace FishOn.ModelView
         {
             _pages = new List<Page>();
 
-            _pages.Add(new WPProvisoningList()
-            {
-                BindingContext =
-                    new WayPointProvisioningModelView(_navigation, _lakeService, _speciesDataService,
-                        _wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
-            });
-
-            _pages.Add(new MyFishList()
-            {
-                BindingContext =
-                  new MyFishListModelView(_navigation, _lakeService, _speciesDataService,
-                      _wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
-            });
-            
            
-            _pages.Add(new LakesListProvisioningPage()
-            {
-                BindingContext =
-                  new LakeListProvisioningModelView(_navigation, _lakeService, _speciesDataService,
-                      _wayPointDataService, _locationService, _appSettingService, _fishOnDataService) 
-            });
-
-            _pages.Add(new TackleBoxPage()
-            {
-                 BindingContext = new TackleBoxModelView(_navigation, _lakeService, _speciesDataService,_wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
-            });
-
-            
-            _pages.Add(new MySpeciesProvisioningPage()
-            {
-                 BindingContext = new MySpeciestProvisioningViewModel(_navigation, _lakeService, _speciesDataService,_wayPointDataService, _locationService, _appSettingService, _fishOnDataService)
-            });
-            
-
-
             return _pages;
         }
     }

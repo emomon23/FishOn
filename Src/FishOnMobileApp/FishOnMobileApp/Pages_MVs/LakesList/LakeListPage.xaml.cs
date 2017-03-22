@@ -13,6 +13,8 @@ namespace FishOn
     public partial class LakeListPage : ContentPage
     {
         private LakeListModelView _vm;
+        private bool _appearProcess = false;
+
         public LakeListPage(LakeListModelView vm)
         {
             InitializeComponent();
@@ -23,9 +25,21 @@ namespace FishOn
             AddLakeButtons();
 
             ImgBtnGenerator.AddButton(this.mainLayout, vm.SetSessionDataCommand, StyleSheet.Button_List_Width, StyleSheet.Small_Button_Height, "Start Trip");
-            this.CreateAddToolbarButton(vm.AddNewLakes, async () => { AddLakeButtons(); });
+
+            txtWaterTemp.Focus();
+            ImgBtnGenerator.BindEntryEnterKeyPress_ToButtonClick(txtWaterTemp, vm.SetSessionDataCommand);
+            
         }
-        
+
+        protected async override void OnAppearing()
+        {
+            if (!_appearProcess)
+            {
+                _appearProcess = true;
+                this.CreateAddToolbarButton(_vm.AddNewLakes, async () => { AddLakeButtons(); });
+            }
+        }
+
         private void AddLakeButtons()
         {
             foreach (var lake in _vm.LakesList)

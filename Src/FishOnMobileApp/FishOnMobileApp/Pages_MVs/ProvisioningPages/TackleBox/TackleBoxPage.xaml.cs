@@ -10,20 +10,10 @@ namespace FishOn.Pages_MVs.ProvisioningPages.TackleBox
 {
     public partial class TackleBoxPage : ContentPage
     {
-        public TackleBoxPage()
+        public TackleBoxPage(TackleBoxModelView vm)
         {
             InitializeComponent();
-        }
-
-        protected override async void OnAppearing()
-        {
-            if (BindingContext != null)
-            {
-                var mv = (TackleBoxModelView) BindingContext;
-                await mv.InitializeAsync();
-            }
+            this.BindingContext = vm;
         }
     }
-
-  
 }

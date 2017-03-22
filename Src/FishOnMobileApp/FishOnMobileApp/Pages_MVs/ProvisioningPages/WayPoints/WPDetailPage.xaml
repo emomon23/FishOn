@@ -3,33 +3,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FishOn.ProvisioningPages.WayPoints.WPDetailPage"
              Title="Way Pts">
+
+  <StackLayout>
+
+    <Label Text="Name"></Label>
+    <Entry HorizontalOptions="FillAndExpand" Text="{Binding WayPoint.Name}"></Entry>
+
+
+    <Label Text="Latitude"></Label>
+    <Entry WidthRequest="150" Text="{Binding WayPoint.Latitude}"
+           HorizontalOptions="FillAndExpand"></Entry>
+
+    <Label Text="Longitude"></Label>
+    <Entry Text="{Binding WayPoint.Longitude}"
+           HorizontalOptions="FillAndExpand"></Entry>
+
+    <Label Text="Lake"></Label>
+    <Picker x:Name="LakePicker"
+     SelectedIndex="{Binding SelectedLakeIndex}"
+     HorizontalOptions="FillAndExpand"/>
+    
+    <Label Text="WP Type"></Label>
+    <Picker x:Name="WpTypePicker"
+      SelectedIndex="{Binding SelectedWayPointTypeIndex}"
+      HorizontalOptions="FillAndExpand"/>
+
   
- <StackLayout>
-   <StackLayout Orientation="Horizontal">
-     <Label Text="Name"></Label>
-     <Entry HorizontalOptions="FillAndExpand" Text="{Binding WayPoint.Name}"></Entry>
   </StackLayout>
-  
-     <Label Text="Latitude"></Label>
-     <Entry WidthRequest="150" Text="{Binding WayPoint.Latitude}"
-            HorizontalOptions="FillAndExpand"></Entry>
-     
-     <Label Text="Longitude"></Label>
-     <Entry Text="{Binding WayPoint.Longitude}"
-            HorizontalOptions="FillAndExpand"></Entry>
-   
-   
-   <StackLayout Orientation="Horizontal">
-     <Label Text="WP Type"></Label>
-     <Picker x:Name="WpTypePicker"
-       VerticalOptions="CenterAndExpand"
-       SelectedIndex="{Binding SelectedWayPointTypeIndex}"
-       HorizontalOptions="FillAndExpand"/>
-   </StackLayout>
-   
-   <StackLayout Orientation="Horizontal">
-     <Label Text="Lake"></Label>
-     <Entry HorizontalOptions="FillAndExpand" Text="{Binding LakeName}"></Entry>
-   </StackLayout>
- </StackLayout>
 </ContentPage>

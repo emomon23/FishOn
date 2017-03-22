@@ -12,6 +12,7 @@ using FishOn.Pages_MVs.LakeMap;
 using FishOn.Pages_MVs.MyData;
 using FishOn.Pages_MVs.ProvisioningPages.Lakes;
 using FishOn.Pages_MVs.ProvisioningPages.MyFish;
+using FishOn.Pages_MVs.ProvisioningPages.Settings;
 using FishOn.PlatformInterfaces;
 using FishOn.ProvisioningPages.WayPoints;
 using FishOn.Services;
@@ -65,6 +66,8 @@ namespace FishOn.ModelView
 
         public double HalfPageWidth => Application.Current.MainPage.Width / 2;
         public double HalfPageHeight => Application.Current.MainPage.Height / 2;
+
+        public int Default_Label_Font_Size => StyleSheet.Default_Label_Font_Size;
 
         public bool IsBusy
         {
@@ -132,22 +135,16 @@ namespace FishOn.ModelView
       
         protected async Task Navigate_ToMyDataButtonsListAsync()
         {
-           // Page page = (Page) Activator.CreateInstance(typeof(MyDataListPage));
-            var page = new MyDataListPage()
-            {
-                BarBackgroundColor = StyleSheet.NavigationPage_BarBackgroundColor,
-                BarTextColor = StyleSheet.TabbedPage_TabFontColor
-            };
-
-            page.BindingContext =  new MyDataListModelView(page.Navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService, _fishOnDataService);
+            var vm = new SettingsListViewModel(_navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService, _fishOnDataService);
+            var page = new SettingsListPage(vm);
 
             await _navigation.PushAsync(page);
         }
 
         protected async Task Naviage_ToWayPointProvisioningDetailPage()
         {
-            var detailPage = new WPDetailPage();
-            detailPage.BindingContext = this;
+            var vm = (WayPointProvisioningModelView) this;
+            var detailPage = new WPDetailPage(vm);
             await _navigation.PushAsync(detailPage);
         }
 

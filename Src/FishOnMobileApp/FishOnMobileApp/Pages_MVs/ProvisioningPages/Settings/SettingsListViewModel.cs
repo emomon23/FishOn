@@ -12,6 +12,8 @@ namespace FishOn.Pages_MVs.ProvisioningPages.Settings
 {
     public class SettingsListViewModel : BaseModelView
     {
+        private ProvisioningPageDefinitions _provisioningPagesDefinitions;
+
         public SettingsListViewModel(INavigation navigation, ILakeDataService lakeDataService,
             ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService,
             IFishOnCurrentLocationService fishOnCurrentLocationService, IAppSettingService appSettingService,
@@ -20,9 +22,23 @@ namespace FishOn.Pages_MVs.ProvisioningPages.Settings
                 navigation, lakeDataService, speciesDataService, wayPointDataService, fishOnCurrentLocationService,
                 appSettingService, fishCaughtDataService)
         {
+            _provisioningPagesDefinitions = new ProvisioningPageDefinitions();
         }
 
+        public List<ProvisioningPageDefinition> PageDefinitions
+        {
+            get { return _provisioningPagesDefinitions.GetList(); }
+        }
 
+        public async Task DisplayProvisioningPage(string pageTitle)
+        {
+            var pageDefinition = _provisioningPagesDefinitions.GetDefinition(pageTitle);
+            var page = await pageDefinition.CreatePage(_navigation, _lakeService, _speciesDataService, _wayPointDataService,
+                _locationService, _appSettingService, _fishOnDataService);
+
+            await _navigation.PushAsync(page);
+
+        }
 
     }
 }

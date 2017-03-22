@@ -21,7 +21,7 @@ namespace FishOn.Pages_MVs
         public static Color Button_BackColor = Color.FromHex("67846C");
         public static Color Button_TextColor = Color.White;
 
-        public static int Default_Label_Font_Size = 14;
+        public static int Default_Label_Font_Size = 18;
 
         public static Color TabbedPage_TabFontColor = Color.White;
 
@@ -41,9 +41,9 @@ namespace FishOn.Pages_MVs
 
         public static int ModalDialog_LabelFontSize = 28;
         public static int ModalDialog_EntryFontSize = 20;
-        public static Color ModalDialog_LabelBackColor = NavigationPage_BarBackgroundColor;
+        public static Color ModalDialog_LabelBackColor = Color.White;
         public static Color ModalDialog_EntryTextColor = Color.Black;
-        public static Color ModalDialog_LabelTextColor = NavigationPage_BarTextColor;
+        public static Color ModalDialog_LabelTextColor = Color.Black;
 
     }
 }

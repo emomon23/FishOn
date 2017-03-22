@@ -12,17 +12,19 @@ namespace FishOn.ProvisioningPages.WayPoints
 {
     public partial class WPDetailPage : ContentPage
     {
-        private WayPointProvisioningModelView _modelView;
-
-        public WPDetailPage()
+        public WPDetailPage(WayPointProvisioningModelView vm)
         {
             InitializeComponent();
+            this.BindingContext = vm;
+
             WpTypePicker.AddItems(new string[] {WayPoint.WayPointTypeEnumeration.FishOn.ToString(), WayPoint.WayPointTypeEnumeration.BoatLaunch.ToString()});
 
+            var lakeNames = vm.LakeList.Select(l => l.LakeName).ToArray();
+            LakePicker.AddItems(lakeNames);
            
             ToolbarItems.Add(new ToolbarItem("Delete", null,  () =>
             {
-                 _modelView.DeleteWayPointCommand.Execute(null);
+                 vm.DeleteWayPointCommand.Execute(null);
             }));
 
             //space
@@ -30,16 +32,11 @@ namespace FishOn.ProvisioningPages.WayPoints
 
             ToolbarItems.Add(new ToolbarItem("Save", null, () =>
             {
-                _modelView.SaveWayPointCommand.Execute(null);
+                vm.SaveWayPointCommand.Execute(null);
             }));
         }
 
         protected override async void OnAppearing()
-        {
-            if (BindingContext != null)
-            {
-                _modelView = (WayPointProvisioningModelView) BindingContext;
-            }
-        }
+        {}
     }
 }

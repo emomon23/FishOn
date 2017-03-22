@@ -6,9 +6,9 @@
   <Grid>
     <Image Source="fishing_rod.png" Opacity="0.3"/>
     
-    <StackLayout VerticalOptions="CenterAndExpand">
-      <Label x:Name="lblCaption" Text="{Binding CaptionText}" FontSize="{Binding LabelFontSize}" TextColor="{Binding LabelTextColor}" BackgroundColor="{Binding LabelBackColor}"></Label>
-      <Entry x:Name="txtValue" Text="{Binding InputBoxValue}" FontSize="{Binding EntryFontSize}" TextColor="{Binding EntryTextColor}"></Entry>
+    <StackLayout Padding="10, 60, 10, 0">
+      <Label x:Name="lblCaption" Text="{Binding CaptionText}" FontSize="{Binding LabelFontSize}" TextColor="White" BackgroundColor="Transparent"></Label>
+      <Entry x:Name="txtValue" Text="{Binding InputBoxValue}" FontSize="{Binding EntryFontSize}" TextColor="{Binding EntryTextColor}" BackgroundColor="{Binding LabelBackColor}"></Entry>
       <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" x:Name="btnContainer">
       
       </StackLayout>
