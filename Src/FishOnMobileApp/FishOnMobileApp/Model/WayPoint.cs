@@ -29,6 +29,7 @@ namespace FishOn.Model
         public double Longitude { get; set; }
         public string Name { get; set; }
         public DateTime DateFirstCreated { get; set; }
+        public string Notes { get; set; }
         public WayPointTypeEnumeration WayPointType { get; set; }
         public int LakeId { get; set; }
 
@@ -41,13 +42,13 @@ namespace FishOn.Model
         [Ignore]
         public virtual Lake Lake { get; set; }
 
-        public void AddFishCaught(Species speciesCaught, WeatherCondition weatherCondition)
+        public void AddFishCaught(Species speciesCaught, WeatherCondition weatherCondition, int currentWaterTemp)
         {
             var fishCaught = new FishOn()
             {
                 DateCaught = DateTime.Now.AddMinutes(-5),
                 SpeciesId = speciesCaught.SpeciesId,
-                WaterTemp = SessionData.CurrentWaterTemp.ToString(),
+                WaterTemp = currentWaterTemp.ToString(),
                 WeatherCondition = weatherCondition,
                 Species = speciesCaught
             };

@@ -9,6 +9,7 @@ using FishOn.Model;
 using FishOn.PlatformInterfaces;
 using FishOn.Services;
 using FishOn.ModelView;
+using FishOn.Repositories;
 using FishOn.Utils;
 using Xamarin.Forms;
 
@@ -19,8 +20,8 @@ namespace FishOn.Pages_MVs.ProvisioningPages.TackleBox
         private ObservableCollection<FishingLure> _fishingLures = null;
 
         public TackleBoxModelView(INavigation navigation, ILakeDataService lakeDataService,
-           ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService)
-            : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService){ }
+           ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService)
+            : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService){ }
 
         public async override Task InitializeAsync()
         {

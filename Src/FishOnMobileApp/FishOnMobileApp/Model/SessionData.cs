@@ -4,34 +4,31 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms.Maps;
 
 namespace FishOn.Model
 {
-    //When the user goes out on the lake, they can set the water temp for the application
-    //Any waypoints created will use the water temp that was set at the beginning of the session (up to X (8?) hours)
-    public static class SessionData
+    public class SessionData
     {
-        private static int _currentWaterTemp;
-        private static DateTime _sessionStartDateTime;
-        private static int _currentLakeId;
-
-        public static int CurrentWaterTemp
+        public SessionData()
         {
-            get { return _currentWaterTemp;  }
+            DateCreated = DateTime.Now;
+            DateLastUpdated = DateCreated;
         }
 
-        public static int CurrentLakeId { get { return _currentLakeId;} }
+        public string SessionDataId { get; set; }    
+        public DateTime DateCreated { get; set; }
+        public DateTime DateLastUpdated { get; set; }
+        public object DataValue { get; set; }
 
-        public static double SessionAge_InMinutes
+        public double CurrentValue_AgeInMinutes
         {
-            get { return (DateTime.Now - _sessionStartDateTime).TotalMinutes; }
+            get { return (DateTime.Now - DateLastUpdated).TotalMinutes; }
         }
 
-        public static void RestartSession(int? currentLakeId, int? currentWaterTemp)
+        public double CurrentValue_AgeInDays
         {
-            _currentLakeId = currentLakeId ?? 0;
-            _currentWaterTemp = currentWaterTemp ?? 0;
-            _sessionStartDateTime = DateTime.Now;
+            get { return (DateTime.Now - DateLastUpdated).TotalDays; }
         }
     }
 }

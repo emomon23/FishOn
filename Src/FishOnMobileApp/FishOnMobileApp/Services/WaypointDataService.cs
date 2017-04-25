@@ -26,6 +26,7 @@ namespace FishOn.Services
         private IFishRepository _fishRepository;
         private IWeatherRepository _weatherRepository;
         private ISpeciesRepository _speciesRepository;
+        private ISessionDataService _sessionDataService;
 
         public WayPointDataService()
         {
@@ -37,7 +38,7 @@ namespace FishOn.Services
             _speciesRepository = new SpeciesRepository();
         }
 
-        public WayPointDataService(IWayPointRepository wayPointRepository, ILakeRepository lakeRepository, IWeatherService weatherService, IFishRepository fishRepo, IWeatherRepository weatherRepo, ISpeciesRepository speciesRepository)
+        public WayPointDataService(IWayPointRepository wayPointRepository, ILakeRepository lakeRepository, IWeatherService weatherService, IFishRepository fishRepo, IWeatherRepository weatherRepo, ISpeciesRepository speciesRepository, ISessionDataService sessionDataService)
         {
             _wayPointRepository = wayPointRepository;
             _lakeRepository = lakeRepository;
@@ -45,6 +46,7 @@ namespace FishOn.Services
             _weatherRepository = weatherRepo;
             _fishRepository = fishRepo;
             _speciesRepository = speciesRepository;
+            _sessionDataService = sessionDataService;
         }
 
         public async Task SaveWayPointProvisioningAsync(WayPoint wayPoint)
@@ -58,7 +60,7 @@ namespace FishOn.Services
 
             if (wayPoint == null)
             {
-                int lakeId = SessionData.CurrentLakeId;
+                int lakeId = _sessionDataService.CurrentLake?.LakeId ?? 0;
 
                 wayPoint = new WayPoint()
                 {
@@ -72,7 +74,7 @@ namespace FishOn.Services
             if (speciesCaught != null)
             {
                 var weatherCondition = await _weatherService.GetWeatherConditionsAsync(latitude, longitude);
-                wayPoint.AddFishCaught(speciesCaught, weatherCondition);
+                wayPoint.AddFishCaught(speciesCaught, weatherCondition, _sessionDataService.CurrentWaterTemp);
             }
 
             await SaveAsync(wayPoint);

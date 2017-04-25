@@ -2,10 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using FishOn.Model;
 using FishOn.PlatformInterfaces;
+using FishOn.Repositories;
 using FishOn.Services;
 using FishOn.Utils;
 using Xamarin.Forms;
+using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
 
 namespace FishOn.ModelView
@@ -14,7 +17,11 @@ namespace FishOn.ModelView
     {
         private bool _initialzeCalled = false;
         public MainPageModelView(INavigation navigation) : base(navigation){}
-        public MainPageModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService) { }
+        public MainPageModelView(INavigation navigation, ILakeDataService lakeDataService,
+            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService,
+            IFishOnCurrentLocationService locationService, IAppSettingService appSettingService,
+            IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService) 
+            :base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService) { }
 
         public override async Task InitializeAsync()
         {
@@ -43,6 +50,20 @@ namespace FishOn.ModelView
                 {
                     //no await here, just get them cached in the background.
                     _wayPointDataService.GetWayPointsAsync();
+                }
+
+                if (_sessionDataService.CurrentWeatherCondition == null)
+                {
+                    IWeatherService weatherService = new WeatherService();
+                    _locationService.GetCurrentPosition(async (position, message) =>
+                    {
+                        if (position.HasValue)
+                        {
+                            var conditions =  await weatherService.GetWeatherConditionsAsync(position.Value.Latitude, position.Value.Longitude);
+                            _sessionDataService.CurrentWeatherCondition = conditions;
+                            _sessionDataService.InitialPosition = position.Value;
+                        }
+                    });
                 }
             }
 

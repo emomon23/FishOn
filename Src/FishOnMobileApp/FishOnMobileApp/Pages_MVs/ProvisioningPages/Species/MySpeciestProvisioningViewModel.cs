@@ -8,6 +8,7 @@ using System.Windows.Input;
 using FishOn.ModelView;
 using FishOn.Pages_MVs.AccordionViewModel;
 using FishOn.PlatformInterfaces;
+using FishOn.Repositories;
 using FishOn.Services;
 using FishOn.Utils;
 using Xamarin.Forms;
@@ -22,9 +23,9 @@ namespace FishOn.Pages_MVs.ProvisioningPages.Species
 
         public MySpeciestProvisioningViewModel(INavigation navigation, ILakeDataService lakeDataService,
             ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService,
-            IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService)
+            IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService,  ISessionDataService sessionDataService)
             : base(
-                navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService){}
+                navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService){}
 
         public async override Task InitializeAsync()
         {

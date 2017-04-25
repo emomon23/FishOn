@@ -14,7 +14,7 @@ namespace FishOn.Pages_MVs.ProvisioningPages.Settings
         {
             InitializeComponent();
             this.BindingContext = vm;
-
+           
             foreach (var pageDefinition in vm.PageDefinitions)
             {
                 ImgBtnGenerator.AddButton(btnContainer, vm.DisplayProvisioningPage, StyleSheet.Button_List_Width, StyleSheet.Button_List_Height, pageDefinition.PageTitle, "expand_right.png", StyleSheet.Default_Label_Font_Size, StyleSheet.Button_BackColor, AlignImageEnumeration.Right);

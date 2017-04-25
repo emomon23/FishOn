@@ -10,6 +10,7 @@ using FishOn.Pages_MVs.ProvisioningPages.Species;
 using FishOn.Pages_MVs.ProvisioningPages.TackleBox;
 using FishOn.PlatformInterfaces;
 using FishOn.ProvisioningPages.WayPoints;
+using FishOn.Repositories;
 using FishOn.Services;
 using Xamarin.Forms;
 
@@ -69,7 +70,7 @@ namespace FishOn.Pages_MVs.ProvisioningPages
 
         public string PageTitle { get; private set; }
 
-        public async Task<ContentPage> CreatePage(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService)
+        public async Task<ContentPage> CreatePage(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService)
         {
             ContentPage result = null;
             BaseModelView vm = null;
@@ -77,28 +78,30 @@ namespace FishOn.Pages_MVs.ProvisioningPages
             switch (_pageEnum)
             {
                 case provisioningPageEnumeration.WayPoints:
-                    vm = new WayPointProvisioningModelView(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService);
+                    vm = new WayPointProvisioningModelView(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService);
                     await vm.InitializeAsync();
                     result = new WPProvisoningList((WayPointProvisioningModelView)vm);
                     break;
                 case provisioningPageEnumeration.Lakes:
-                    vm = new LakeListProvisioningModelView(navigation, lakeDataService,speciesDataService,wayPointDataService, locationService,appSettingService, fishCaughtDataService);
+                    vm = new LakeListProvisioningModelView(navigation, lakeDataService, speciesDataService,
+                        wayPointDataService, locationService, appSettingService, fishCaughtDataService,
+                        sessionDataService);
                     await vm.InitializeAsync();
                     result = new LakesListProvisioningPage((LakeListProvisioningModelView)vm);
                     break;
                 case provisioningPageEnumeration.MyFish:
-                    vm = new MyFishListModelView(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService);
+                    vm = new MyFishListModelView(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService);
                     await vm.InitializeAsync();
                     result = new MyFishList((MyFishListModelView)vm);
                     break;
              
                 case provisioningPageEnumeration.Tackle:
-                    vm = new TackleBoxModelView(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService);
+                    vm = new TackleBoxModelView(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService);
                     await vm.InitializeAsync();
                     result = new TackleBoxPage((TackleBoxModelView)vm);
                     break;
                 case provisioningPageEnumeration.Species:
-                    vm = new MySpeciestProvisioningViewModel(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService);
+                    vm = new MySpeciestProvisioningViewModel(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService);
                     await vm.InitializeAsync();
                     result = new MySpeciesProvisioningPage((MySpeciestProvisioningViewModel)vm);
                     break;

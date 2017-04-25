@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FishOn.Pages_MVs.WaypointNameMethodRecorder.VoiceToTextPage" BackgroundColor="Black">
+
+    <Grid>
+      <Image Source="fishing_rod.png" Opacity="0.3"/>
+
+      <ScrollView>
+        <StackLayout x:Name="mainContentLayout" Spacing="0" >
+       
+        </StackLayout>
+      </ScrollView>
+      
+    </Grid>
+</ContentPage>

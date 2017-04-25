@@ -6,6 +6,7 @@ using System.Windows.Input;
 using FishOn.Model;
 using FishOn.PlatformInterfaces;
 using FishOn.ProvisioningPages.WayPoints;
+using FishOn.Repositories;
 using FishOn.Services;
 using FishOnMobileApp;
 using Xamarin.Forms;
@@ -18,8 +19,8 @@ namespace FishOn.ModelView
         private List<Lake> _lakeList;
 
         public WayPointProvisioningModelView(INavigation navigation, ILakeDataService lakeDataService,
-            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService)
-            : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService){}
+            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService,  ISessionDataService sessionDataService)
+            : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService) {}
 
         public override async Task InitializeAsync()
         {

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using FishOn.Model;
 using FishOn.PlatformInterfaces;
+using FishOn.Repositories;
 using FishOn.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
@@ -15,7 +16,7 @@ namespace FishOn.ModelView
         private ObservableCollection<Species> _speciesList;
        
         public SpeciesPageModelView(INavigation navigation) : base(navigation) { }
-        public SpeciesPageModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService) { }
+        public SpeciesPageModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService) :base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService) { }
 
         public async Task Initialize()
         {
@@ -36,10 +37,12 @@ namespace FishOn.ModelView
         {
             get
             {
-                return new Command<string>((string speciesName) =>
+                return new Command<string>(async (string speciesName) =>
                 {
                     IsBusy = true;
-                 
+                    await Navigate_ToVoiceToTextPage();
+
+                    /*
                     _locationService.GetCurrentPosition(async (Position? p, string errorMsg) =>
                     {
                         if (p.HasValue)
@@ -56,7 +59,7 @@ namespace FishOn.ModelView
                         }
 
                     });
-
+                    */
                 });
             }
         }

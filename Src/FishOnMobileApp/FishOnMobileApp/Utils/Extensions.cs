@@ -261,6 +261,20 @@ namespace FishOn.Utils
             }));
         }
 
+        public static void CreateCancelButton(this ContentPage page, Func<Task> cancelFunction)
+        {
+           
+            page.ToolbarItems.Add(new ToolbarItem("Cancel", null, async () =>
+            {
+                await cancelFunction();
+            }));
+
+            //Add a space
+            page.ToolbarItems.Add(new ToolbarItem(" ", null, () =>
+            {
+
+            }));
+        }
 
         public static object Clone<T>(this Object obj)
         {

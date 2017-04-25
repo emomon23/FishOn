@@ -21,6 +21,28 @@ namespace FishOn.Model
         public double Moon_Age { get; set; }
         public int Moon_IlluminationPercent { get; set; }
 
+        public string WeatherSummary
+        {
+            get { return BuildWeatherSummary(); }
+        }
+
+        private string BuildWeatherSummary()
+        {
+            string result = AirTemp > 0 ? $"{AirTemp} degrees. " : "";
+            result += $"Wind: {WindSpeed} mph, ";
+            result += $"Dewpoint: {DewPoint}, ";
+            result += $"B. Pressure: {BerometricPressure}, ";
+            result += $"Humidity: {HumidityPercent}%, ";
+            result += $"visibility: {Visibility}";
+
+            if (result.Length > 0)
+            {
+                return result.Substring(0, result.Length - 2);
+            }
+
+            return "";
+        }
+
         public string MoonSummary
         {
             get { return $"{Moon_Label} ({Moon_IlluminationPercent}%) full moon"; }

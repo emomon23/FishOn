@@ -32,6 +32,9 @@ namespace FishOn.Pages_MVs
         public static double Small_Button_Width = 125;
         public static double Small_Button_Height = 40;
 
+        public static double SmallSmall_Button_Width = 60;
+        public static double SmallSmall_Button_Height = 28;
+
         public static double Big_Button_Width = 275;
         public static double Big_Button_Height = 70;
 

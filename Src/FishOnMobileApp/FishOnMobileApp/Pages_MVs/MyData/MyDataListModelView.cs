@@ -10,6 +10,7 @@ using FishOn.Pages_MVs.ProvisioningPages.Species;
 using FishOn.Pages_MVs.ProvisioningPages.TackleBox;
 using FishOn.PlatformInterfaces;
 using FishOn.ProvisioningPages.WayPoints;
+using FishOn.Repositories;
 using FishOn.Services;
 using FishOn.Utils;
 using Xamarin.Forms;
@@ -21,7 +22,8 @@ namespace FishOn.ModelView
         private List<Page> _pages = new List<Page>();
 
         public MyDataListModelView(INavigation navigation) : base(navigation) { }
-        public MyDataListModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService):base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService) { }
+        public MyDataListModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService) 
+            :base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService) { }
      
         public async Task InitializeNewPageContextAsync(string pageTitle)
         {

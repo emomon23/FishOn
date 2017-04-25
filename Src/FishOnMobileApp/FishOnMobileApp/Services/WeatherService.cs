@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using FishOn.Model;
+using FishOn.PlatformInterfaces;
 using FishOn.Repositories;
 using FishOn.Utils;
 

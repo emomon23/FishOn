@@ -8,6 +8,7 @@ using System.Windows.Input;
 using FishOn.Model.ViewModel;
 using FishOn.ModelView;
 using FishOn.PlatformInterfaces;
+using FishOn.Repositories;
 using FishOn.Services;
 using Xamarin.Forms;
 
@@ -30,10 +31,10 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
         public MyFishListModelView(INavigation navigation, ILakeDataService lakeDataService,
             ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService,
             IFishOnCurrentLocationService locationService, IAppSettingService appSettingService,
-            IFishCaughtDataService fishCaughtDataService)
+            IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService)
             : base(
                 navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService,
-                fishCaughtDataService)
+                fishCaughtDataService, sessionDataService)
         {
             _viewByWayPointButonColor = StyleSheet.LargeToggle_SelectedBackColor;
             _viewBySpeciesButtonColor = StyleSheet.Button_BackColor;

@@ -40,7 +40,6 @@ namespace FishOnMobileApp
         protected override async void OnAppearing()
         {
              await _pageViewModel.InitializeAsync();
-          
         }
 
     }

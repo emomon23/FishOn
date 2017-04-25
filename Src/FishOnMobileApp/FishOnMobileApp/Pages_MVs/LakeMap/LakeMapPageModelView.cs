@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FishOn.Model;
 using FishOn.PlatformInterfaces;
+using FishOn.Repositories;
 using FishOn.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
@@ -23,8 +24,8 @@ namespace FishOn.ModelView
         }
 
         public LakeMapPageModelView(INavigation navigation, Map lakeMap, ILakeDataService lakeDataService,
-            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService)
-            : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService)
+            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService)
+            : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService)
         {
             _lakeMap = lakeMap;
         }

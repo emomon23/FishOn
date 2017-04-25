@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FishOn.Model;
 using FishOn.PlatformInterfaces;
+using FishOn.Repositories;
 using FishOn.Services;
 using FishOn.Utils;
 using Xamarin.Forms;
@@ -27,10 +28,10 @@ namespace FishOn.ModelView
         public LakeListModelView(INavigation navigation, ILakeDataService lakeDataService,
             ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService,
             IFishOnCurrentLocationService locationService, IAppSettingService appSettingService,
-            IFishCaughtDataService fishCaughtDataService)
+            IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService)
             : base(
                 navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService,
-                fishCaughtDataService)
+                fishCaughtDataService, sessionDataService)
         {
         }
 
@@ -40,12 +41,12 @@ namespace FishOn.ModelView
             var observable = new ObservableCollection<Lake>(list);
             LakesList = observable;
 
-            if (SessionData.CurrentLakeId > 0)
+            if (_sessionDataService.CurrentLake != null)
             {
-                SelectedLake = _lakes.SingleOrDefault(l => l.LakeId == SessionData.CurrentLakeId);
+                SelectedLake = _lakes.SingleOrDefault(l => l.LakeId == _sessionDataService.CurrentLake.LakeId);
             }
 
-            WaterTemp = SessionData.CurrentWaterTemp;
+            WaterTemp = _sessionDataService.CurrentWaterTemp;
         }
 
         public ObservableCollection<Lake> LakesList
@@ -123,7 +124,8 @@ namespace FishOn.ModelView
             {
                 return new Command(() =>
                 {
-                    SessionData.RestartSession(SelectedLake?.LakeId, _waterTemp);
+                    _sessionDataService.CurrentLake = SelectedLake;
+                    _sessionDataService.CurrentWaterTemp = _waterTemp;
                     Navigate_BackToLandingPageAsync();
                 });
             }

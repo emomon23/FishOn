@@ -71,8 +71,9 @@ namespace FishOn.Utils
 
             StackLayout layout = new StackLayout()
             {
-                Margin = new Thickness(5,5,5,5),
-                Padding = new Thickness(8,8,8,8),
+                Margin = new Thickness(8,8,8,8),
+                Padding = new Thickness(5,5,5,5),
+                Spacing = 0,
                 BackgroundColor = backColorOverride.Value,
                 WidthRequest = width,
                 HeightRequest = height,
@@ -155,7 +156,11 @@ namespace FishOn.Utils
                 {
                     await view.ScaleTo(.95, 200, Easing.BounceIn);
                     view.ScaleTo(1, 200);
-                    command.Execute(objText);
+
+                    if (command != null)
+                    {
+                        command.Execute(objText);
+                    }
                 })
             };
 
@@ -207,7 +212,7 @@ namespace FishOn.Utils
             contents.layout.GestureRecognizers.Add(tap);
         }
 
-        public static void AddButton(StackLayout container, ICommand command, double width,
+        public static View AddButton(StackLayout container, ICommand command, double width,
                                         double height, string text = null, string image = null, double? fontSize=null, Color ? backColor=null)
         {
             //We don't add duplicates to the stacklayout
@@ -216,10 +221,13 @@ namespace FishOn.Utils
                 var bg = ImgBtnGenerator.GetInstance();
                 var button = bg.CreateButton(command, width, height, text, image, fontSize, backColor);
                 container.Children.Add(button);
+                return button;
             }
+
+            return container.Children.FirstOrDefault(c => c.AutomationId == $"imgBtn{text}");
         }
 
-        public static void AddButton(StackLayout container, Func<Task> asyncFunction, double width,
+        public static View AddButton(StackLayout container, Func<Task> asyncFunction, double width,
                                        double height, string text = null, string image = null, double? fontSize = null, Color? backColor = null)
         {
             //We don't add duplicates to the stacklayout
@@ -228,10 +236,13 @@ namespace FishOn.Utils
                 var bg = ImgBtnGenerator.GetInstance();
                 var button = bg.CreateButton(asyncFunction, width, height, text, image, fontSize, backColor);
                 container.Children.Add(button);
+                return button;
             }
+
+            return container.Children.FirstOrDefault(c => c.AutomationId == $"imgBtn{text}");
         }
 
-        public static void AddButton(StackLayout container, Func<string, Task> asyncFunction, double width,
+        public static View AddButton(StackLayout container, Func<string, Task> asyncFunction, double width,
                                       double height, string text = null, string image = null, double? fontSize = null, Color? backColor = null, AlignImageEnumeration alignImage = AlignImageEnumeration.Left)
         {
             //We don't add duplicates to the stacklayout
@@ -240,7 +251,10 @@ namespace FishOn.Utils
                 var bg = ImgBtnGenerator.GetInstance();
                 var button = bg.CreateButton(asyncFunction, width, height, text, image, fontSize, backColor, alignImage);
                 container.Children.Add(button);
+                return button;
             }
+
+            return container.Children.FirstOrDefault(c => c.AutomationId == $"imgBtn{text}");
         }
 
         public static void BindEntryEnterKeyPress_ToButtonClick(Entry textBox, Func<Task> btnFunction)
@@ -255,7 +269,10 @@ namespace FishOn.Utils
         {
             textBox.Completed += (object sender, EventArgs e) =>
             {
-                btnCommand.Execute(null);
+                if (btnCommand != null)
+                {
+                    btnCommand.Execute(null);
+                }
             };
         }
 
