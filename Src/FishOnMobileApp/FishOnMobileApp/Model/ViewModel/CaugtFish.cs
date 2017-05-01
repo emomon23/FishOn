@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,5 +29,8 @@ namespace FishOn.Model.ViewModel
         public string Conditions { get; set; }
 
         public string LakeName { get; set; }
+
+        public string Image1FileName { get; set; }
+        public string Image2FileName { get; set; }
     }
 }

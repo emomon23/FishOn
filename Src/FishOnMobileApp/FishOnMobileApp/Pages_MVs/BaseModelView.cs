@@ -162,10 +162,12 @@ namespace FishOn.ModelView
             await _navigation.PushAsync(detailPage);
         }
 
-        protected async Task Navigate_ToVoiceToTextPage()
+        protected async Task Navigate_ToVoiceToTextPage(string selectedSpeciesName)
         {
             var vm = new WaypointNameMethodRecorderViewModel(_navigation, _lakeService, _speciesDataService, _wayPointDataService, _locationService, _appSettingService, _fishOnDataService, _sessionDataService);
+            vm.SelectedSpecies = selectedSpeciesName;
             await vm.InitializeAsync();
+
             var page = new VoiceToTextPage(vm);
             await _navigation.PushAsync(page);
         }

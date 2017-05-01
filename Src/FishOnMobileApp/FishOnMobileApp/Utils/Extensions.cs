@@ -90,6 +90,21 @@ namespace FishOn.Utils
             return result;
         }
 
+        public static string Capitalize(this string str)
+        {
+            if (str.IsNullOrEmpty())
+            {
+                return str;
+            }
+
+            if (str.Length == 1)
+            {
+                return str.ToUpper();
+            }
+
+            return $"{str.Substring(0, 1).ToUpper()}{str.Substring(1)}";
+        }
+
         public static bool ToBool(this string str)
         {
             var temp = str.ToLower();

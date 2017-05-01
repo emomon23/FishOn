@@ -15,17 +15,12 @@ namespace FishOn.Utils
     {
         private Dictionary<string, FieldSetViewContainer> _fieldSets = new Dictionary<string, FieldSetViewContainer>();
         private StackLayout _mainLayout;
-        private ScrollView _mainScrollView;
+        private StackLayout _floatingLayout;
         private VoiceToText _voiceToText;
 
         public FieldSetGenerator(StackLayout layout)
         {
             _mainLayout = layout;
-        }
-
-        public FieldSetGenerator(ScrollView scrollView)
-        {
-            _mainScrollView = scrollView;
         }
 
         public Color DefaultPlaceHolderColor = Color.FromHex("#CACFD2");
@@ -42,12 +37,12 @@ namespace FishOn.Utils
             return null;
         }
 
-        public FieldSetViewContainer CreateFieldSet(string fieldSetId, string labelText, string binding, bool includeButtonContainer = false)
+        public FieldSetViewContainer CreateFieldSet(string fieldSetId, string labelText, string binding, bool includeButtonContainer = false, int floatWithPercent = 0)
         {
-            return CreateFieldSet(fieldSetId, labelText, null, binding, includeButtonContainer);
+            return CreateFieldSet(fieldSetId, labelText, null, binding, includeButtonContainer, floatWithPercent);
         }
 
-        public FieldSetViewContainer CreateVoiceToTextFieldSet(string fieldSetId, string labelText , string binding)
+        public FieldSetViewContainer CreateVoiceToTextFieldSet(string fieldSetId, string labelText , string binding, Action<string> voiceToTextConvertedCallback = null, int floatWidthPercent = 0)
         {
             ICommand nullCommand = null;
 
@@ -56,18 +51,21 @@ namespace FishOn.Utils
                 _voiceToText = new VoiceToText(_mainLayout);
             }
 
-            var container = CreateFieldSet(fieldSetId, labelText, binding, includeButtonContainer: true);
+            var container = CreateFieldSet(fieldSetId, labelText, binding, includeButtonContainer: true, floatWithPercent:floatWidthPercent);
             var button = ImgBtnGenerator.AddButton(container.ButtonContainer, nullCommand, StyleSheet.SmallSmall_Button_Width, StyleSheet.SmallSmall_Button_Height, image: "microphone.png");
             _voiceToText.BindToNativeSpeechRecognistion((Entry)container.InputElement, button, value =>
             {
                 container.UpdateInputBackColor(Color.Black);
+                if (voiceToTextConvertedCallback != null)
+                {
+                    voiceToTextConvertedCallback(value);
+                }
             });
 
             return container;
         }
         
-
-        public FieldSetViewContainer CreateFieldSet(string fieldSetId, string labelText, View inputView, string currentValue = null, bool includeButtonContainer = false)
+        public FieldSetViewContainer CreateFieldSet(string fieldSetId, string labelText, View inputView, string currentValue = null, bool includeButtonContainer = false, int floatWithPercent = 0)
         {
 
             /* - Stacklayout (container)
@@ -87,13 +85,13 @@ namespace FishOn.Utils
             CreateLabel(labelText, result);
             CreateButtonContainer(result, includeButtonContainer);
 
-            AssembleFieldSet(result);
+            AssembleFieldSet(result, floatWithPercent);
 
             _fieldSets.Add(fieldSetId, result);
 
-            if (_mainScrollView != null)
+            if (_floatingLayout != null)
             {
-                _mainScrollView.Content = result.Container;
+                _floatingLayout.Children.Add(result.Container);
             }
             else if (_mainLayout != null)
             {
@@ -103,28 +101,26 @@ namespace FishOn.Utils
             return result;
         }
 
-        public FieldSetViewContainer CreateAutoCompleteFieldSet(AutoCompleteDefinition autoCompleteDefinition)
+        public FieldSetViewContainer CreateAutoCompleteFieldSet(AutoCompleteDefinition autoCompleteDefinition, int floatWidthPercent = 0)
         {
             FieldSetViewContainer result = null;
 
             if (autoCompleteDefinition.IncludeVoiceToTextButton)
             {
                 result = CreateVoiceToTextFieldSet(autoCompleteDefinition.Identifier, autoCompleteDefinition.LabelText,
-                    autoCompleteDefinition.Binding);
+                    autoCompleteDefinition.Binding, autoCompleteDefinition.VoiceToTextConverstion, floatWidthPercent);
             }
             else
             {
                 result = CreateFieldSet(autoCompleteDefinition.Identifier, autoCompleteDefinition.LabelText,
-                    autoCompleteDefinition.Binding, autoCompleteDefinition.IncludeVoiceToTextButton);
+                    autoCompleteDefinition.Binding, autoCompleteDefinition.IncludeVoiceToTextButton, floatWidthPercent);
             }
 
             result.AutoCompleteListContainer = new ScrollView();
             result.Container.Children.Add(result.AutoCompleteListContainer);
 
             Entry entry = (Entry) result.InputElement;
-
-           
-
+            
             int autoCompleteIndex = _fieldSets.Count -1;
 
             entry.TextChanged += (s, e) =>
@@ -155,6 +151,34 @@ namespace FishOn.Utils
             };
             
             return result;
+        }
+
+        public void StartFloat()
+        {
+            _floatingLayout = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                WidthRequest = 500
+       
+            };
+            _mainLayout.Children.Add(_floatingLayout);
+        }
+
+        public void EndFloat()
+        {
+            _floatingLayout = null;
+        }
+
+        public void UpdateEntryText(string identifier, string text)
+        {
+            if (!_fieldSets.ContainsKey(identifier))
+            {
+                throw new Exception($"Unable to find fieldset '{identifier}'");
+            }
+
+            var fieldSet = _fieldSets[identifier];
+            ((Entry) fieldSet.InputElement).Text = text;
+
         }
 
         private void ShowHideAllOtherFieldSets(int leaveIndex, bool isVisible)
@@ -239,7 +263,7 @@ namespace FishOn.Utils
             }
         }
 
-        private void AssembleFieldSet(FieldSetViewContainer container)
+        private void AssembleFieldSet(FieldSetViewContainer container, int floatingPercent)
         {
             container.InputContainer = new StackLayout()
             {
@@ -255,7 +279,7 @@ namespace FishOn.Utils
                 container.InputContainer.Children.Add(container.ButtonContainer);
             }
 
-            var containerTop = _fieldSets.Count == 0 ? 5 : 10;
+            var containerTop = 5;
             var containerRight = container.ButtonContainer == null ? 10 : 0;
 
             container.Container = new StackLayout()
@@ -263,6 +287,14 @@ namespace FishOn.Utils
                 Margin = new Thickness(10, containerTop, containerRight,0),
                 Children = {container.Label, container.InputContainer}
             };
+
+            if (floatingPercent > 0)
+            {
+                var screenSize = Application.Current.MainPage.Width;
+                var width = ((double)screenSize * ((double)floatingPercent / (double)100)) - (double)10;
+
+                container.Container.WidthRequest = width;
+            }
         }
     }
 
@@ -292,5 +324,6 @@ namespace FishOn.Utils
         public Action OnExpand { get; set; }
         public Action OnCollapse { get; set; }
         public Action OnSelected { get; set; }
+        public Action<string> VoiceToTextConverstion { get; set; }
     }
 }

@@ -40,7 +40,7 @@ namespace FishOn.ModelView
                 return new Command<string>(async (string speciesName) =>
                 {
                     IsBusy = true;
-                    await Navigate_ToVoiceToTextPage();
+                    await Navigate_ToVoiceToTextPage(speciesName);
 
                     /*
                     _locationService.GetCurrentPosition(async (Position? p, string errorMsg) =>

@@ -5,12 +5,14 @@
 
     <Grid>
       <Image Source="fishing_rod.png" Opacity="0.3"/>
+      <StackLayout x:Name="mainContentLayout" Spacing="0" VerticalOptions="FillAndExpand" >
+         
+      </StackLayout>
 
-      <ScrollView>
-        <StackLayout x:Name="mainContentLayout" Spacing="0" >
-       
-        </StackLayout>
-      </ScrollView>
-      
+      <StackLayout VerticalOptions="End" Padding="10, 0, 10, 5" Orientation="Horizontal">
+         <Image x:Name="image1" Margin="5,5,5,5" WidthRequest="70"  VerticalOptions="End" HeightRequest="100" HorizontalOptions="Start"></Image>
+         <StackLayout x:Name="cameraButtonContainer" HorizontalOptions="CenterAndExpand"></StackLayout>
+         <Image x:Name="image2" Margin="5,5,5,5" WidthRequest="70"  VerticalOptions="End" HeightRequest="100" HorizontalOptions="End"></Image>
+      </StackLayout>
     </Grid>
 </ContentPage>
