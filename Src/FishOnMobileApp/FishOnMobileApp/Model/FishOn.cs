@@ -14,17 +14,15 @@ namespace FishOn.Model
         private string _dateTimeCaught = DateTime.Now.AddMinutes(-5).ToString("g");
         private int _wayPointId = 0;
         private int _speciesId = 0;
+        private int _lakeId = 0;
         private int _originalWayPointId = 0;
         private int _originalSpeciesId = 0;
         private WayPoint _wayPoint;
-        private FishingLure _lure;
         private Species _species;
 
         public FishOn()
         {
-            WeatherCondition = new WeatherCondition();
             Species = new Species();
-            Lure = new FishingLure();
         }
 
         [PrimaryKey, AutoIncrement]
@@ -49,7 +47,13 @@ namespace FishOn.Model
             }
         }
 
-        public string Note { get; set; }
+        [Indexed]
+        public int FishingMethodId { get; set; }
+
+        public string WeatherConditions { get; set; }
+
+        public string MoonPercentage { get; set; }
+
         public string WaterTemp { get; set; }
 
      
@@ -70,8 +74,6 @@ namespace FishOn.Model
             }
         }
      
-        public string Method { get; set; }
-
         public bool WayPointIsDirty
         {
             get { return _originalWayPointId != 0 && _originalWayPointId != _wayPointId; }
@@ -90,6 +92,9 @@ namespace FishOn.Model
             _originalSpeciesId = _speciesId;
         }
 
+        public string Image1File { get; set; }
+
+        public string Image2File { get; set; }
 
         [Indexed]
         public int SpeciesId {
@@ -106,25 +111,7 @@ namespace FishOn.Model
                 }
             }
         }
-
-        [Ignore]
-        public WeatherCondition WeatherCondition { get; set; }
-
-        [Ignore]
-        public virtual FishingLure Lure
-        {
-            get
-            {
-                return _lure;
-            }
-            set
-            {
-                _lure = value;
-                FishingLureId = value.FishingLureId;
-            }
-        }
-
-
+        
         [Ignore]
         public virtual WayPoint WayPoint
         {

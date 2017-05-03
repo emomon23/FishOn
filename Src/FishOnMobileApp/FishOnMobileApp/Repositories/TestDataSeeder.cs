@@ -6,22 +6,17 @@ using System.Threading.Tasks;
 using FishOn.Model;
 using FishOn.Services;
 using FishOn.Utils;
-using FishOn = FishOn.Model.FishOn;
 
 namespace FishOn.Repositories
 {
     public static class TestDataSeeder
     {
-        private static IWayPointDataService _wpService = new WayPointDataService();
-        private static ISpeciesDataService _speciesDataService = new SpeciesDataService();
-        private static ILakeDataService _lakeDataService = new LakeDataService();
-        private static List<FishingLure> _lures = null;
         private static List<Species> _specieses = null;
         private static Random _rnd = new Random(DateTime.Now.Millisecond);
 
         public async static Task SeedTestDataAsync()
         {
-            if (await HasDBAlreadyBeenSeedWithTestDataAsync())
+           /* if (await HasDBAlreadyBeenSeedWithTestDataAsync())
             {
                 return;
             }
@@ -93,13 +88,14 @@ namespace FishOn.Repositories
             await CreateFishOnAsync(carsonWP, "Sunny", "", "");
             await CreateFishOnAsync(carsonWP, "Sunny", "", "");
             await CreateFishOnAsync(carsonWP, "Sunny", "", "");
-
+     */
 
         }
 
         private async  static  Task<bool> HasDBAlreadyBeenSeedWithTestDataAsync()
         {
-            return (await _lakeDataService.GetLakesAsync()).Any(l => l.LakeName == "Pleasent");
+            return true;
+            // return (await _lakeDataService.GetLakesAsync()).Any(l => l.LakeName == "Pleasent");
         }
 
       
@@ -116,54 +112,14 @@ namespace FishOn.Repositories
                 WaterTemp = "52",
                 WayPointId =  wp.WayPointId,
                 WayPoint =  wp,
-                Method = method,
-                Note =  notes,
-                WeatherCondition =  new WeatherCondition()
-                {
-                    AirTemp = _rnd.Next(0, 94),
-                    BerometricPressure = (double)_rnd.Next(20, 70),
-                    HumidityPercent = _rnd.Next(60,90),
-                    Moon_Label = "Full",
-                    Moon_Age = 14,
-                    Moon_IlluminationPercent = 100,
-                    DewPoint = _rnd.Next(25,100),
-                    Visibility = 25
-                },
-                Lure = CreateRandomFishingLure()
-            };
+             };
 
             wp.FishCaught.Add(fo);
 
-            await _wpService.SaveWayPointProvisioningAsync(wp);
+         //   await _wpService.SaveWayPointProvisioningAsync(wp);
         }
 
-        private static FishingLure CreateRandomFishingLure()
-        {
-            var lureNames = new string[]
-                {"Yozuri", "Rapala SR-7", "Rapala SR-5", "Mozutzu FT", "Purple Jig", "Popper", "Buzzbait"};
-
-            var colors = new string[] {"Red", "Yellow", "Green", "Firetiger", "Purple", "Orange", "White"};
-            var methods = new string[]
-
-                {"Jig up and down slow", "Pop on top", "Troll 1.4-2.7", "Troll Fast", "Bobber fish"};
-
-            var notes = new string[]
-            {
-                "Works great on minnetonka", "A good hay creek lure", "Not so great in winter", "An ice fishing lure",
-                "Too light for muskie", "Too big for Bass"
-            };
-
-            return new FishingLure()
-            {
-                Color = colors.PickOne(),
-                Method = methods.PickOne(),
-                Name = lureNames.PickOne(),
-                Note = notes.PickOne(),
-                Size = _rnd.Next(1, 50),
-                Weight = _rnd.Next(1, 100)
-            };
-        }
-
+     
         private async static Task<WayPoint> CreateWayPointAsync(double lat, double longitude, string name, Lake lake,
             WayPoint.WayPointTypeEnumeration wpType = WayPoint.WayPointTypeEnumeration.FishOn)
         {
@@ -177,14 +133,14 @@ namespace FishOn.Repositories
                 Lake = lake,
             };
 
-            await _wpService.SaveWayPointProvisioningAsync(wp);
+        //    await _wpService.SaveWayPointProvisioningAsync(wp);
             return wp;
         }
 
         private async static Task<List<Lake>> CreateLakesAsync(params string [] lakes)
         {
-            var result = await _lakeDataService.CreateNewLakesAsync(lakes);
-            return result;
+         //   var result = await _lakeDataService.CreateNewLakesAsync(lakes);
+            return null;
         }
 
         private static DateTime GetRandomDate()

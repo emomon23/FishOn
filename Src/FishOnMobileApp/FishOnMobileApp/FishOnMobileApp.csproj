@@ -39,9 +39,15 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\AppSetting.cs" />
+    <Compile Include="Model\FishingMethod.cs" />
+    <Compile Include="Model\ViewModel\FishingMethodDetailViewModel.cs" />
     <Compile Include="Model\ViewModel\FishOnGroupBySpeciesViewModel.cs" />
     <Compile Include="Model\ViewModel\FishOnGroupByWayPointViewModel.cs" />
-    <Compile Include="Model\ViewModel\CaugtFish.cs" />
+    <Compile Include="Model\ViewModel\NewFishOnViewModel.cs" />
+    <Compile Include="Model\ViewModel\WayPointDetailViewModel.cs" />
+    <Compile Include="Model\ViewModel\WayPointListItemViewModel.cs" />
+    <Compile Include="Model\ViewModel\WayPointPhotoAlbumViewModel.cs" />
+    <Compile Include="Model\WeatherCondtion.cs" />
     <Compile Include="Pages_MVs\AccordionViewModel\AccordionNodeViewModel.cs" />
     <Compile Include="Pages_MVs\LakeMap\LakeMapDetailPage.xaml.cs">
       <DependentUpon>LakeMapDetailPage.xaml</DependentUpon>
@@ -58,13 +64,11 @@
     <Compile Include="Pages_MVs\MainPage\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\FishingLure.cs" />
     <Compile Include="Model\FishOn.cs" />
     <Compile Include="Model\Lake.cs" />
     <Compile Include="Model\SessionData.cs" />
     <Compile Include="Model\Species.cs" />
     <Compile Include="Model\WayPoint.cs" />
-    <Compile Include="Model\WeatherCondition.cs" />
     <Compile Include="Pages_MVs\MyData\MyDataListPage.xaml.cs">
       <DependentUpon>MyDataListPage.xaml</DependentUpon>
     </Compile>
@@ -88,13 +92,6 @@
       <DependentUpon>MySpeciesProvisioningPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages_MVs\ProvisioningPages\Species\MySpeciestProvisioningViewModel.cs" />
-    <Compile Include="Pages_MVs\ProvisioningPages\TackleBox\FishingLureDetail.xaml.cs">
-      <DependentUpon>FishingLureDetail.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages_MVs\ProvisioningPages\TackleBox\TackleBoxPage.xaml.cs">
-      <DependentUpon>TackleBoxPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages_MVs\ProvisioningPages\TackleBox\TackleBoxModelView.cs" />
     <Compile Include="Pages_MVs\StyleSheet.cs" />
     <Compile Include="Pages_MVs\WaypointNameMethodRecorder\VoiceToTextPage.xaml.cs">
       <DependentUpon>VoiceToTextPage.xaml</DependentUpon>
@@ -117,16 +114,14 @@
     <Compile Include="Repositories\FishOnHttpRepository.cs" />
     <Compile Include="Repositories\FishOnDataContext.cs" />
     <Compile Include="Repositories\LakeRepository.cs" />
-    <Compile Include="Repositories\SessionDataService.cs" />
+    <Compile Include="Repositories\RepoFactory.cs" />
+    <Compile Include="Services\SessionDataService.cs" />
     <Compile Include="Repositories\SpeciesRepository.cs" />
     <Compile Include="Repositories\TestDataSeeder.cs" />
     <Compile Include="Repositories\WayPointRepository.cs" />
-    <Compile Include="Repositories\WeatherRepository.cs" />
     <Compile Include="Services\AppSettingService.cs" />
-    <Compile Include="Services\FishCaughtDataService.cs" />
-    <Compile Include="Services\LakeDataService.cs" />
-    <Compile Include="Services\SpeciesDataService.cs" />
-    <Compile Include="Services\WaypointDataService.cs" />
+    <Compile Include="Services\FishOnNavigationService.cs" />
+    <Compile Include="Services\FishOnService.cs" />
     <Compile Include="Services\WeatherService.cs" />
     <Compile Include="Pages_MVs\SimpleInputModal\SimpleInputModal.xaml.cs">
       <DependentUpon>SimpleInputModal.xaml</DependentUpon>
@@ -266,12 +261,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\TackleBox\TackleBoxPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Pages_MVs\ProvisioningPages\Lakes\LakesListProvisioningPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
@@ -285,12 +274,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Pages_MVs\ProvisioningPages\MyFish\MyFishDetailPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Pages_MVs\ProvisioningPages\TackleBox\FishingLureDetail.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

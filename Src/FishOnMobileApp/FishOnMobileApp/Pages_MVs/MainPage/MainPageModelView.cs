@@ -1,28 +1,25 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using FishOn.Model;
 using FishOn.PlatformInterfaces;
-using FishOn.Repositories;
 using FishOn.Services;
 using FishOn.Utils;
 using Xamarin.Forms;
-using Xamarin.Forms.Maps;
-using Xamarin.Forms.Xaml;
 
 namespace FishOn.ModelView
 {
     public class MainPageModelView : BaseModelView
     {
         private bool _initialzeCalled = false;
-        public MainPageModelView(INavigation navigation) : base(navigation){}
-        public MainPageModelView(INavigation navigation, ILakeDataService lakeDataService,
-            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService,
-            IFishOnCurrentLocationService locationService, IAppSettingService appSettingService,
-            IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService) 
-            :base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService) { }
+        private ISessionDataService _sessionDataService;
+        private IFishOnCurrentLocationService _locationService;
 
+        public MainPageModelView(FishOnNavigationService navigation, IFishOnService fishOnService, ISessionDataService sessionDataService, IFishOnCurrentLocationService locationService) : base(navigation, fishOnService)
+        {
+            _sessionDataService = sessionDataService;
+            _locationService = locationService;
+        }
+      
         public override async Task InitializeAsync()
         {
             if (!_initialzeCalled)
@@ -31,7 +28,7 @@ namespace FishOn.ModelView
                 _initialzeCalled = true;
 
                 //If not lakes exist, prompt the user for this one time
-                var lakes = await _lakeService.GetLakesAsync();
+                var lakes = await _fishOnService.GetLakesAsync();
                 if (!lakes.Any())
                 {
                     var modalDialogViewModal = new SimpleInputModalModelView(_navigation,
@@ -42,19 +39,19 @@ namespace FishOn.ModelView
                         {
                             if (!cancelClicked && commaSeperatedListOfLakeNames.IsNotNullOrEmpty())
                             {
-                                await _lakeService.CreateNewLakesAsync(commaSeperatedListOfLakeNames.Split(','));
+                                await _fishOnService.CreateNewLakesAsync(commaSeperatedListOfLakeNames.Split(','));
                             }
                         });
                 }
                 else
                 {
                     //no await here, just get them cached in the background.
-                    _wayPointDataService.GetWayPointsAsync();
+                    _fishOnService.GetWayPointsAsync();
                 }
 
                 if (_sessionDataService.CurrentWeatherCondition == null)
                 {
-                    IWeatherService weatherService = new WeatherService();
+                    IWeatherService weatherService = new WeatherService(_sessionDataService);
                     _locationService.GetCurrentPosition(async (position, message) =>
                     {
                         if (position.HasValue)
@@ -67,7 +64,7 @@ namespace FishOn.ModelView
                 }
             }
 
-            await _appSettingService.Initialize();
+            _fishOnService.GetAppSettingsAsync();
         }
 
         public ICommand FishOnCommand
@@ -76,7 +73,7 @@ namespace FishOn.ModelView
             {
                 return new Command(async () =>
                 {
-                    await Navigate_ToSpeciesListAsync();
+                    await _navigation.Navigate_ToSpeciesListAsync();
                 });
             }
         }
@@ -87,7 +84,7 @@ namespace FishOn.ModelView
             {
                 return new Command(async () =>
                 {
-                    await Navigate_ToLakeListAsync();
+                    await _navigation.Navigate_ToLakeListAsync();
                 });
             }
         }
@@ -98,7 +95,7 @@ namespace FishOn.ModelView
             {
                 return new Command(async () =>
                 {
-                    await Navigate_ToMyDataButtonsListAsync();
+                    await _navigation.Navigate_ToMyDataButtonsListAsync();
                 });
             }
         }
@@ -109,7 +106,7 @@ namespace FishOn.ModelView
             {
                 return new Command(async () =>
                 {
-                    await Naviage_ToLakeMapAsync();
+                    await _navigation.Naviage_ToLakeMapAsync();
                 });
             }
         }

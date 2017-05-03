@@ -19,13 +19,15 @@ namespace FishOn.Pages_MVs.ProvisioningPages.Lakes
     {
         private ObservableCollection<Lake> _lakes;
 
-        public LakeListProvisioningModelView(INavigation navigation, ILakeDataService lakeDataService,
-          ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService)
-            : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService,  sessionDataService) { }
+        public LakeListProvisioningModelView(FishOnNavigationService navigation, IFishOnService fishOnService)
+            : base(navigation, fishOnService)
+        {
+            
+        }
 
         public async override Task InitializeAsync()
         {
-            LakeList = new ObservableCollection<Lake>(await _lakeService.GetLakesAsync());
+            LakeList = new ObservableCollection<Lake>(await _fishOnService.GetLakesAsync());
         }
 
         public ICommand EditLakeCommand
@@ -42,17 +44,17 @@ namespace FishOn.Pages_MVs.ProvisioningPages.Lakes
                         {
                             if (await AreYouSureAsync("Delete Lake?"))
                             {
-                                await _lakeService.DeleteAsync(lake);
+                                await _fishOnService.DeleteLakeAsync(lake);
                             }
                         }
                         else if (!cancelClicked && valueProvided.IsNotNullOrEmpty())
                         {
                             lake.LakeName = valueProvided;
-                            await _lakeService.SaveAsync(lake);
+                            await _fishOnService.SaveLakeAsync(lake);
                           
                         }
 
-                        LakeList = new ObservableCollection<Lake>(await _lakeService.GetLakesAsync());
+                        LakeList = new ObservableCollection<Lake>(await _fishOnService.GetLakesAsync());
                     });
                 });
             }
@@ -70,7 +72,7 @@ namespace FishOn.Pages_MVs.ProvisioningPages.Lakes
                     {
                         if (!cancelClicked && valueProvided.IsNotNullOrEmpty())
                         {
-                            var newLakes = await _lakeService.CreateNewLakesAsync(valueProvided.Split(','));
+                            var newLakes = await _fishOnService.CreateNewLakesAsync(valueProvided.Split(','));
                             if (newLakes != null && newLakes.Count > 0)
                             {
                                 LakeList = new ObservableCollection<Lake>(newLakes);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -61,13 +62,18 @@ namespace FishOn.Repositories
 
         public async Task<string> GetRawStringAsync(string url)
         {
-            using (HttpClient httpClient = new HttpClient())
+            HttpClient httpClient = new HttpClient()
+            {
+                BaseAddress = new Uri(url)
+            };
+
+            using (httpClient)
             {
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml");
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0");
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Charset", "ISO-8859-1");
 
-                var httpResponse = await httpClient.GetAsync(url);
+                var httpResponse = await httpClient.GetAsync("");
                 if (httpResponse.StatusCode == HttpStatusCode.OK)
                 {
                     return await httpResponse.Content.ReadAsStringAsync();

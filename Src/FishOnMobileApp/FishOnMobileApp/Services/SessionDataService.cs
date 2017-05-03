@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FishOn.Model;
 using Xamarin.Forms.Maps;
 
-namespace FishOn.Repositories
+namespace FishOn.Services
 {
     public interface ISessionDataService
     {
@@ -19,7 +17,7 @@ namespace FishOn.Repositories
     public class SessionDataService : ISessionDataService
     {
         private List<SessionData> _sessionData = new List<SessionData>();
-
+        
         private object GetSessionData(string dataId, int maxAgeInMinutes, object valueIfNull = null)
         {
             var item = _sessionData.FirstOrDefault(s => s.SessionDataId == dataId);
@@ -59,8 +57,20 @@ namespace FishOn.Repositories
 
         public Position InitialPosition
         {
-            get { return (Position) GetSessionData("initialPosition", 120); }
-            set { SaveSessionData("initialPosition", value);}
+            get
+            {
+                var postion = GetSessionData("initialPosition", 60 * 8);
+                if (postion != null)
+                {
+                    return (Position) postion;
+                }
+
+                return new Position(0, 0);
+            }
+            set
+            {
+                SaveSessionData("initialPosition", value);
+            }
         }
 
         public int CurrentWaterTemp

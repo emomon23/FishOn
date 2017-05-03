@@ -15,25 +15,24 @@ namespace FishOn.ModelView
     {
         private List<WayPoint> _wayPoints;
         private Map _lakeMap;
+        private IFishOnCurrentLocationService _locationService;
         private ObservableCollection<Species> _speciesList;
         private List<Species> _displaySpecies;
 
-        public LakeMapPageModelView(INavigation navigation, Map lakeMap) : base(navigation)
+        public LakeMapPageModelView(FishOnNavigationService navigation, IFishOnService fishOnService, IFishOnCurrentLocationService locationService) : base(navigation, fishOnService)
         {
-            _lakeMap = lakeMap;
+            _locationService = locationService;
         }
-
-        public LakeMapPageModelView(INavigation navigation, Map lakeMap, ILakeDataService lakeDataService,
-            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService)
-            : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService)
-        {
-            _lakeMap = lakeMap;
+        
+        public Map LakeMapControl {
+            get { return _lakeMap; }
+            set { _lakeMap = value; }
         }
 
         public async Task InitializeAsync()
         {
             await GetSpecies();
-            _wayPoints = await _wayPointDataService.GetWayPointsAsync();
+            _wayPoints = await _fishOnService.GetWayPointsAsync();
             
             DisplayPinList();
 
@@ -67,12 +66,12 @@ namespace FishOn.ModelView
 
         public bool IsFadeVisible
         {
-            get { return !_appSettingService.MapFilterHasBeenUsed; }
+            get { return !_fishOnService.HasMapFilterEverBeenUsed; }
         }
 
         public async Task SpeciesFilterSwitch(Species species)
         {
-            _appSettingService.MapFilterHasBeenUsed = true;
+            _fishOnService.HasMapFilterEverBeenUsed = true;
             DisplayPinList();
         }
 
@@ -110,7 +109,7 @@ namespace FishOn.ModelView
 
         private async Task GetSpecies()
         {
-            var species = await _speciesDataService.GetSpeciesAsync();
+            var species = await _fishOnService.GetSpeciesListAsync();
             _displaySpecies = species.Where(s => s.DisplaySpeciesOnLakeMap).ToList();
             SpeciesList = new ObservableCollection<Species>(species);
         }

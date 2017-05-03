@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FishOn.Model;
 using FishOn.Model.ViewModel;
 using FishOn.ModelView;
-using FishOn.Pages_MVs.ProvisioningPages;
 using FishOn.PlatformInterfaces;
-using FishOn.Repositories;
 using FishOn.Services;
 using FishOn.Utils;
-using Plugin.Media.Abstractions;
-using Xamarin.Forms;
 
 namespace FishOn.Pages_MVs.WaypointNameMethodRecorder
 {
@@ -20,31 +13,56 @@ namespace FishOn.Pages_MVs.WaypointNameMethodRecorder
     {
         private List<WayPoint> _wayPoints;
         private List<Lake> _lakes;
+        private List<FishingMethod> _fishingMethods;
 
-        public WaypointNameMethodRecorderViewModel(INavigation navigation, ILakeDataService lakeDataService,
-            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService,
-            IFishOnCurrentLocationService fishOnCurrentLocationService, IAppSettingService appSettingService,
-            IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService)
-            : base(
-                navigation, lakeDataService, speciesDataService, wayPointDataService, fishOnCurrentLocationService,
-                appSettingService, fishCaughtDataService, sessionDataService)
+        private ISessionDataService _sessionDataService;
+        private IWeatherService _weatherService;
+        private IFishOnCurrentLocationService _locationService;
+      
+        public WaypointNameMethodRecorderViewModel(FishOnNavigationService navigation, IFishOnService fishOnService, IWeatherService weatherService, ISessionDataService sessionDataService, IFishOnCurrentLocationService locationService):base(navigation, fishOnService)
         {
-            this.NewFishOn = new CaugtFish()
-            {
-                MoonPhase = $"{_sessionDataService.CurrentWeatherCondition?.Moon_IlluminationPercent}% FM",
-                Conditions = _sessionDataService.CurrentWeatherCondition?.WeatherSummary,
-                WaterTemp = _sessionDataService.CurrentWaterTemp,
-                LakeName = _sessionDataService.CurrentLake?.LakeName
-            };
+            _weatherService = weatherService;
+            _sessionDataService = sessionDataService;
+            _locationService = locationService;
         }
 
-        public string SelectedSpecies { get; set; }
+        public Species SelectedSpecies { get; set; }
 
         public async override Task InitializeAsync()
         {
             base.InitializeAsync();
-            _wayPoints = await _wayPointDataService.GetWayPointsAsync();
-            _lakes = await _lakeService.GetLakesAsync();
+
+            _wayPoints = await  _fishOnService.GetWayPointsAsync();
+            _lakes = await _fishOnService.GetLakesAsync();
+            _fishingMethods = await _fishOnService.GetFishingMethodsAsync();
+
+            var currentWeatherConditions = await _weatherService.GetCurrentWeatherConditions();
+
+            this.NewFishOn = new NewFishOnViewModel()
+            {
+                MoonPhase = $"{currentWeatherConditions?.Moon_IlluminationPercent}%",
+                Conditions = currentWeatherConditions?.WeatherSummary,
+                WaterTemp = _sessionDataService.CurrentWaterTemp,
+                LakeName = _sessionDataService.CurrentLake?.LakeName,
+                SpeciesId = SelectedSpecies.SpeciesId
+            };
+
+            var lastFishCaught = await _fishOnService.GetMostRecentFishCaughtAsync(this.SelectedSpecies.SpeciesId, 30);
+            if (lastFishCaught != null)
+            {
+                NewFishOn.WayPointName = lastFishCaught.WayPointName;
+                NewFishOn.Latitude = lastFishCaught.Latitude;
+                NewFishOn.Longitude = lastFishCaught.Longitude;
+                if (lastFishCaught.SpeciesId == SelectedSpecies.SpeciesId)
+                {
+                    NewFishOn.FishingMethod = lastFishCaught.FishingMethod;
+                }
+            }
+
+            if (!NewFishOn.Latitude.HasValue)
+            {
+                GetWaypointCoordinates();
+            }
         }
 
         public async Task<CameraResult> TakePicture()
@@ -73,6 +91,38 @@ namespace FishOn.Pages_MVs.WaypointNameMethodRecorder
 
             return cameraResult;
         }
+
+        public async Task SaveNewFishCaught()
+        {
+            if (NewFishOn.Conditions.IsNotNullOrEmpty())
+            {
+                var conditions = await _weatherService.GetCurrentWeatherConditions();
+                if (conditions != null)
+                {
+                    NewFishOn.Conditions = conditions.WeatherSummary;
+                    if (NewFishOn.MoonPhase.IsNotNullOrEmpty())
+                    {
+                        NewFishOn.MoonPhase = conditions.Moon_IlluminationPercent + "%";
+                    }
+                }
+            }
+            await _fishOnService.SaveFishCaughtAsync(NewFishOn);
+            _navigation.Navigate_BackToLandingPageAsync("Waypoint Saved");
+        }
+
+        private void GetWaypointCoordinates()
+        {
+            _locationService.GetCurrentPosition(async (position, message) =>
+            {
+                if (position.HasValue)
+                {
+                    NewFishOn.Latitude = position.Value.Latitude;
+                    NewFishOn.Longitude = position.Value.Longitude;
+                }
+            });
+        }
+
+       
 
         public bool IsLakeNameInWayPointName
         {
@@ -121,13 +171,21 @@ namespace FishOn.Pages_MVs.WaypointNameMethodRecorder
 
         public string WayPointNameWithLakeParseOut { get; private set; }
 
-        public CaugtFish NewFishOn { get; set; }
+        public NewFishOnViewModel NewFishOn { get; set; }
 
         public IList<WayPoint> WayPointList
         {
             get
             {
                return _wayPoints;
+            }
+        }
+
+        public IList<FishingMethod> FishingMethodsList
+        {
+            get
+            {
+                return _fishingMethods;
             }
         }
 
@@ -143,8 +201,10 @@ namespace FishOn.Pages_MVs.WaypointNameMethodRecorder
         {
             FishOnCamera.DeleteImages(NewFishOn.Image1FileName, NewFishOn.Image2FileName);
 
-            await Navigate_BackToLandingPageAsync("");
+            await _navigation.Navigate_BackToLandingPageAsync();
         }
+
+      
 
     }
 }

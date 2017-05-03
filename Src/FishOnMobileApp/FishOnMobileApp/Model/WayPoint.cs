@@ -42,15 +42,14 @@ namespace FishOn.Model
         [Ignore]
         public virtual Lake Lake { get; set; }
 
-        public void AddFishCaught(Species speciesCaught, WeatherCondition weatherCondition, int currentWaterTemp)
+        public void AddFishCaught(Species speciesCaught, int currentWaterTemp)
         {
             var fishCaught = new FishOn()
             {
                 DateCaught = DateTime.Now.AddMinutes(-5),
                 SpeciesId = speciesCaught.SpeciesId,
                 WaterTemp = currentWaterTemp.ToString(),
-                WeatherCondition = weatherCondition,
-                Species = speciesCaught
+               Species = speciesCaught
             };
             FishCaught.Add(fishCaught);
 

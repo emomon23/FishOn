@@ -18,26 +18,16 @@ namespace FishOn.ModelView
         private Model.Lake _selectedLake;
         private string _newLakeNames;
         private int _waterTemp;
-
+        private ISessionDataService _sessionDataService;
         ObservableCollection<Lake> _lakes;
 
-        public LakeListModelView(INavigation navigation) : base(navigation)
+        public LakeListModelView(FishOnNavigationService navigation, IFishOnService fishOnService, ISessionDataService sessionData) : base(navigation, fishOnService)
         {
         }
-
-        public LakeListModelView(INavigation navigation, ILakeDataService lakeDataService,
-            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService,
-            IFishOnCurrentLocationService locationService, IAppSettingService appSettingService,
-            IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService)
-            : base(
-                navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService,
-                fishCaughtDataService, sessionDataService)
-        {
-        }
-
+        
         public async override Task InitializeAsync()
         {
-            var list = await _lakeService.GetLakesAsync();
+            var list = await _fishOnService.GetLakesAsync();
             var observable = new ObservableCollection<Lake>(list);
             LakesList = observable;
 
@@ -99,7 +89,7 @@ namespace FishOn.ModelView
                 {
                     if (!cancelClicked)
                     {
-                        var lakes = await _lakeService.CreateNewLakesAsync(lakeNamesProvided.Split(','));
+                        var lakes = await _fishOnService.CreateNewLakesAsync(lakeNamesProvided.Split(','));
                         LakesList = new ObservableCollection<Lake>(lakes);
                         await postSaveCallback();
                     }
@@ -122,11 +112,11 @@ namespace FishOn.ModelView
         {
             get
             {
-                return new Command(() =>
+                return new  Command(async () =>
                 {
                     _sessionDataService.CurrentLake = SelectedLake;
                     _sessionDataService.CurrentWaterTemp = _waterTemp;
-                    Navigate_BackToLandingPageAsync();
+                    await _navigation.Navigate_BackToLandingPageAsync();
                 });
             }
         }

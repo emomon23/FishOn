@@ -9,29 +9,66 @@ using FishOn.Model;
 using FishOn.PlatformInterfaces;
 using FishOn.Repositories;
 using FishOn.Utils;
+using Xamarin.Forms;
 
 namespace FishOn.Services
 {
     public interface IWeatherService
     {
         Task<WeatherCondition> GetWeatherConditionsAsync(double latitude, double longitude);
+        Task<WeatherCondition> GetCurrentWeatherConditions();
     }
 
     public class WeatherService : IWeatherService
     {
-        private IFishOnHttpRepository _httpRepo;
-        
+        private IFishOnHttpRepository _httpRepo = new FishOnHttpRepository();
+        private IFishOnCurrentLocationService _locationService = DependencyService.Get<IFishOnCurrentLocationService>();
+        private ISessionDataService _sessionDataService = null;
+
 	    //Example: http://forecast.weather.gov/MapClick.php?lat=45.01058&lon=-93.4555&FcstType=dwml
         private const string _BaseUrl = "http://forecast.weather.gov/MapClick.php?lat=[LATITUDE]&lon=[LONGITUDE]&FcstType=dwml";
 
-        public WeatherService()
+        public WeatherService(ISessionDataService sessionDataService)
         {
-            _httpRepo = new FishOnHttpRepository();
+            _sessionDataService = sessionDataService;
         }
 
-        public WeatherService(IFishOnHttpRepository httpRepository)
+        public WeatherService(IFishOnHttpRepository httpRepository, ISessionDataService sessionDataService, IFishOnCurrentLocationService locationService)
         {
             _httpRepo = httpRepository;
+           _locationService = locationService;
+        }
+
+        public async Task<WeatherCondition> GetCurrentWeatherConditions()
+        {
+            var currentConditions = _sessionDataService.CurrentWeatherCondition;
+            if (currentConditions != null)
+            {
+                return currentConditions;
+            }
+
+            var initialPosition = _sessionDataService.InitialPosition;
+            if (initialPosition == null || initialPosition.Latitude == 0 && initialPosition.Longitude == 0)
+            {
+                _locationService.GetCurrentPosition(async (position, message) =>
+                {
+                    if (position.HasValue)
+                    {
+                        _sessionDataService.InitialPosition = position.Value;
+                        initialPosition = position.Value;
+                        var conditions = await GetWeatherConditionsAsync(initialPosition.Latitude, initialPosition.Longitude);
+                        _sessionDataService.CurrentWeatherCondition = conditions;
+                    }
+                });
+
+                return null;
+            }
+            else
+            {
+                var conditions = await GetWeatherConditionsAsync(initialPosition.Latitude, initialPosition.Longitude);
+                _sessionDataService.CurrentWeatherCondition = conditions;
+                return conditions;
+            }
         }
 
         public async Task<WeatherCondition> GetWeatherConditionsAsync(double latitude, double longitude)

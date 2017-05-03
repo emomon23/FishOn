@@ -18,19 +18,17 @@ namespace FishOn.ModelView
         private ObservableCollection<WayPoint> _speciesList;
         private List<Lake> _lakeList;
 
-        public WayPointProvisioningModelView(INavigation navigation, ILakeDataService lakeDataService,
-            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService,  ISessionDataService sessionDataService)
-            : base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService) {}
+        public WayPointProvisioningModelView(FishOnNavigationService navigationService, IFishOnService fishOnService):base(navigationService, fishOnService) { }
 
         public override async Task InitializeAsync()
         {
             await GetWayPointList();
-           _lakeList = await _lakeService.GetLakesAsync();
+           _lakeList = await _fishOnService.GetLakesAsync();
         }
 
         private async Task GetWayPointList()
         {
-            var wayPoints = await _wayPointDataService.GetWayPointsAsync();
+            var wayPoints = await _fishOnService.GetWayPointsAsync();
             WayPointList = new ObservableCollection<WayPoint>(wayPoints);
         }
 
@@ -92,9 +90,9 @@ namespace FishOn.ModelView
             {
                 return new Command(async () =>
                 {
-                    var lake = await _lakeService.GetOrCreateLakeAsync(LakeName);
+                    var lake = (await _fishOnService.CreateNewLakesAsync(LakeName))[0];
                     WayPoint.LakeId = lake.LakeId;
-                    await _wayPointDataService.SaveWayPointProvisioningAsync(WayPoint);
+                    await _fishOnService.SaveWayPointProvisioningAsync(WayPoint);
                     await GetWayPointList();
                     await _navigation.PopAsync();
                 });
@@ -112,7 +110,7 @@ namespace FishOn.ModelView
 
                     if (answer)
                     {
-                        await _wayPointDataService.DeleteWayPointAsync(WayPoint);
+                        await _fishOnService.DeleteWayPointAsync(WayPoint);
                         await GetWayPointList();
                         await _navigation.PopAsync();
                     }
@@ -137,10 +135,10 @@ namespace FishOn.ModelView
             {
                 return new Command<WayPoint>(async (WayPoint wayPoint) =>
                 {
-                    var lake = await _lakeService.GetLakeAsync(wayPoint.LakeId);
+                    var lake = (await _fishOnService.GetLakesAsync()).FirstOrDefault(l => l.LakeId == wayPoint.LakeId);
                     WayPoint = wayPoint;
                     LakeName = lake?.LakeName;
-                    await Naviage_ToWayPointProvisioningDetailPage();
+                    await _navigation.Naviage_ToWayPointProvisioningDetailPage();
                 });
             }
         }
@@ -153,7 +151,7 @@ namespace FishOn.ModelView
                 {
                     WayPoint = new WayPoint() {Name = ""};
                     LakeName = "";
-                    await Naviage_ToWayPointProvisioningDetailPage();
+                    await _navigation.Naviage_ToWayPointProvisioningDetailPage();
                 });
             }
         }

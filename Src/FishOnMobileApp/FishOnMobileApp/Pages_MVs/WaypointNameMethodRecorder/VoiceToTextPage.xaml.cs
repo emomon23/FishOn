@@ -40,14 +40,23 @@ namespace FishOn.Pages_MVs.WaypointNameMethodRecorder
                 {
                     if (_vm.IsLakeNameInWayPointName)
                     {
+                        //The user said something like "Lake Minnetonka South side Big Island"
+                        //strip out the word 'Minnetonka' and update the lake textbox
                         fieldSetGenerator.UpdateEntryText("lake", _vm.ParseOutLakeNameFromWayPointName());
                         fieldSetGenerator.UpdateEntryText("wayPointName", _vm.WayPointNameWithLakeParseOut);
                     }
                 }
             });
+            
+            fieldSetGenerator.CreateAutoCompleteFieldSet(new AutoCompleteDefinition()
+            {
+                Identifier = "fishingMethod",
+                Binding = "FishingMethod",
+                LabelText = "Fishing Method",
+                DataSource = _vm.FishingMethodsList.Select(m => m.Description).ToList(),
+                IncludeVoiceToTextButton = true
 
-
-            fieldSetGenerator.CreateVoiceToTextFieldSet("fishingMethod", "Fishing Method", "FishingMethod");
+            });
              
             //START FLOAT
             fieldSetGenerator.StartFloat();
@@ -79,7 +88,7 @@ namespace FishOn.Pages_MVs.WaypointNameMethodRecorder
 
             this.CreateSaveToolbarButton(async () =>
             {
-                DisplayAlert("Save Clicked", _vm.NewFishOn.WayPointName, "OK");
+                await _vm.SaveNewFishCaught();
             });
         }
 

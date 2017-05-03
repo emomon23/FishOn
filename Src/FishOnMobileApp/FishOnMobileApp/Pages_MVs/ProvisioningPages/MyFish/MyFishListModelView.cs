@@ -28,13 +28,7 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
 
         private ObservableCollection<FishOnGroupBySpeciesViewModel> _speciesCaught;
 
-        public MyFishListModelView(INavigation navigation, ILakeDataService lakeDataService,
-            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService,
-            IFishOnCurrentLocationService locationService, IAppSettingService appSettingService,
-            IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService)
-            : base(
-                navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService,
-                fishCaughtDataService, sessionDataService)
+        public MyFishListModelView(FishOnNavigationService navService, IFishOnService fishOnService):base(navService, fishOnService)
         {
             _viewByWayPointButonColor = StyleSheet.LargeToggle_SelectedBackColor;
             _viewBySpeciesButtonColor = StyleSheet.Button_BackColor;
@@ -44,7 +38,7 @@ namespace FishOn.Pages_MVs.ProvisioningPages.MyFish
         public override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-            _wayPoints = await _wayPointDataService.GetWayPointsAsync();
+            _wayPoints = await _fishOnService.GetWayPointsAsync();
         
             FishCaughtByWayPoint = FishOnGroupByWayPointViewModel.MapToObservableCollection(_wayPoints);
             FishCaughtBySpecies = FishOnGroupBySpeciesViewModel.MapToObservableCollection(_wayPoints);

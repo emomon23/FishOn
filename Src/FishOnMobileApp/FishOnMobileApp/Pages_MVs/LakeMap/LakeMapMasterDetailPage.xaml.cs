@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using FishOn.ModelView;
+using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
 namespace FishOn.Pages_MVs.LakeMap
@@ -7,11 +8,11 @@ namespace FishOn.Pages_MVs.LakeMap
     {
         private Map _map;
 
-        public LakeMapMasterDetailPage()
+        public LakeMapMasterDetailPage(LakeMapPageModelView vm)
         {
             InitializeComponent();
-            
-            var detailPage = new LakeMapDetailPage();
+            this.BindingContext = vm;
+            var detailPage = new LakeMapDetailPage(vm);
             _map = detailPage.LakeMap;
 
             // For Android & Windows Phone, provide a way to get back to the master page.
@@ -27,7 +28,7 @@ namespace FishOn.Pages_MVs.LakeMap
             }
 
             Detail = detailPage;
-            Master = new LakeMapMasterPage();
+            Master = new LakeMapMasterPage(vm);
         }
 
         public Map WayPointsMap

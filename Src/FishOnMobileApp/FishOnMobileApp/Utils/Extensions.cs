@@ -132,7 +132,13 @@ namespace FishOn.Utils
         {
             return string.IsNullOrEmpty(str);
         }
-        
+
+        public static bool IsOlderThanMinutes(this DateTime date, int mins)
+        {
+            var timeSpan = DateTime.Now - date;
+            return timeSpan.TotalMinutes > mins;
+        }
+
         public static bool IsNotNullOrEmpty(this string str)
         {
             return !string.IsNullOrEmpty(str);

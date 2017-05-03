@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using FishOn.Model;
 using FishOn.PlatformInterfaces;
-using SQLite;
-using SQLite.Net;
 using SQLite.Net.Async;
-using SQLite.Net.Interop;
 using Xamarin.Forms;
-using Model = FishOn.Model;
 
 namespace FishOn.Repositories
 {
@@ -21,21 +15,19 @@ namespace FishOn.Repositories
         Task SaveNewLakesAsync(List<Lake> newLakes);
         Task<List<Lake>> GetLakesAsync();
         Task<Lake> GetLakeAsync(string lakeName);
+        Task<List<FishingMethod>> GetFishingMethodsAsync();
+        Task SaveFishingMethodAsync(FishingMethod fishingMethod);
         Task<Lake> GetLakeAsync(int lakeId);
         Task<List<WayPoint>> GetWayPointsAsync(int? lakeId = null);
         Task SaveWayPointAsync(WayPoint wp);
         Task<WayPoint> GetWayPointAsync(double latitude, double longitude);
         Task SaveFishOnAsync(Model.FishOn fishCaught);
-        Task SaveLureAsync(FishingLure lure);
-        Task DeleteLureAsync(FishingLure lure);
-        Task SaveWeatherConditionAsync(WeatherCondition wc);
         Task<List<Model.FishOn>> GetFishCaughtAtWayPointAsync(int wayPointId);
         Task<List<Model.FishOn>> GetFishCaughtOnLure(int lureId);
+        Task<List<Model.FishOn>> GetFishCaught();
         Task DeleteWayPointAsync(WayPoint wayPoint);
         Task<List<AppSetting>> GetAppSettingsAsync();
         Task SaveAppSettingAsync(AppSetting setting);
-        Task<List<FishingLure>>  GetLuresAsync();
-        Task<FishingLure> GetLureAsync(int fishingLureId);
         Task DeleteFishCaughtAsync(Model.FishOn fishCaught);
         Task DeleteLakeAsync(Lake lake);
         Task SaveSpeciesAsync(Species species);
@@ -69,10 +61,11 @@ namespace FishOn.Repositories
 
             return _singletonInstance;
         }
-        
+
+       
         public async Task  InitializeAsync()
         {
-            _sqLite.DeleteDatabase();
+           // _sqLite.DeleteDatabase();
 
             if (!_sqLite.DoesDBExist)
             {
@@ -222,14 +215,6 @@ namespace FishOn.Repositories
             var fishCaught = await this.GetFishCaughtAtWayPointAsync(id);
             foreach (var fish in fishCaught)
             {
-                var weatherConditions =
-                    await _db.Table<WeatherCondition>().Where(w => w.WeatherConditionId == fish.FishOnId).ToListAsync();
-
-                if (weatherConditions != null && weatherConditions.Count > 0)
-                {
-                    await _db.DeleteAsync(weatherConditions[0]);
-                }
-
                 await _db.DeleteAsync(fish);
             }
 
@@ -247,19 +232,9 @@ namespace FishOn.Repositories
             }
         }
 
-
-        #endregion
-
-        #region WeatherConditions
-
-        public async Task SaveWeatherConditionAsync(WeatherCondition wc)
-        {
-            _db.InsertAsync(wc);
-        }
-
         #endregion
         
-        #region Fish Caught / Fishing Lures
+        #region Fish Caught / Fishing Methods
 
         public async Task SaveFishOnAsync(Model.FishOn fishCaught)
         {
@@ -290,63 +265,26 @@ namespace FishOn.Repositories
             return await _db.Table<Model.FishOn>().Where(f => f.FishingLureId == lureId).ToListAsync();
         }
 
-        public async Task SaveLureAsync(FishingLure lure)
+        public async Task<List<Model.FishOn>> GetFishCaught()
         {
-            if (lure == null)
-            {
-                return;
-            }
-
-            if (lure.FishingLureId == 0)
-            {
-                await _db.InsertAsync(lure);
-                return;
-            }
-
-            await _db.UpdateAsync(lure);
+            return await _db.Table<Model.FishOn>().ToListAsync();
         }
 
-        public async Task DeleteLureAsync(FishingLure lure)
+        public async Task<List<FishingMethod>> GetFishingMethodsAsync()
         {
-            if (lure.FishingLureId == 0)
+            return await _db.Table<Model.FishingMethod>().ToListAsync();
+        }
+
+        public async Task SaveFishingMethodAsync(FishingMethod fishingMethod)
+        {
+            if (fishingMethod.FishingMethodId == 0)
             {
-                return;
-            }
-
-            var fishWereCaughWithLure =
-                (await _db.Table<Model.FishOn>().Where(f => f.FishingLureId == lure.FishingLureId).ToListAsync()).Any();
-
-            if (fishWereCaughWithLure)
-            {
-                lure.IsDeleted = true;
-                await SaveLureAsync(lure);
-
+                await _db.InsertAsync(fishingMethod);
             }
             else
             {
-                await _db.DeleteAsync(lure);
+                await _db.UpdateAsync(fishingMethod);
             }
-        }
-
-        public async Task<List<FishingLure>> GetLuresAsync()
-        {
-            return await _db.Table<FishingLure>().Where(l => l.IsDeleted == false).ToListAsync();
-        }
-
-        public async Task<FishingLure> GetLureAsync(int fishingLureId)
-        {
-            if (fishingLureId == 0)
-            {
-                return null;
-            }
-
-            var query = await _db.Table<FishingLure>().Where(l => l.FishingLureId == fishingLureId).ToListAsync();
-            if (query != null && query.Any())
-            {
-                return query[0];
-            }
-
-            return null;
         }
 
         #endregion
@@ -360,9 +298,8 @@ namespace FishOn.Repositories
             await _db.CreateTableAsync<WayPoint>();
             await _db.CreateTableAsync<Lake>();
             await _db.CreateTableAsync<Model.FishOn>();
-            await _db.CreateTableAsync<WeatherCondition>();
-            await _db.CreateTableAsync<FishingLure>();
-            
+            await _db.CreateTableAsync<FishingMethod>();
+
         }
 
         private async Task SeedDatabaseAsync()

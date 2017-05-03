@@ -11,9 +11,10 @@ namespace FishOn.Pages_MVs.LakeMap
 {
     public partial class LakeMapMasterPage : ContentPage
     {
-        public LakeMapMasterPage()
+        public LakeMapMasterPage(LakeMapPageModelView vm) 
         {
             InitializeComponent();
+            this.BindingContext = vm;
         }
 
         //Xamarin switch doesn't support binding, this is a work around, until I find / implement a better solution

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FishOn.Pages_MVs;
+using FishOn.Services;
 using FishOn.Utils;
 using Xamarin.Forms;
 
@@ -20,7 +21,7 @@ namespace FishOn.ModelView
         private string _inputBoxValue;
         private bool _showDelete = false;
 
-        public SimpleInputModalModelView(INavigation navigation, string captionText, string okButtonText = "Ok", string cancelButtonText = "Cancel", string defaultValue=null, bool showDeleteButton = false) : base(navigation)
+        public SimpleInputModalModelView(FishOnNavigationService navigation, string captionText, string okButtonText = "Ok", string cancelButtonText = "Cancel", string defaultValue=null, bool showDeleteButton = false) : base(navigation, null)
         {
             CaptionText = captionText;
             OkButtonText = okButtonText;
@@ -45,6 +46,7 @@ namespace FishOn.ModelView
                 OnPropertyChanged();
             }
         }
+
         public async Task DisplayModalAsync(ModalClosedAsyncCallBackDelegate callBack)
         {
             _modalClosedAsyncCallBack = callBack;

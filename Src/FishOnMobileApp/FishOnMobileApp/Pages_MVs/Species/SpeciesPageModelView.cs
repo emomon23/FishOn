@@ -15,12 +15,11 @@ namespace FishOn.ModelView
     {
         private ObservableCollection<Species> _speciesList;
        
-        public SpeciesPageModelView(INavigation navigation) : base(navigation) { }
-        public SpeciesPageModelView(INavigation navigation, ILakeDataService lakeDataService, ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService, IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService) :base(navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService) { }
-
+        public SpeciesPageModelView(FishOnNavigationService navigation, IFishOnService fishOnService) : base(navigation, fishOnService) { }
+      
         public async Task Initialize()
         {
-            var list = (await _speciesDataService.GetSpeciesAsync()).Where(s => s.IsAvailableOnCatchList);
+            var list = (await _fishOnService.GetSpeciesListAsync()).Where(s => s.IsAvailableOnCatchList);
             var observable = new ObservableCollection<Species>(list);
             SpeciesList = observable;
         }
@@ -29,7 +28,7 @@ namespace FishOn.ModelView
         {
             get
             {
-                return new Command(async () => await Navigate_BackToLandingPageAsync() );
+                return new Command(async () => await _navigation.Navigate_BackToLandingPageAsync() );
             }
         }
 
@@ -40,26 +39,7 @@ namespace FishOn.ModelView
                 return new Command<string>(async (string speciesName) =>
                 {
                     IsBusy = true;
-                    await Navigate_ToVoiceToTextPage(speciesName);
-
-                    /*
-                    _locationService.GetCurrentPosition(async (Position? p, string errorMsg) =>
-                    {
-                        if (p.HasValue)
-                        {
-                            var position = p.Value;
-                            var speciesCaught = _speciesList.FirstOrDefault(s => s.Name == speciesName);
-
-                            await _wayPointDataService.CreateNewFishOnAsync(position.Latitude, position.Longitude,
-                                speciesCaught);
-
-                            IsBusy = false;
-                            await Navigate_BackToLandingPageAsync();
-                           
-                        }
-
-                    });
-                    */
+                    await _navigation.Navigate_ToVoiceToTextPage(speciesName);
                 });
             }
         }

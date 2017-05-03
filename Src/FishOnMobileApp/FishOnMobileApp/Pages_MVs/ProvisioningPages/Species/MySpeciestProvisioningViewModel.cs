@@ -19,14 +19,9 @@ namespace FishOn.Pages_MVs.ProvisioningPages.Species
     {
         private ObservableCollection<Model.Species> _availableSpecies;
 
-        public MySpeciestProvisioningViewModel(INavigation navigation) : base(navigation) { }
+        public MySpeciestProvisioningViewModel(FishOnNavigationService navigation, IFishOnService fishOnService) : base(navigation, fishOnService) { }
 
-        public MySpeciestProvisioningViewModel(INavigation navigation, ILakeDataService lakeDataService,
-            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService,
-            IFishOnCurrentLocationService locationService, IAppSettingService appSettingService, IFishCaughtDataService fishCaughtDataService,  ISessionDataService sessionDataService)
-            : base(
-                navigation, lakeDataService, speciesDataService, wayPointDataService, locationService, appSettingService, fishCaughtDataService, sessionDataService){}
-
+       
         public async override Task InitializeAsync()
         {
             await base.InitializeAsync();
@@ -60,13 +55,13 @@ namespace FishOn.Pages_MVs.ProvisioningPages.Species
                         {
                             if (deleteClicked && await AreYouSureAsync($"Delete {speciestoEdit.Name}?"))
                             {
-                                await _speciesDataService.DeleteAsync(speciestoEdit);
+                                await _fishOnService.DeleteSpeciesAsync(speciestoEdit);
                                 AvailableSpecies.Remove(speciestoEdit);
                             }
                             else if (!cancelClicked && speciesName.IsNotNullOrEmpty() && speciesName != speciestoEdit.Name)
                             {
                                 speciestoEdit.Name = speciesName;
-                                await _speciesDataService.SaveAsync(speciestoEdit);
+                                await _fishOnService.SaveSpeciesAsync(speciestoEdit);
                                 RefreashSpeciesList();
                             }
                         });
@@ -93,7 +88,7 @@ namespace FishOn.Pages_MVs.ProvisioningPages.Species
                                     IsAvailableOnCatchList = true
                                 };
 
-                                await _speciesDataService.SaveAsync(newSpcies);
+                                await _fishOnService.SaveSpeciesAsync(newSpcies);
                                 await RefreashSpeciesList();
                             }
                         });
@@ -103,12 +98,12 @@ namespace FishOn.Pages_MVs.ProvisioningPages.Species
 
         public async Task ToggleSelectedSpecies(Model.Species species)
         {
-            _speciesDataService.SaveAsync(species);
+            _fishOnService.SaveSpeciesAsync(species);
         }
 
         private async Task RefreashSpeciesList()
         {
-            var speciesList = await _speciesDataService.GetSpeciesAsync();
+            var speciesList = await _fishOnService.GetSpeciesListAsync();
             AvailableSpecies = new ObservableCollection<Model.Species>(speciesList);
         }
     }

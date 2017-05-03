@@ -15,16 +15,7 @@ namespace FishOn.Pages_MVs.ProvisioningPages.Settings
     {
         private ProvisioningPageDefinitions _provisioningPagesDefinitions;
 
-        public SettingsListViewModel(INavigation navigation, ILakeDataService lakeDataService,
-            ISpeciesDataService speciesDataService, IWayPointDataService wayPointDataService,
-            IFishOnCurrentLocationService fishOnCurrentLocationService, IAppSettingService appSettingService,
-            IFishCaughtDataService fishCaughtDataService, ISessionDataService sessionDataService)
-            : base(
-                navigation, lakeDataService, speciesDataService, wayPointDataService, fishOnCurrentLocationService,
-                appSettingService, fishCaughtDataService, sessionDataService)
-        {
-            _provisioningPagesDefinitions = new ProvisioningPageDefinitions();
-        }
+        public SettingsListViewModel(FishOnNavigationService navigation, IFishOnService fishOnService):base(navigation, fishOnService) { }
 
         public List<ProvisioningPageDefinition> PageDefinitions
         {
@@ -34,8 +25,8 @@ namespace FishOn.Pages_MVs.ProvisioningPages.Settings
         public async Task DisplayProvisioningPage(string pageTitle)
         {
             var pageDefinition = _provisioningPagesDefinitions.GetDefinition(pageTitle);
-            var page = await pageDefinition.CreatePage(_navigation, _lakeService, _speciesDataService, _wayPointDataService,
-                _locationService, _appSettingService, _fishOnDataService, _sessionDataService);
+
+            var page = await pageDefinition.CreatePage(_navigation, _fishOnService);
 
             await _navigation.PushAsync(page);
 
